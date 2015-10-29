@@ -5,8 +5,9 @@
  */
 package co.com.siscomputo.usuario.logic;
 
+
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
-import co.com.siscomputo.administracion.persistencia.PaisEntity;
+import co.com.siscomputo.administracion.persistencia.ProcesosEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
 import java.util.ArrayList;
 import org.hibernate.Query;
@@ -17,7 +18,7 @@ import org.hibernate.Transaction;
  *
  * @author LENOVO
  */
-public class PaisLogic {
+public class ProcesosLogic {
     private Session sesion;//Variable de la sesión y conexión de la base de datos
 
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -41,42 +42,39 @@ public class PaisLogic {
         }
         return retorno;
     }
-    /**
-     * Método para ingresar un país
-     * @param pais
-     * @return 
-     */
-    public PaisEntity ingresaPais(PaisEntity pais){
+    
+    public ProcesosEntity ingresaProcesos(ProcesosEntity procesos){
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                pais.setNumeroRespuesta(3);
-                pais.setTrazaRespuesta("Error de Conexión " + validaConexion);
+                procesos.setNumeroRespuesta(3);
+                procesos.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                pais.setIdPais(maxPais());
-                sesion.save(pais);
+                procesos.setIdProcesos(maxProcesos());
+                sesion.save(procesos);
                 tx.commit();
                 sesion.close();
-                pais.setTrazaRespuesta("Inserción de Permiso Exitosa");
-                pais.setNumeroRespuesta(19);
+                procesos.setTrazaRespuesta("Inserción de Permiso Exitosa");
+                procesos.setNumeroRespuesta(19);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            pais=new PaisEntity();
-            pais.setNumeroRespuesta(0);
-            pais.setTrazaRespuesta(e.getMessage());            
+            procesos=new ProcesosEntity();
+            procesos.setNumeroRespuesta(0);
+            procesos.setTrazaRespuesta(e.getMessage());            
         }
-        return pais;
+        return procesos;
     }
     
-    public int maxPais() {
+
+    private int maxProcesos() {
         int ret = -1;
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
             } else {
-                Query query = sesion.createQuery("SELECT MAX(idPais) FROM PaisEntity");
+                Query query = sesion.createQuery("SELECT MAX(idProcesos) FROM ProcesosEntity");
                 ret = (int) query.uniqueResult();
                 ret++;
             }
@@ -85,37 +83,30 @@ public class PaisLogic {
         }
         return ret;
     }
-    /**
-     * Método para actualizar un país
-     * @param pais
-     * @return 
-     */
-    public PaisEntity actualizaPais(PaisEntity pais){
+    
+    public ProcesosEntity actualizarProcesos(ProcesosEntity procesos){
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                pais.setNumeroRespuesta(3);
-                pais.setTrazaRespuesta("Error de Conexión " + validaConexion);
+                procesos.setNumeroRespuesta(3);
+                procesos.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {                
-                sesion.update(pais);
+                sesion.update(procesos);
                 tx.commit();
                 sesion.close();
-                pais.setTrazaRespuesta("Actualización de Permiso Exitosa");
-                pais.setNumeroRespuesta(20);
+                procesos.setTrazaRespuesta("Actualización de procesos Exitosa");
+                procesos.setNumeroRespuesta(20);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            pais=new PaisEntity();
-            pais.setNumeroRespuesta(0);
-            pais.setTrazaRespuesta(e.getMessage());            
+            procesos=new ProcesosEntity();
+            procesos.setNumeroRespuesta(0);
+            procesos.setTrazaRespuesta(e.getMessage());            
         }
-        return pais;
+        return procesos;
     }
-    /**
-     * Método que retorna la lista de países disponibles
-     * @return 
-     */
-    public ObjetoRetornaEntity listaPais(){
+    
+    public ObjetoRetornaEntity listaProcesos(){
         ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
         try {
             String validaConexion = initOperation();
@@ -123,9 +114,9 @@ public class PaisLogic {
                 retorna.setNumeroRespuesta(3);
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                Query query=sesion.createQuery("FROM PaisEntity p WHERE p.estadoPais<>'E'");
+                Query query=sesion.createQuery("FROM ProcesosEntity p WHERE p.estadoProceso<>'E'");
                 retorna.setRetorna((ArrayList<Object>) query.list());
-                retorna.setTrazaRespuesta("Consulta tabla Países exitosa");
+                retorna.setTrazaRespuesta("Consulta tabla Procesos exitosa");
                 retorna.setNumeroRespuesta(21);
                 sesion.close();
             }
@@ -137,31 +128,27 @@ public class PaisLogic {
         }
         return retorna;
     }
-    /**
-     * Método que trae un País por ID
-     * @param idPais
-     * @return 
-     */
-    public PaisEntity paisPorID(int idPais) {
-        PaisEntity pais = new PaisEntity();
+    
+    public ProcesosEntity procesoPorID(int idProceso){
+        ProcesosEntity procesos = new ProcesosEntity();
         String validaConexion = initOperation();
         try {
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                pais.setNumeroRespuesta(3);
-                pais.setTrazaRespuesta("Error de Conexión: " + validaConexion);
+                procesos.setNumeroRespuesta(3);
+                procesos.setTrazaRespuesta("Error de Conexión: " + validaConexion);
             } else {
-                Query query=sesion.createQuery("FROM PaisEntity p WHERE p.idPais=:idS");
-                query.setParameter("idS", idPais);
-                pais=(PaisEntity) query.uniqueResult();
-                pais.setTrazaRespuesta("Consulta de pais exitosa");
-                pais.setNumeroRespuesta(35);
+                Query query=sesion.createQuery("FROM ProcesosEntity p WHERE p.idProcesos=:idS");
+                query.setParameter("idS", idProceso);
+                procesos=(ProcesosEntity) query.uniqueResult();
+                procesos.setTrazaRespuesta("Consulta de procesos exitosa");
+                procesos.setNumeroRespuesta(35);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            pais = new PaisEntity();
-            pais.setNumeroRespuesta(0);
-            pais.setTrazaRespuesta(e.getMessage());
+            procesos = new ProcesosEntity();
+            procesos.setNumeroRespuesta(0);
+            procesos.setTrazaRespuesta(e.getMessage());
         }
-        return pais;
+        return procesos;
     }
 }

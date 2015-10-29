@@ -79,6 +79,12 @@ public class UsuarioLogic {
                     objetoLogin.setNumeroRespuesta(1);
                     objetoLogin.setTrazaRespuesta("Bienvenido");
                     objetoLogin.setIdUsuario(usuarioObjeto.getIdUsuario());
+                    if(usuarioObjeto.getUltimoIngreso()==null){
+                        objetoLogin.setTrazaRespuesta("InicioNuevo");
+                    }else{
+                        fechaUltimoIngreso(usuarioObjeto);
+                    }
+                    
                 }
                 sesion.close();
             }
@@ -232,7 +238,7 @@ public class UsuarioLogic {
                 usu.setIdCreador(0);
                 fechaUltimoIngreso(usu);
                 sesion.update(usu);
-                tx.commit();
+                
                 sesion.close();
             }
         } catch (Exception e) {
@@ -308,7 +314,7 @@ public class UsuarioLogic {
             usu.setUltimoIngreso(fecha);
             sesion.update(usu);
             tx.commit();
-            sesion.close();
+            
         } catch (Exception e) {
             System.out.println("Error ingresando fecha: " + e);
         }
@@ -366,5 +372,18 @@ public class UsuarioLogic {
             usuarioObjeto.setTrazaRespuesta("ERROR: "+e);
         }
         return usuarioObjeto;
+    }
+    
+    public ObjetoRetornaEntity primeraVez(){
+        try {
+             String validaConexion = initOperation();
+            if (!"Ok".equalsIgnoreCase(validaConexion)) {
+                
+            } else {
+                
+            }
+        } catch (Exception e) {
+        }
+        return null;
     }
 }

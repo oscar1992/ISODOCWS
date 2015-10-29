@@ -22,5 +22,9 @@
     <mapping class="co.com.siscomputo.administracion.persistencia.SedeEntity"/>
     <mapping class="co.com.siscomputo.administracion.persistencia.EmpresaEntity"/>
     <mapping class="co.com.siscomputo.administracion.persistencia.SedeEmpresaEntity"/>
+    <mapping class="co.com.siscomputo.administracion.persistencia.FestivosEntity"/>
+    <mapping class="co.com.siscomputo.administracion.persistencia.MacroprocesosEntity"/>
+    <mapping class="co.com.siscomputo.administracion.persistencia.ProcesosEntity"/>
+    <mapping class="co.com.siscomputo.administracion.persistencia.SubprocesoEntity"/>
   </session-factory>
 </hibernate-configuration>

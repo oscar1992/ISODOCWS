@@ -13,21 +13,29 @@ import co.com.siscomputo.administracion.persistencia.AreaEntity;
 import co.com.siscomputo.administracion.persistencia.CiudadEntity;
 import co.com.siscomputo.administracion.persistencia.DepartamentoEntity;
 import co.com.siscomputo.administracion.persistencia.EmpresaEntity;
+import co.com.siscomputo.administracion.persistencia.FestivosEntity;
+import co.com.siscomputo.administracion.persistencia.MacroprocesosEntity;
 import co.com.siscomputo.administracion.persistencia.PaisEntity;
+import co.com.siscomputo.administracion.persistencia.ProcesosEntity;
 import co.com.siscomputo.administracion.persistencia.RolesEntity;
 import co.com.siscomputo.administracion.persistencia.SedeEmpresaEntity;
 import co.com.siscomputo.administracion.persistencia.SedeEntity;
+import co.com.siscomputo.administracion.persistencia.SubprocesoEntity;
 import co.com.siscomputo.administracion.persistencia.UsuarioEntity;
 import co.com.siscomputo.usuario.logic.AreaLogic;
 import co.com.siscomputo.usuario.logic.CiudadLogic;
 import co.com.siscomputo.usuario.logic.DepartamentoLogic;
 import co.com.siscomputo.usuario.logic.EmpresaLogic;
+import co.com.siscomputo.usuario.logic.FestivosLogic;
+import co.com.siscomputo.usuario.logic.MacroProcesoLogic;
 import co.com.siscomputo.usuario.logic.MenuLogic;
 import co.com.siscomputo.usuario.logic.PaisLogic;
 import co.com.siscomputo.usuario.logic.PermisosLogic;
+import co.com.siscomputo.usuario.logic.ProcesosLogic;
 import co.com.siscomputo.usuario.logic.RolesLogic;
 import co.com.siscomputo.usuario.logic.SedeEmpresaLogic;
 import co.com.siscomputo.usuario.logic.SedeLogic;
+import co.com.siscomputo.usuario.logic.SubProcesosLogic;
 import co.com.siscomputo.usuario.logic.UsuarioLogic;
 import java.util.ArrayList;
 import javax.jws.WebService;
@@ -250,6 +258,11 @@ public class Usuario {
         PaisLogic paisLogic=new PaisLogic();
         return paisLogic.listaPais();
     }
+    @WebMethod(operationName = "paisPorId")
+    public PaisEntity paisPorId(@WebParam(name = "idPais") int idPais){
+        PaisLogic paisLogic=new PaisLogic();
+        return paisLogic.paisPorID(idPais);
+    }
     /**
      * Método que permite insertar un departamento nuevo
      * @param departamento
@@ -280,6 +293,16 @@ public class Usuario {
         return departamentoLogic.listaDepartamento();
     }
     /**
+     * Método que trae un departamento por ID
+     * @param idDepto
+     * @return 
+     */
+    @WebMethod(operationName = "deptoPorId")
+    public DepartamentoEntity departamentoPorId(@WebParam(name = "idDepto") int idDepto){
+        DepartamentoLogic departamentoLogic=new DepartamentoLogic();
+        return departamentoLogic.deptoPorID(idDepto);
+    }
+    /**
      * Método que permite insertar una ciudad nueva
      * @param ciudad
      * @return 
@@ -308,6 +331,8 @@ public class Usuario {
         CiudadLogic ciudadLogic=new CiudadLogic();
         return ciudadLogic.listaCiudad();
     }
+    
+    
     /**
      * Método que permite insertar una sede nueva
      * @param sede
@@ -401,4 +426,160 @@ public class Usuario {
         SedeEmpresaLogic sedeEmpresaLogic=new SedeEmpresaLogic();
         return sedeEmpresaLogic.listaRoles();
     }
+    /**
+     * Método qye permite ingresar un festivo nuevo
+     * @param festivo
+     * @return 
+     */
+    @WebMethod(operationName = "ingresaFestivo")
+    public FestivosEntity ingresaFestivo(@WebParam(name = "festivo") FestivosEntity festivo){
+        FestivosLogic festivosLogic=new FestivosLogic();
+        return festivosLogic.ingresaFestivo(festivo);
+    }
+    /**
+     * Método qye permite actualizar un festivo 
+     * @param festivo
+     * @return 
+     */
+    @WebMethod(operationName = "actualizarFestivo")
+    public FestivosEntity actualizarFestivo(@WebParam(name = "festivo") FestivosEntity festivo){
+        FestivosLogic festivosLogic=new FestivosLogic();
+        return festivosLogic.actualizaFestivo(festivo);
+    }
+    /**
+     * Método que consulta los festivos disponibles
+     * @return 
+     */
+    @WebMethod(operationName = "listafestivos")
+    public ObjetoRetornaEntity listaFestivos(){
+        FestivosLogic festivosLogic=new FestivosLogic();
+        return festivosLogic.listaFestivos();
+    }
+    /**
+     * Método que trae un único festivo filtrado por el ID
+     * @param idFestivo
+     * @return 
+     */
+    public FestivosEntity festtivoPorId(@WebParam(name = "idFestivo") int idFestivo){
+        FestivosLogic festivosLogic=new FestivosLogic();
+        return festivosLogic.festivoPorId(idFestivo);
+    }
+    /**
+     * Mátodo que ingresa un MacroProceso
+     * @param macro
+     * @return 
+     */
+    @WebMethod(operationName = "ingresaMacroProceso")
+    public MacroprocesosEntity ingresaMacro(@WebParam(name = "macro") MacroprocesosEntity macro){
+        MacroProcesoLogic macroProcesoLogic=new MacroProcesoLogic();
+        return macroProcesoLogic.ingresaMacroproceso(macro);
+    }
+    /**
+     * Mátodo que actualiza un MacroProceso
+     * @param macro
+     * @return 
+     */
+    @WebMethod(operationName = "actualizaMacroProceso")
+    public MacroprocesosEntity actualizaMacro(@WebParam(name = "macro") MacroprocesosEntity macro){
+        MacroProcesoLogic macroProcesoLogic=new MacroProcesoLogic();
+        return macroProcesoLogic.actualizarMacroproceso(macro);
+    }
+    /**
+     * Método que consulta los macroProcesos disponibles
+     * @return 
+     */
+    @WebMethod(operationName = "listaMacroProcesos")
+    public ObjetoRetornaEntity listaMacro(){
+        MacroProcesoLogic macroProcesoLogic=new MacroProcesoLogic();
+        return macroProcesoLogic.listaMacroProcesos();
+    }
+    /**
+     * Mátodo que trae un único MacroProceso Filtrado por ID
+     * @param macro
+     * @return 
+     */
+    @WebMethod(operationName = "macroPorId")
+    public MacroprocesosEntity macroPorId(@WebParam(name = "macro") int idMacro){
+        MacroProcesoLogic macroProcesoLogic=new MacroProcesoLogic();
+        return macroProcesoLogic.macroPorID(idMacro);
+    }
+    /**
+     * Método que inserta un proceso nuevo
+     * @param proceso
+     * @return 
+     */
+    @WebMethod(operationName = "ingresaProceso")
+    public ProcesosEntity ingresaProceso(@WebParam(name = "proceso") ProcesosEntity proceso){
+        ProcesosLogic procesosLogic=new ProcesosLogic();
+        return procesosLogic.ingresaProcesos(proceso);
+    }
+    /**
+     * Método que actualiza un proceso nuevo
+     * @param proceso
+     * @return 
+     */
+    @WebMethod(operationName = "actualizaProceso")
+    public ProcesosEntity actualizaProceso(@WebParam(name = "proceso") ProcesosEntity proceso){
+        ProcesosLogic procesosLogic=new ProcesosLogic();
+        return procesosLogic.actualizarProcesos(proceso);
+    }
+    /**
+     * Método que inserta un proceso nuevo
+     * @param idProceso 
+     * @return 
+     */
+    @WebMethod(operationName = "procesoPorID")
+    public ProcesosEntity procesoPorID(@WebParam(name = "proceso") int idProceso){
+        ProcesosLogic procesosLogic=new ProcesosLogic();
+        return procesosLogic.procesoPorID(idProceso);
+    }
+    /**
+     * Método que trae la lista de procesos disponibles
+     * @return 
+     */
+    @WebMethod(operationName = "listaProcesos")
+    public ObjetoRetornaEntity listaProceso(){
+        ProcesosLogic procesosLogic=new ProcesosLogic();
+        return procesosLogic.listaProcesos();
+    }
+    /**
+     * Método que ingresa un Subproceso nuevo
+     * @param subproceso
+     * @return 
+     */
+    @WebMethod(operationName = "ingresaSubProceso")
+    public SubprocesoEntity ingresaSubproceso(@WebParam(name = "subproceso")SubprocesoEntity subproceso){
+        SubProcesosLogic subProcesosLogic=new SubProcesosLogic();
+        return subProcesosLogic.ingresaSubProceso(subproceso);
+    }
+    /**
+     * Método que actualiza un Subproceso 
+     * @param subproceso
+     * @return 
+     */
+    @WebMethod(operationName = "actualizaSubProceso")
+    public SubprocesoEntity actualizaSubproceso(@WebParam(name = "subproceso")SubprocesoEntity subproceso){
+        SubProcesosLogic subProcesosLogic=new SubProcesosLogic();
+        return subProcesosLogic.actualizarSubprocesos(subproceso);
+    }
+    /**
+     * Método que trae un subproceso filtrado por ID
+     * @param idSubproceso 
+     * @return 
+     */
+    @WebMethod(operationName = "subProcesoPorID")
+    public SubprocesoEntity subprocesoPorID(@WebParam(name = "subproceso")int idSubproceso){
+        SubProcesosLogic subProcesosLogic=new SubProcesosLogic();
+        return subProcesosLogic.subProcesoProID(idSubproceso);
+    }
+    /**
+     * Método que consulta la lista de subprocesos disponibles
+     * @return 
+     */
+    @WebMethod(operationName = "listaSubProcesos")
+    public ObjetoRetornaEntity listaSubprocesos(){
+        SubProcesosLogic subProcesosLogic=new SubProcesosLogic();
+        return subProcesosLogic.listaSubproceso();
+    }
+    
 }

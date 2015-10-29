@@ -137,4 +137,31 @@ public class DepartamentoLogic {
         }
         return retorna;
     }
+    /**
+     * Método que devuelve un departamento filtrado por su Id
+     * @param idPais
+     * @return 
+     */
+    public DepartamentoEntity deptoPorID(int idPais) {
+        DepartamentoEntity depto = new DepartamentoEntity();
+        String validaConexion = initOperation();
+        try {
+            if (!"Ok".equalsIgnoreCase(validaConexion)) {
+                depto.setNumeroRespuesta(3);
+                depto.setTrazaRespuesta("Error de Conexión: " + validaConexion);
+            } else {
+                Query query=sesion.createQuery("FROM DepartamentoEntity p WHERE p.idDepartamento=:idS");
+                query.setParameter("idS", idPais);
+                depto=(DepartamentoEntity) query.uniqueResult();
+                depto.setTrazaRespuesta("Consulta de depto exitosa");
+                depto.setNumeroRespuesta(35);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            depto = new DepartamentoEntity();
+            depto.setNumeroRespuesta(0);
+            depto.setTrazaRespuesta(e.getMessage());
+        }
+        return depto;
+    }
 }
