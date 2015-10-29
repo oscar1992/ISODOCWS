@@ -17,7 +17,7 @@ import javax.persistence.Table;
  * @author LENOVO
  */
 @Entity
-@Table(name = "ADM_EMPR")
+@Table(name = "ADM_TEMPR")
 public class EmpresaEntity extends ObjetoRetornaEntity implements Serializable{
     @Id
     @Column(name = "EMPR_EMPR")

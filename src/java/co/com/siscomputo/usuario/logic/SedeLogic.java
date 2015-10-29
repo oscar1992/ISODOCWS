@@ -134,7 +134,7 @@ public class SedeLogic {
         ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
         try {
             initOperation();
-            Query query = sesion.createQuery("FROM SedeEntity");
+            Query query = sesion.createQuery("FROM SedeEntity s WHERE s.estadoSede<>'E'");
             retorna.setRetorna((ArrayList<Object>) query.list());
             retorna.setTrazaRespuesta("Carga de Sedes exitosa");
             retorna.setNumeroRespuesta(31);

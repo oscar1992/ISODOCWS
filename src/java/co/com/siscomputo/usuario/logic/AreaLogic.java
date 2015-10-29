@@ -116,7 +116,7 @@ public class AreaLogic {
                 retorna.setNumeroRespuesta(3);
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                Query query=sesion.createQuery("FROM AreaEntity");
+                Query query=sesion.createQuery("FROM AreaEntity a WHERE a.estadoArea<>'E'");
                 retorna.setRetorna((ArrayList<Object>) query.list());
                 retorna.setTrazaRespuesta("Consulta tabla Areas exitosa");
                 retorna.setNumeroRespuesta(22);

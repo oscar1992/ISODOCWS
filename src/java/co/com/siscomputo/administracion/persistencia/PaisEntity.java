@@ -17,7 +17,7 @@ import javax.persistence.Table;
  * @author LENOVO
  */
 @Entity
-@Table(name = "ADM_PAIS")
+@Table(name = "ADM_TPAIS")
 public class PaisEntity extends ObjetoTraza implements Serializable{
     @Id
     @Column(name = "PAIS_PAIS")

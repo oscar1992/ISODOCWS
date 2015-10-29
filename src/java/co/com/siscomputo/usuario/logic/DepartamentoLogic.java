@@ -76,7 +76,7 @@ public class DepartamentoLogic {
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
             } else {
-                Query query = sesion.createQuery("SELECT MAX(idPais) FROM DepartamentoEntity");
+                Query query = sesion.createQuery("SELECT MAX(idDepartamento) FROM DepartamentoEntity");
                 ret = (int) query.uniqueResult();
                 ret++;
             }

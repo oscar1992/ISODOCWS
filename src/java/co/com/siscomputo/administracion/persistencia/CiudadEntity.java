@@ -19,7 +19,7 @@ import javax.persistence.Table;
  * @author LENOVO
  */
 @Entity
-@Table(name = "ADM_CIUD")
+@Table(name = "ADM_TCIUD")
 public class CiudadEntity extends ObjetoTraza implements Serializable{
     @Id
     @Column(name = "CIUD_CIUD")

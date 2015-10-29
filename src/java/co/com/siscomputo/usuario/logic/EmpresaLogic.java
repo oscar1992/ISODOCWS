@@ -125,7 +125,7 @@ public class EmpresaLogic {
         ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
         try {
             initOperation();
-            Query query = sesion.createQuery("FROM EmpresaEntity ");
+            Query query = sesion.createQuery("FROM EmpresaEntity e WHERE e.estadoEmpresa<>'E'");
             retorna.setRetorna((ArrayList<Object>) query.list());
             retorna.setTrazaRespuesta("Carga de Empresas exitosa");
             retorna.setNumeroRespuesta(34);

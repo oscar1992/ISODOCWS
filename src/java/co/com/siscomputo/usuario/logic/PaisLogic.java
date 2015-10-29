@@ -123,7 +123,7 @@ public class PaisLogic {
                 retorna.setNumeroRespuesta(3);
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                Query query=sesion.createQuery("FROM PaisEntity");
+                Query query=sesion.createQuery("FROM PaisEntity p WHERE p.estadoPais<>'E'");
                 retorna.setRetorna((ArrayList<Object>) query.list());
                 retorna.setTrazaRespuesta("Consulta tabla Países exitosa");
                 retorna.setNumeroRespuesta(21);
