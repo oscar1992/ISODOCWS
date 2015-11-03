@@ -26,5 +26,8 @@
     <mapping class="co.com.siscomputo.administracion.persistencia.MacroprocesosEntity"/>
     <mapping class="co.com.siscomputo.administracion.persistencia.ProcesosEntity"/>
     <mapping class="co.com.siscomputo.administracion.persistencia.SubprocesoEntity"/>
+    <mapping class="co.com.siscomputo.administracion.persistencia.UsuarioMacroprocesoEntity"/>
+    <mapping class="co.com.siscomputo.administracion.persistencia.UsuarioProcesoEntity"/>
+    <mapping class="co.com.siscomputo.administracion.persistencia.UsuarioSubprocesoEntity"/>
   </session-factory>
 </hibernate-configuration>

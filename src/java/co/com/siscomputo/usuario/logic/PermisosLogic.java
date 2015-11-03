@@ -6,6 +6,7 @@
 package co.com.siscomputo.usuario.logic;
 
 import co.com.siscomputo.administracion.entites.ListaAsignaPermisosModulo;
+import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.administracion.persistencia.ModuloEntity;
 import co.com.siscomputo.administracion.persistencia.PermisosEntity;
 import co.com.siscomputo.administracion.persistencia.RolPermisoEntity;
@@ -125,7 +126,7 @@ public class PermisosLogic {
      * lista de permisos del sistema
      *
      * @return
-     */
+     */    
     public ArrayList<ListaAsignaPermisosModulo> listaRolPermiso() {
         ArrayList<ListaAsignaPermisosModulo> listaRetorna = new ArrayList<>();
         try {
@@ -177,5 +178,28 @@ public class PermisosLogic {
             e.printStackTrace();
         }
         return listaRetorna;
+    }
+    
+    public ObjetoRetornaEntity listaRolPermisoPorRol(int idRol){
+         ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
+        try {
+            String validaConexion = initOperation();
+            if (!"Ok".equalsIgnoreCase(validaConexion)) {
+                retorna.setNumeroRespuesta(3);
+                retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
+            } else {
+                Query query=sesion.createQuery("FROM RolPermisoEntity p WHERE p.estadoProceso<>'E'");
+                retorna.setRetorna((ArrayList<Object>) query.list());
+                retorna.setTrazaRespuesta("Consulta tabla Procesos exitosa");
+                retorna.setNumeroRespuesta(21);
+                sesion.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            retorna=new ObjetoRetornaEntity();
+            retorna.setNumeroRespuesta(0);
+            retorna.setTrazaRespuesta(e.getMessage());
+        }
+        return retorna;
     }
 }

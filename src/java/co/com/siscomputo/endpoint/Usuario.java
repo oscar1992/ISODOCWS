@@ -22,6 +22,9 @@ import co.com.siscomputo.administracion.persistencia.SedeEmpresaEntity;
 import co.com.siscomputo.administracion.persistencia.SedeEntity;
 import co.com.siscomputo.administracion.persistencia.SubprocesoEntity;
 import co.com.siscomputo.administracion.persistencia.UsuarioEntity;
+import co.com.siscomputo.administracion.persistencia.UsuarioMacroprocesoEntity;
+import co.com.siscomputo.administracion.persistencia.UsuarioProcesoEntity;
+import co.com.siscomputo.administracion.persistencia.UsuarioSubprocesoEntity;
 import co.com.siscomputo.usuario.logic.AreaLogic;
 import co.com.siscomputo.usuario.logic.CiudadLogic;
 import co.com.siscomputo.usuario.logic.DepartamentoLogic;
@@ -37,12 +40,11 @@ import co.com.siscomputo.usuario.logic.SedeEmpresaLogic;
 import co.com.siscomputo.usuario.logic.SedeLogic;
 import co.com.siscomputo.usuario.logic.SubProcesosLogic;
 import co.com.siscomputo.usuario.logic.UsuarioLogic;
+import co.com.siscomputo.usuario.logic.UsuarioMacroprocesoLogic;
+import co.com.siscomputo.usuario.logic.UsuarioProcesoLogic;
+import co.com.siscomputo.usuario.logic.UsuarioSubprocesoLogic;
 import co.com.siscomputo.utilidades.Valida;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -955,6 +957,152 @@ public class Usuario {
     public ObjetoRetornaEntity listaSubprocesos() {
         SubProcesosLogic subProcesosLogic = new SubProcesosLogic();
         return subProcesosLogic.listaSubproceso();
+    }
+
+    /**
+     * Método que permite Ingresar una relación usuario-Macroproceso nuevo
+     *
+     * @param ususmacro
+     * @return
+     */
+    @WebMethod(operationName = "ingresarUsuarioMacroproceso")
+    public UsuarioMacroprocesoEntity ingresarUsuarioMacroproceso(@WebParam(name = "usuarioMacroproceso") UsuarioMacroprocesoEntity ususmacro) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(ususmacro.getIdUsuario().getIdUsuario(), "Usuario-MacroProceso"))) {
+            UsuarioMacroprocesoEntity ret = new UsuarioMacroprocesoEntity();
+            ret.setTrazaRespuesta(valida.valida(ususmacro, "Usuario-MacroProceso"));
+            return ret;
+        } else {
+            UsuarioMacroprocesoLogic usuarioMacroprocesoLogic = new UsuarioMacroprocesoLogic();
+            return usuarioMacroprocesoLogic.ingresaUsuarioMacroproceso(ususmacro);
+        }
+    }
+
+    /**
+     * Método que permite actulizar una relación usuario-MacroProceso
+     *
+     * @param usumacro
+     * @return
+     */
+    @WebMethod(operationName = "actualizarusuarioMacroproceso")
+    public UsuarioMacroprocesoEntity actualizarUsuarioMacroporceso(@WebParam(name = "usuarioMacroproceso") UsuarioMacroprocesoEntity usumacro) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(usumacro.getIdUsuarioMacroproceso(), "Usuario-MacroProceso"))) {
+            UsuarioMacroprocesoEntity ret = new UsuarioMacroprocesoEntity();
+            ret.setTrazaRespuesta(valida.valida(usumacro, "Usuario-MacroProceso"));
+            return ret;
+        } else {
+            UsuarioMacroprocesoLogic usuarioMacroprocesoLogic = new UsuarioMacroprocesoLogic();
+            return usuarioMacroprocesoLogic.actualizarUsuarioMacroproceso(usumacro);
+        }
+    }
+
+    /**
+     * Método que retorna una lista de las relaciones entre Usuarios y
+     * Macroprocesos
+     *
+     * @return
+     */
+    @WebMethod(operationName = "listaUsuarioMacroproceso")
+    public ObjetoRetornaEntity listausuarioMacroproceso() {
+        UsuarioMacroprocesoLogic usuarioMacroprocesoLogic = new UsuarioMacroprocesoLogic();
+        return usuarioMacroprocesoLogic.listaMacroProcesos();
+    }
+
+    /**
+     * Método que permite Ingresar una relación usuario-Proceso nuevo
+     *
+     *
+     * @param usuProceso
+     * @return
+     */
+    @WebMethod(operationName = "ingresarUsuarioProcesos")
+    public UsuarioProcesoEntity ingresarUsuarioProceso(@WebParam(name = "UsuarioProceso") UsuarioProcesoEntity usuProceso) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(usuProceso.getIdUsuario().getIdUsuario(), "Usuario-Proceso"))) {
+            UsuarioProcesoEntity ret = new UsuarioProcesoEntity();
+            ret.setTrazaRespuesta(valida.valida(usuProceso, "Usuario-Proceso"));
+            return ret;
+        } else {
+            UsuarioProcesoLogic usuarioProcesoLogic = new UsuarioProcesoLogic();
+            return usuarioProcesoLogic.ingresarUsuarioProceso(usuProceso);
+        }
+    }
+
+    /**
+     * Método que permite actulizar una relación usuario-Proceso
+     *
+     *
+     * @param usuProceso
+     * @return
+     */
+    @WebMethod(operationName = "actualizarUsuarioProceso")
+    public UsuarioProcesoEntity actualizarusuarioProceso(@WebParam(name = "usuarioProceso") UsuarioProcesoEntity usuProceso) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(usuProceso.getIdUsuario().getIdUsuario(), "Usuario-Proceso"))) {
+            UsuarioProcesoEntity ret = new UsuarioProcesoEntity();
+            ret.setTrazaRespuesta(valida.valida(usuProceso, "Usuario-Proceso"));
+            return ret;
+        } else {
+            UsuarioProcesoLogic usuarioProcesoLogic = new UsuarioProcesoLogic();
+            return usuarioProcesoLogic.actualizarUsuarioProceso(usuProceso);
+        }
+    }
+
+    /**
+     * Método que retorna una lista de relaciones entre Usuarios y Procesos
+     * @return
+     */
+    @WebMethod(operationName = "listausuarioProcesos")
+    public ObjetoRetornaEntity listaUsuarioProcesos() {
+        UsuarioProcesoLogic usuarioProcesoLogic = new UsuarioProcesoLogic();
+        return usuarioProcesoLogic.listaProcesos();
+    }
+
+    /**
+     * Método que permite Ingresar una relación usuario-Subproceso nuevo
+     *
+     * @param usuSubproceso
+     * @return
+     */
+    @WebMethod(operationName = "ingresarUsuarioSubproceso")
+    public UsuarioSubprocesoEntity ingresarUsuarioSubprocesos(@WebParam(name = "UsuarioSubproceso") UsuarioSubprocesoEntity usuSubproceso) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(usuSubproceso.getIdusuario().getIdUsuario(), "Usuario-SubProceso"))) {
+            UsuarioSubprocesoEntity ret = new UsuarioSubprocesoEntity();
+            ret.setTrazaRespuesta(valida.valida(usuSubproceso, "Usuario-SubProceso"));
+            return ret;
+        } else {
+            UsuarioSubprocesoLogic usuarioSubprocesoLogic = new UsuarioSubprocesoLogic();
+            return usuarioSubprocesoLogic.ingresaUsuarioSubproceso(usuSubproceso);
+        }
+    }
+
+    /**
+     * Método que permite Ingresar una relación usuario-SubProceso nuevo     *
+     * @param usuSubproceso
+     * @return
+     */
+    @WebMethod(operationName = "actualizarUsuarioSubproceso")
+    public UsuarioSubprocesoEntity actualizarUsuarioSubprocesos(@WebParam(name = "UsuarioSubproceso") UsuarioSubprocesoEntity usuSubproceso) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(usuSubproceso.getIdusuario().getIdUsuario(), "Usuario-SubProceso"))) {
+            UsuarioSubprocesoEntity ret = new UsuarioSubprocesoEntity();
+            ret.setTrazaRespuesta(valida.valida(usuSubproceso, "Usuario-SubProceso"));
+            return ret;
+        } else {
+            UsuarioSubprocesoLogic usuarioSubprocesoLogic = new UsuarioSubprocesoLogic();
+            return usuarioSubprocesoLogic.actualizarUsuarioSubproceso(usuSubproceso);
+        }
+    }
+    /**
+     * Método que retorna una lista de relaciones entre Usuarios y Subrocesos
+     * @return 
+     */
+    @WebMethod(operationName = "listaUsuarioSubproceso")
+    public ObjetoRetornaEntity listaUsuarioSubprocesos(){
+        UsuarioSubprocesoLogic usuarioSubprocesoLogic=new UsuarioSubprocesoLogic();
+        return usuarioSubprocesoLogic.listaSubProcesos();
     }
 
 }
