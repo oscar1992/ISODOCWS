@@ -37,10 +37,16 @@ import co.com.siscomputo.usuario.logic.SedeEmpresaLogic;
 import co.com.siscomputo.usuario.logic.SedeLogic;
 import co.com.siscomputo.usuario.logic.SubProcesosLogic;
 import co.com.siscomputo.usuario.logic.UsuarioLogic;
+import co.com.siscomputo.utilidades.Valida;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import javax.xml.bind.annotation.XmlElement;
 
 /**
  *
@@ -50,536 +56,905 @@ import javax.jws.WebParam;
 public class Usuario {
 
     /**
-     * Web service operation 
-     * método de autenticación de usuario
+     * Web service operation método de autenticación de usuario
+     *
      * @param nombre
      * @param pass
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "login")
-    
-    public ObjetoLogin login(@WebParam(name = "nombre") String nombre, @WebParam(name = "pass") String pass) {
-        UsuarioLogic usuarioLogica = new UsuarioLogic();        
-        return usuarioLogica.login(nombre, pass);
+    public ObjetoLogin login(@WebParam(name = "nombre") @XmlElement(required = true) String nombre, @WebParam(name = "pass") String pass) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(nombre, "nombre"))) {
+            ObjetoLogin ret = new ObjetoLogin();
+            ret.setAcceso(false);
+            ret.setTrazaRespuesta(valida.valida(nombre, "nombre"));
+            return ret;
+        }
+        if (!"Ok".equalsIgnoreCase(valida.valida(pass, "contraseña"))) {
+            ObjetoLogin ret = new ObjetoLogin();
+            ret.setAcceso(false);
+            ret.setTrazaRespuesta(valida.valida(pass, "contraseña"));
+            return ret;
+        } else {
+            System.out.println("Inten");
+            UsuarioLogic usuarioLogica = new UsuarioLogic();
+            return usuarioLogica.login(nombre, pass);
+        }
+
     }
 
     /**
-     * Web service operation
-     * Método de la lista de módulos filtrados por Usuario
+     * Web service operation Método de la lista de módulos filtrados por Usuario
+     *
      * @param id_usuario
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "listaModulos")
-    public ObjetoRetornaEntity listaModulos(@WebParam(name = "id_usuario") int id_usuario) {
-        UsuarioLogic usuarioLogica = new UsuarioLogic();
-        return usuarioLogica.modulos(id_usuario);
+    public ObjetoRetornaEntity listaModulos(@WebParam(name = "id_usuario") int idUsuario) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idUsuario, "idUsuario"))) {
+            ObjetoRetornaEntity ret = new ObjetoRetornaEntity();
+            ret.setTrazaRespuesta(valida.valida(idUsuario, "idUsuario"));
+            return ret;
+        } else {
+            UsuarioLogic usuarioLogica = new UsuarioLogic();
+            return usuarioLogica.modulos(idUsuario);
+        }
+
     }
 
     /**
-     * Web service operation
-     * Método de la lista de permisos filtrados por Usuario
+     * Web service operation Método de la lista de permisos filtrados por
+     * Usuario
+     *
      * @param id_usuario
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "listaPermisos")
-    public ObjetoRetornaEntity listaPermisos(@WebParam(name = "id_usuario") int id_usuario) {
-        UsuarioLogic usuarioLogica= new UsuarioLogic();
-        return usuarioLogica.permisos(id_usuario);
+    public ObjetoRetornaEntity listaPermisos(@WebParam(name = "id_usuario") int idUsuario) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idUsuario, "idUsuario"))) {
+            ObjetoRetornaEntity ret = new ObjetoRetornaEntity();
+            ret.setTrazaRespuesta(valida.valida(idUsuario, "idUsuario"));
+            return ret;
+        } else {
+            UsuarioLogic usuarioLogica = new UsuarioLogic();
+            return usuarioLogica.permisos(idUsuario);
+        }
     }
 
     /**
-     * Web service operation
-     * Método de carga de lista de usuarios
-     * @return 
+     * Web service operation Método de carga de lista de usuarios
+     *
+     * @return
      */
     @WebMethod(operationName = "listaUsuarios")
     public ObjetoRetornaEntity listaUsuarios() {
-        UsuarioLogic usuarioLogic=new UsuarioLogic();
+        UsuarioLogic usuarioLogic = new UsuarioLogic();
         try {
-            return usuarioLogic.listaUsuarios(); 
+            return usuarioLogic.listaUsuarios();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
-        
+
     }
 
     /**
-    * Web service operation
-    * Método que permite actualizar un usario
-    * @param usu
-    * @return 
-    */
+     * Web service operation Método que permite actualizar un usario
+     *
+     * @param usu
+     * @return
+     */
     @WebMethod(operationName = "actualizarUsuario")
     public UsuarioEntity actualizarUsuario(@WebParam(name = "Usuario") UsuarioEntity usu) {
-        UsuarioLogic usuarioLogic=new UsuarioLogic();
-        return usuarioLogic.actualizarUsuario(usu);
-    }
-    
-    /**
-     * Método que permite ingresar un usuario nuevo
-     * @param usu
-     * @return 
-     */
-    @WebMethod(operationName = "ingresarUsuario")
-    public UsuarioEntity ingresarUsuario(@WebParam(name = "Usuario") UsuarioEntity usu){
-        UsuarioLogic usuarioLogic=new UsuarioLogic();
-        return usuarioLogic.ingresarUsuario(usu);
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(usu.getIdUsuario(), "idUsuario"))) {
+            UsuarioEntity ret = new UsuarioEntity();
+            ret.setTrazaRespuesta(valida.valida(usu.getIdUsuario(), "idUsuario"));
+            return ret;
+        } else {
+            UsuarioLogic usuarioLogic = new UsuarioLogic();
+            return usuarioLogic.actualizarUsuario(usu);
+        }
     }
 
     /**
-     * Web service operation
-     * Método que carga una lista de permisos filtrados por Usuario
+     * Método que permite ingresar un usuario nuevo
+     *
+     * @param usu
+     * @return
+     */
+    @WebMethod(operationName = "ingresarUsuario")
+    public UsuarioEntity ingresarUsuario(@WebParam(name = "Usuario") UsuarioEntity usu) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(usu.getNombre(), "idUsuario"))) {
+            UsuarioEntity ret = new UsuarioEntity();
+            ret.setTrazaRespuesta(valida.valida(usu.getNombre(), "idUsuario"));
+            return ret;
+        } else {
+            UsuarioLogic usuarioLogic = new UsuarioLogic();
+            return usuarioLogic.ingresarUsuario(usu);
+        }
+    }
+
+    /**
+     * Web service operation Método que carga una lista de permisos filtrados
+     * por Usuario
+     *
      * @param idUsuario
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "listaPermisosFiltrados")
     public ObjetoRetornaEntity listaPermisosFiltrados(@WebParam(name = "idUsuario") int idUsuario) {
-        UsuarioLogic usuarioLogic=new UsuarioLogic();
-        return usuarioLogic.permisosFiltrados(idUsuario);
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idUsuario, "idUsuario"))) {
+            ObjetoRetornaEntity ret = new ObjetoRetornaEntity();
+            ret.setTrazaRespuesta(valida.valida(idUsuario, "idUsuario"));
+            return ret;
+        } else {
+            UsuarioLogic usuarioLogic = new UsuarioLogic();
+            return usuarioLogic.permisosFiltrados(idUsuario);
+        }
     }
-    
+
     /**
      * Método que trae las lista para crear los menus
+     *
      * @param idUsuario
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "menuDatosporUsuario")
-    public ArrayList<MenuModuloEntity> menuDatosporUsuario(@WebParam(name = "idUsuario") int idUsuario){
-        MenuLogic menuLogic=new MenuLogic();
-        return menuLogic.datosMenu(idUsuario);
+    public ArrayList<MenuModuloEntity> menuDatosporUsuario(@WebParam(name = "idUsuario") int idUsuario) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idUsuario, "idUsuario"))) {
+            return null;
+        } else {
+            MenuLogic menuLogic = new MenuLogic();
+            return menuLogic.datosMenu(idUsuario);
+        }
     }
+
     /**
      * Método que trae un único usuario filtrado por su ID
+     *
      * @param idUsuario
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "usuarioPorId")
-    public UsuarioEntity usuarioPorId(@WebParam(name = "idUsuario")int idUsuario){
-        UsuarioLogic usuarioLogic=new UsuarioLogic();
-        return usuarioLogic.usuarioPorId(idUsuario);
+    public UsuarioEntity usuarioPorId(@WebParam(name = "idUsuario") int idUsuario) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idUsuario, "idUsuario"))) {
+            UsuarioEntity ret = new UsuarioEntity();
+            ret.setTrazaRespuesta(valida.valida(idUsuario, "idUsuario"));
+            return ret;
+        } else {
+            UsuarioLogic usuarioLogic = new UsuarioLogic();
+            return usuarioLogic.usuarioPorId(idUsuario);
+        }
     }
-    
-    
+
     /**
      * Método que trae la lista de roles disponibles
-     * @return 
+     *
+     * @return
      */
     @WebMethod(operationName = "listaRoles")
-    public ObjetoRetornaEntity listaRoles(){
-        RolesLogic rolesLogic=new RolesLogic();
+    public ObjetoRetornaEntity listaRoles() {
+        RolesLogic rolesLogic = new RolesLogic();
         return rolesLogic.listaRoles();
     }
-       
+
     /**
      * Método que ingresa un Rol nuevo
+     *
      * @param rol
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "ingresarRol")
-    public RolesEntity ingresarRol(@WebParam(name = "rol") RolesEntity rol){
-        RolesLogic rolesLogic=new RolesLogic();
-        return rolesLogic.ingresarRol(rol);
+    public RolesEntity ingresarRol(@WebParam(name = "rol") RolesEntity rol) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(rol.getNombre_rol(), "Rol"))) {
+            RolesEntity ret = new RolesEntity();
+            ret.setTrazaRespuesta(valida.valida(rol.getNombre_rol(), "Rol"));
+            return ret;
+        } else {
+            RolesLogic rolesLogic = new RolesLogic();
+            return rolesLogic.ingresarRol(rol);
+        }
     }
+
     /**
      * Metodo que permite actualizar el Rol
+     *
      * @param rol
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "actualizarRol")
-    public RolesEntity actualizarRol(@WebParam(name = "rol") RolesEntity rol){
-        RolesLogic rolesLogic=new RolesLogic();
-        return rolesLogic.actualizarRol(rol);
+    public RolesEntity actualizarRol(@WebParam(name = "rol") RolesEntity rol) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(rol.getId_rol(), "Rol"))) {
+            RolesEntity ret = new RolesEntity();
+            ret.setTrazaRespuesta(valida.valida(rol.getId_rol(), "Rol"));
+            return ret;
+        } else {
+            RolesLogic rolesLogic = new RolesLogic();
+            return rolesLogic.actualizarRol(rol);
+        }
     }
+
     /**
-     * Método que trae una lista de objetos para construir el árbol de los permisos
-     * @return 
+     * Método que trae una lista de objetos para construir el árbol de los
+     * permisos
+     *
+     * @return
      */
     @WebMethod(operationName = "listaPermisosDisponibles")
-    public ArrayList<ListaAsignaPermisosModulo> listaPermisosDisponibles(){
-        PermisosLogic permisosLogic=new PermisosLogic();
+    public ArrayList<ListaAsignaPermisosModulo> listaPermisosDisponibles() {
+        PermisosLogic permisosLogic = new PermisosLogic();
         return permisosLogic.listaRolPermiso();
     }
+
     /**
      * Método que permite insertar un área nueva
+     *
      * @param area
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "insertarArea")
-    public AreaEntity ingresarArea(@WebParam(name = "area") AreaEntity area){
-        AreaLogic areaLogic=new AreaLogic();
-        return areaLogic.ingresarArea(area);
+    public AreaEntity ingresarArea(@WebParam(name = "area") AreaEntity area) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(area.getNombreArea(), "Area"))) {
+            AreaEntity ret = new AreaEntity();
+            ret.setTrazaRespuesta(valida.valida(area.getNombreArea(), "Ares"));
+            return ret;
+        } else {
+            AreaLogic areaLogic = new AreaLogic();
+            return areaLogic.ingresarArea(area);
+        }
     }
+
     /**
-     * Método que permite actualizar un área 
+     * Método que permite actualizar un área
+     *
      * @param area
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "actualizarArea")
-    public AreaEntity actualizarArea(@WebParam(name = "area") AreaEntity area){
-        AreaLogic areaLogic=new AreaLogic();
-        return areaLogic.actualizarArea(area);
+    public AreaEntity actualizarArea(@WebParam(name = "area") AreaEntity area) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(area.getIdArea(), "Ares"))) {
+            AreaEntity ret = new AreaEntity();
+            ret.setTrazaRespuesta(valida.valida(area.getIdArea(), "Area"));
+            return ret;
+        } else {
+            AreaLogic areaLogic = new AreaLogic();
+            return areaLogic.actualizarArea(area);
+        }
     }
+
     /**
      * Método que consulta la lista de Areas
-     * @return 
+     *
+     * @return
      */
     @WebMethod(operationName = "listaAreas")
-    public ObjetoRetornaEntity listaAreas(){
-        AreaLogic areaLogic=new AreaLogic();
+    public ObjetoRetornaEntity listaAreas() {
+        AreaLogic areaLogic = new AreaLogic();
         return areaLogic.listaArea();
     }
+
     /**
      * Método que permite insertar un pais nuevo
+     *
      * @param pais
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "insertarPais")
-    public PaisEntity ingresarPais(@WebParam(name = "pais")PaisEntity pais){
-        PaisLogic paisLogic=new PaisLogic();
-        return paisLogic.ingresaPais(pais);
+    public PaisEntity ingresarPais(@WebParam(name = "pais") PaisEntity pais) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(pais.getNombrePais(), "Pais"))) {
+            PaisEntity ret = new PaisEntity();
+            ret.setTrazaRespuesta(valida.valida(pais.getNombrePais(), "Pais"));
+            return ret;
+        } else {
+            PaisLogic paisLogic = new PaisLogic();
+            return paisLogic.ingresaPais(pais);
+        }
     }
+
     /**
-     * Método que permite actualizar un pais 
+     * Método que permite actualizar un pais
+     *
      * @param pais
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "actualizarPais")
-    public PaisEntity actualizarPais(@WebParam(name = "pais") PaisEntity pais){
-        PaisLogic paisLogic=new PaisLogic();
-        return paisLogic.actualizaPais(pais);
+    public PaisEntity actualizarPais(@WebParam(name = "pais") PaisEntity pais) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(pais.getIdPais(), "Pais"))) {
+            PaisEntity ret = new PaisEntity();
+            ret.setTrazaRespuesta(valida.valida(pais.getIdPais(), "Pais"));
+            return ret;
+        } else {
+            PaisLogic paisLogic = new PaisLogic();
+            return paisLogic.actualizaPais(pais);
+        }
     }
+
     /**
      * Método que consulta la lista de paises
-     * @return 
+     *
+     * @return
      */
     @WebMethod(operationName = "listaPais")
-    public ObjetoRetornaEntity listaPais(){
-        PaisLogic paisLogic=new PaisLogic();
+    public ObjetoRetornaEntity listaPais() {
+        PaisLogic paisLogic = new PaisLogic();
         return paisLogic.listaPais();
     }
+
     @WebMethod(operationName = "paisPorId")
-    public PaisEntity paisPorId(@WebParam(name = "idPais") int idPais){
-        PaisLogic paisLogic=new PaisLogic();
-        return paisLogic.paisPorID(idPais);
+    public PaisEntity paisPorId(@WebParam(name = "idPais") int idPais) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idPais, "Pais"))) {
+            PaisEntity ret = new PaisEntity();
+            ret.setTrazaRespuesta(valida.valida(idPais, "Pais"));
+            return ret;
+        } else {
+            PaisLogic paisLogic = new PaisLogic();
+            return paisLogic.paisPorID(idPais);
+        }
     }
+
     /**
      * Método que permite insertar un departamento nuevo
+     *
      * @param departamento
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "insertarDepartameno")
-    public DepartamentoEntity ingresarDepartamento(@WebParam(name = "departamento")DepartamentoEntity departamento){
-        DepartamentoLogic departamentoLogic=new DepartamentoLogic();
-        return departamentoLogic.ingresaDepartamento(departamento);
+    public DepartamentoEntity ingresarDepartamento(@WebParam(name = "departamento") DepartamentoEntity departamento) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(departamento.getNombreDepartamento(), "Depto"))) {
+            DepartamentoEntity ret = new DepartamentoEntity();
+            ret.setTrazaRespuesta(valida.valida(departamento.getNombreDepartamento(), "Depto"));
+            return ret;
+        } else {
+            DepartamentoLogic departamentoLogic = new DepartamentoLogic();
+            return departamentoLogic.ingresaDepartamento(departamento);
+        }
     }
+
     /**
      * Método que permite actualizar un departamento nuevo
-     * @param departamento 
-     * @return 
+     *
+     * @param departamento
+     * @return
      */
     @WebMethod(operationName = "actualizarDepartameno")
-    public DepartamentoEntity actualizarDepartamento(@WebParam(name = "departamento")DepartamentoEntity departamento){
-        DepartamentoLogic departamentoLogic=new DepartamentoLogic();
-        return departamentoLogic.actualizaDepartamento(departamento);
+    public DepartamentoEntity actualizarDepartamento(@WebParam(name = "departamento") DepartamentoEntity departamento) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(departamento.getIdDepartamento(), "Depto"))) {
+            DepartamentoEntity ret = new DepartamentoEntity();
+            ret.setTrazaRespuesta(valida.valida(departamento.getIdDepartamento(), "Depto"));
+            return ret;
+        } else {
+            DepartamentoLogic departamentoLogic = new DepartamentoLogic();
+            return departamentoLogic.actualizaDepartamento(departamento);
+        }
     }
+
     /**
      * Método que consulta la lista de departamentos
-     * @return 
+     *
+     * @return
      */
     @WebMethod(operationName = "listaDepartameno")
-    public ObjetoRetornaEntity listaDepartamento(){
-        DepartamentoLogic departamentoLogic=new DepartamentoLogic();
+    public ObjetoRetornaEntity listaDepartamento() {
+        DepartamentoLogic departamentoLogic = new DepartamentoLogic();
         return departamentoLogic.listaDepartamento();
     }
+
     /**
      * Método que trae un departamento por ID
+     *
      * @param idDepto
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "deptoPorId")
-    public DepartamentoEntity departamentoPorId(@WebParam(name = "idDepto") int idDepto){
-        DepartamentoLogic departamentoLogic=new DepartamentoLogic();
-        return departamentoLogic.deptoPorID(idDepto);
+    public DepartamentoEntity departamentoPorId(@WebParam(name = "idDepto") int idDepto) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idDepto, "Depto"))) {
+            DepartamentoEntity ret = new DepartamentoEntity();
+            ret.setTrazaRespuesta(valida.valida(idDepto, "Depto"));
+            return ret;
+        } else {
+            DepartamentoLogic departamentoLogic = new DepartamentoLogic();
+            return departamentoLogic.deptoPorID(idDepto);
+        }
     }
+
     /**
      * Método que permite insertar una ciudad nueva
+     *
      * @param ciudad
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "insertarCiudad")
-    public CiudadEntity ingresarCiudad(@WebParam(name = "ciudad")CiudadEntity ciudad){
-        CiudadLogic ciudadLogic=new CiudadLogic();
-        return ciudadLogic.ingresaCiudad(ciudad);
+
+    public CiudadEntity ingresarCiudad(@WebParam(name = "ciudad") CiudadEntity ciudad) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(ciudad.getNombreCiudad(), "Ciudad"))) {
+            CiudadEntity ret = new CiudadEntity();
+            ret.setTrazaRespuesta(valida.valida(ciudad.getNombreCiudad(), "Ciudad"));
+            return ret;
+        } else {
+            CiudadLogic ciudadLogic = new CiudadLogic();
+            return ciudadLogic.ingresaCiudad(ciudad);
+        }
     }
+
     /**
      * Método que permite actualizar una ciudad
+     *
      * @param ciudad
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "actualizarCiudad")
-    public CiudadEntity actualizarCiudad(@WebParam(name = "ciudad")CiudadEntity ciudad){
-        CiudadLogic ciudadLogic=new CiudadLogic();
-        return ciudadLogic.actualizarCiudad(ciudad);
+    public CiudadEntity actualizarCiudad(@WebParam(name = "ciudad") CiudadEntity ciudad) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(ciudad.getIdCiudad(), "Ciudad"))) {
+            CiudadEntity ret = new CiudadEntity();
+            ret.setTrazaRespuesta(valida.valida(ciudad.getIdCiudad(), "Ciudad"));
+            return ret;
+        } else {
+            CiudadLogic ciudadLogic = new CiudadLogic();
+            return ciudadLogic.actualizarCiudad(ciudad);
+        }
     }
+
     /**
      * Método que trae la lista de las ciudades disponibles
-     * @return 
+     *
+     * @return
      */
     @WebMethod(operationName = "listaCiudades")
-    public ObjetoRetornaEntity listaCiudad(){
-        CiudadLogic ciudadLogic=new CiudadLogic();
+    public ObjetoRetornaEntity listaCiudad() {
+        CiudadLogic ciudadLogic = new CiudadLogic();
         return ciudadLogic.listaCiudad();
     }
-    
-    
+
     /**
      * Método que permite insertar una sede nueva
+     *
      * @param sede
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "ingresaSede")
-    public SedeEntity ingresarSede(@WebParam(name = "sede") SedeEntity sede){
-        SedeLogic sedeLogic=new SedeLogic();
-        return sedeLogic.ingresarSede(sede);
+    public SedeEntity ingresarSede(@WebParam(name = "sede") SedeEntity sede) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(sede.getNombreSede(), "Sede"))) {
+            SedeEntity ret = new SedeEntity();
+            ret.setTrazaRespuesta(valida.valida(sede.getNombreSede(), "Sede"));
+            return ret;
+        } else {
+            SedeLogic sedeLogic = new SedeLogic();
+            return sedeLogic.ingresarSede(sede);
+        }
     }
+
     /**
      * Método que permite actualizar una sede
+     *
      * @param sede
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "actualizaSede")
-    public SedeEntity actualizarSede(@WebParam(name = "sede") SedeEntity sede){
-        SedeLogic sedeLogic=new SedeLogic();
-        return sedeLogic.actualizarSede(sede);
+    public SedeEntity actualizarSede(@WebParam(name = "sede") SedeEntity sede) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(sede.getIdSede(), "Sede"))) {
+            SedeEntity ret = new SedeEntity();
+            ret.setTrazaRespuesta(valida.valida(sede.getIdSede(), "Sede"));
+            return ret;
+        } else {
+            SedeLogic sedeLogic = new SedeLogic();
+            return sedeLogic.actualizarSede(sede);
+        }
     }
+
     /**
      * Método que qonculta una lista de sedes
-     * @return 
+     *
+     * @return
      */
     @WebMethod(operationName = "listaSede")
-    public ObjetoRetornaEntity listaSede(){
-        SedeLogic sedeLogic=new SedeLogic();
+    public ObjetoRetornaEntity listaSede() {
+        SedeLogic sedeLogic = new SedeLogic();
         return sedeLogic.listaSedes();
     }
-    
+
     @WebMethod(operationName = "sedePorId")
-    public SedeEntity sedePorId(@WebParam(name = "sede") int idSede){
-        SedeLogic sedeLogic=new SedeLogic();
-        return sedeLogic.sedePorID(idSede);
+    public SedeEntity sedePorId(@WebParam(name = "sede") int idSede) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idSede, "Sede"))) {
+            SedeEntity ret = new SedeEntity();
+            ret.setTrazaRespuesta(valida.valida(idSede, "Sede"));
+            return ret;
+        } else {
+            SedeLogic sedeLogic = new SedeLogic();
+            return sedeLogic.sedePorID(idSede);
+        }
     }
+
     /**
      * Método que inserta una empresa nueva
+     *
      * @param empresa
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "ingresarEmpresa")
-    public EmpresaEntity ingresarEmpresa(@WebParam(name = "empresa") EmpresaEntity empresa){
-        EmpresaLogic empresaLogic=new EmpresaLogic();
-        return empresaLogic.ingresarEmpresa(empresa);
+    public EmpresaEntity ingresarEmpresa(@WebParam(name = "empresa") EmpresaEntity empresa) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(empresa.getNombreEmpresa(), "empresa"))) {
+            EmpresaEntity ret = new EmpresaEntity();
+            ret.setTrazaRespuesta(valida.valida(empresa.getNombreEmpresa(), "empresa"));
+            return ret;
+        } else {
+            EmpresaLogic empresaLogic = new EmpresaLogic();
+            return empresaLogic.ingresarEmpresa(empresa);
+        }
     }
+
     /**
-     * Método que actualizauna empresa 
+     * Método que actualizauna empresa
+     *
      * @param empresa
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "actualizarEmpresa")
-    public EmpresaEntity actualizarEmpresa(@WebParam(name = "empresa") EmpresaEntity empresa){
-        EmpresaLogic empresaLogic=new EmpresaLogic();
-        return empresaLogic.actualizarEmpresa(empresa);
+    public EmpresaEntity actualizarEmpresa(@WebParam(name = "empresa") EmpresaEntity empresa) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(empresa.getIdEmpresa(), "empresa"))) {
+            EmpresaEntity ret = new EmpresaEntity();
+            ret.setTrazaRespuesta(valida.valida(empresa.getIdEmpresa(), "empresa"));
+            return ret;
+        } else {
+            EmpresaLogic empresaLogic = new EmpresaLogic();
+            return empresaLogic.actualizarEmpresa(empresa);
+        }
     }
+
     /**
      * Método que consulta la lista de empresas disponibles
-     * @return 
+     *
+     * @return
      */
     @WebMethod(operationName = "listaEmpresa")
-    public ObjetoRetornaEntity listaEmpresa(){
-        EmpresaLogic empresaLogic=new EmpresaLogic();
+    public ObjetoRetornaEntity listaEmpresa() {
+        EmpresaLogic empresaLogic = new EmpresaLogic();
         return empresaLogic.listaEmpresa();
     }
+
     /**
      * Método que permite ingrsar un registro nuevo a la tabla Sede_Empresa
+     *
      * @param sedeE
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "ingresaSedeEmpresa")
-    public SedeEmpresaEntity ingresarSedeEmpresa(@WebParam(name = "sedee") SedeEmpresaEntity sedeE){
-        SedeEmpresaLogic sedeEmpresaLogic=new SedeEmpresaLogic();
-        return sedeEmpresaLogic.ingresarSedeEmpresa(sedeE);
+    public SedeEmpresaEntity ingresarSedeEmpresa(@WebParam(name = "sedee") SedeEmpresaEntity sedeE) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(sedeE.getIdSede(), "sedeE"))) {
+            SedeEmpresaEntity ret = new SedeEmpresaEntity();
+            ret.setTrazaRespuesta(valida.valida(sedeE.getIdSede(), "sedeE"));
+            return ret;
+        } else {
+            SedeEmpresaLogic sedeEmpresaLogic = new SedeEmpresaLogic();
+            return sedeEmpresaLogic.ingresarSedeEmpresa(sedeE);
+        }
     }
+
     /**
      * Método que permite actualizar un registro de la tabla Sede_Empresa
+     *
      * @param sedeE
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "actualizaSedeEmpresa")
-    public SedeEmpresaEntity actualizaSedeEmpresa(@WebParam(name = "sedee") SedeEmpresaEntity sedeE){
-        SedeEmpresaLogic sedeEmpresaLogic=new SedeEmpresaLogic();
-        return sedeEmpresaLogic.actualizarsedeEmpresa(sedeE);
+    public SedeEmpresaEntity actualizaSedeEmpresa(@WebParam(name = "sedee") SedeEmpresaEntity sedeE) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(sedeE.getIdSedeEmpresa(), "sedeE"))) {
+            SedeEmpresaEntity ret = new SedeEmpresaEntity();
+            ret.setTrazaRespuesta(valida.valida(sedeE.getIdSedeEmpresa(), "sedeE"));
+            return ret;
+        } else {
+            SedeEmpresaLogic sedeEmpresaLogic = new SedeEmpresaLogic();
+            return sedeEmpresaLogic.actualizarsedeEmpresa(sedeE);
+        }
     }
+
     /**
      * Método que consulta una lista de relaciones Sede_Empresa
-     * @return 
+     *
+     * @return
      */
     @WebMethod(operationName = "listaSedeEmpresa")
-    public ObjetoRetornaEntity listaSedeEmpresa(){
-        SedeEmpresaLogic sedeEmpresaLogic=new SedeEmpresaLogic();
+    public ObjetoRetornaEntity listaSedeEmpresa() {
+        SedeEmpresaLogic sedeEmpresaLogic = new SedeEmpresaLogic();
         return sedeEmpresaLogic.listaRoles();
     }
+
     /**
      * Método qye permite ingresar un festivo nuevo
+     *
      * @param festivo
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "ingresaFestivo")
-    public FestivosEntity ingresaFestivo(@WebParam(name = "festivo") FestivosEntity festivo){
-        FestivosLogic festivosLogic=new FestivosLogic();
-        return festivosLogic.ingresaFestivo(festivo);
+    public FestivosEntity ingresaFestivo(@WebParam(name = "festivo") FestivosEntity festivo) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(festivo.getNombreFestivo(), "festivo"))) {
+            FestivosEntity ret = new FestivosEntity();
+            ret.setTrazaRespuesta(valida.valida(festivo.getNombreFestivo(), "festivo"));
+            return ret;
+        } else {
+            FestivosLogic festivosLogic = new FestivosLogic();
+            return festivosLogic.ingresaFestivo(festivo);
+
+        }
     }
+
     /**
-     * Método qye permite actualizar un festivo 
+     * Método qye permite actualizar un festivo
+     *
      * @param festivo
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "actualizarFestivo")
-    public FestivosEntity actualizarFestivo(@WebParam(name = "festivo") FestivosEntity festivo){
-        FestivosLogic festivosLogic=new FestivosLogic();
-        return festivosLogic.actualizaFestivo(festivo);
+    public FestivosEntity actualizarFestivo(@WebParam(name = "festivo") FestivosEntity festivo) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(festivo.getIdFEstivo(), "festivo"))) {
+            FestivosEntity ret = new FestivosEntity();
+            ret.setTrazaRespuesta(valida.valida(festivo.getIdFEstivo(), "festivo"));
+            return ret;
+        } else {
+            FestivosLogic festivosLogic = new FestivosLogic();
+            return festivosLogic.actualizaFestivo(festivo);
+        }
     }
+
     /**
      * Método que consulta los festivos disponibles
-     * @return 
+     *
+     * @return
      */
     @WebMethod(operationName = "listafestivos")
-    public ObjetoRetornaEntity listaFestivos(){
-        FestivosLogic festivosLogic=new FestivosLogic();
+    public ObjetoRetornaEntity listaFestivos() {
+        FestivosLogic festivosLogic = new FestivosLogic();
         return festivosLogic.listaFestivos();
     }
+
     /**
      * Método que trae un único festivo filtrado por el ID
+     *
      * @param idFestivo
-     * @return 
+     * @return
      */
-    public FestivosEntity festtivoPorId(@WebParam(name = "idFestivo") int idFestivo){
-        FestivosLogic festivosLogic=new FestivosLogic();
-        return festivosLogic.festivoPorId(idFestivo);
+    public FestivosEntity festtivoPorId(@WebParam(name = "idFestivo") int idFestivo) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idFestivo, "festivo"))) {
+            FestivosEntity ret = new FestivosEntity();
+            ret.setTrazaRespuesta(valida.valida(idFestivo, "festivo"));
+            return ret;
+        } else {
+            FestivosLogic festivosLogic = new FestivosLogic();
+            return festivosLogic.festivoPorId(idFestivo);
+        }
     }
+
     /**
      * Mátodo que ingresa un MacroProceso
+     *
      * @param macro
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "ingresaMacroProceso")
-    public MacroprocesosEntity ingresaMacro(@WebParam(name = "macro") MacroprocesosEntity macro){
-        MacroProcesoLogic macroProcesoLogic=new MacroProcesoLogic();
-        return macroProcesoLogic.ingresaMacroproceso(macro);
+    public MacroprocesosEntity ingresaMacro(@WebParam(name = "macro") MacroprocesosEntity macro) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(macro.getNombreMacroproceso(), "Macro"))) {
+            MacroprocesosEntity ret = new MacroprocesosEntity();
+            ret.setTrazaRespuesta(valida.valida(macro.getNombreMacroproceso(), "Macro"));
+            return ret;
+        } else {
+            MacroProcesoLogic macroProcesoLogic = new MacroProcesoLogic();
+            return macroProcesoLogic.ingresaMacroproceso(macro);
+        }
     }
+
     /**
      * Mátodo que actualiza un MacroProceso
+     *
      * @param macro
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "actualizaMacroProceso")
-    public MacroprocesosEntity actualizaMacro(@WebParam(name = "macro") MacroprocesosEntity macro){
-        MacroProcesoLogic macroProcesoLogic=new MacroProcesoLogic();
-        return macroProcesoLogic.actualizarMacroproceso(macro);
+    public MacroprocesosEntity actualizaMacro(@WebParam(name = "macro") MacroprocesosEntity macro) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(macro.getIdMacroproceso(), "Macro"))) {
+            MacroprocesosEntity ret = new MacroprocesosEntity();
+            ret.setTrazaRespuesta(valida.valida(macro.getIdMacroproceso(), "Macro"));
+            return ret;
+        } else {
+            MacroProcesoLogic macroProcesoLogic = new MacroProcesoLogic();
+            return macroProcesoLogic.actualizarMacroproceso(macro);
+        }
     }
+
     /**
      * Método que consulta los macroProcesos disponibles
-     * @return 
+     *
+     * @return
      */
     @WebMethod(operationName = "listaMacroProcesos")
-    public ObjetoRetornaEntity listaMacro(){
-        MacroProcesoLogic macroProcesoLogic=new MacroProcesoLogic();
+    public ObjetoRetornaEntity listaMacro() {
+        MacroProcesoLogic macroProcesoLogic = new MacroProcesoLogic();
         return macroProcesoLogic.listaMacroProcesos();
     }
+
     /**
      * Mátodo que trae un único MacroProceso Filtrado por ID
+     *
      * @param macro
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "macroPorId")
-    public MacroprocesosEntity macroPorId(@WebParam(name = "macro") int idMacro){
-        MacroProcesoLogic macroProcesoLogic=new MacroProcesoLogic();
-        return macroProcesoLogic.macroPorID(idMacro);
+    public MacroprocesosEntity macroPorId(@WebParam(name = "macro") int idMacro) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idMacro, "Macro"))) {
+            MacroprocesosEntity ret = new MacroprocesosEntity();
+            ret.setTrazaRespuesta(valida.valida(idMacro, "Macro"));
+            return ret;
+        } else {
+            MacroProcesoLogic macroProcesoLogic = new MacroProcesoLogic();
+            return macroProcesoLogic.macroPorID(idMacro);
+        }
     }
+
     /**
      * Método que inserta un proceso nuevo
+     *
      * @param proceso
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "ingresaProceso")
-    public ProcesosEntity ingresaProceso(@WebParam(name = "proceso") ProcesosEntity proceso){
-        ProcesosLogic procesosLogic=new ProcesosLogic();
-        return procesosLogic.ingresaProcesos(proceso);
+    public ProcesosEntity ingresaProceso(@WebParam(name = "proceso") ProcesosEntity proceso) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(proceso.getNombrePreoceso(), "Proceso"))) {
+            ProcesosEntity ret = new ProcesosEntity();
+            ret.setTrazaRespuesta(valida.valida(proceso.getNombrePreoceso(), "Proceso"));
+            return ret;
+        } else {
+            ProcesosLogic procesosLogic = new ProcesosLogic();
+            return procesosLogic.ingresaProcesos(proceso);
+        }
     }
+
     /**
      * Método que actualiza un proceso nuevo
+     *
      * @param proceso
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "actualizaProceso")
-    public ProcesosEntity actualizaProceso(@WebParam(name = "proceso") ProcesosEntity proceso){
-        ProcesosLogic procesosLogic=new ProcesosLogic();
-        return procesosLogic.actualizarProcesos(proceso);
+    public ProcesosEntity actualizaProceso(@WebParam(name = "proceso") ProcesosEntity proceso) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(proceso.getIdMacroProceso(), "Proceso"))) {
+            ProcesosEntity ret = new ProcesosEntity();
+            ret.setTrazaRespuesta(valida.valida(proceso.getIdMacroProceso(), "Proceso"));
+            return ret;
+        } else {
+            ProcesosLogic procesosLogic = new ProcesosLogic();
+            return procesosLogic.actualizarProcesos(proceso);
+        }
     }
+
     /**
      * Método que inserta un proceso nuevo
-     * @param idProceso 
-     * @return 
+     *
+     * @param idProceso
+     * @return
      */
     @WebMethod(operationName = "procesoPorID")
-    public ProcesosEntity procesoPorID(@WebParam(name = "proceso") int idProceso){
-        ProcesosLogic procesosLogic=new ProcesosLogic();
-        return procesosLogic.procesoPorID(idProceso);
+    public ProcesosEntity procesoPorID(@WebParam(name = "proceso") int idProceso) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idProceso, "Proceso"))) {
+            ProcesosEntity ret = new ProcesosEntity();
+            ret.setTrazaRespuesta(valida.valida(idProceso, "Proceso"));
+            return ret;
+        } else {
+            ProcesosLogic procesosLogic = new ProcesosLogic();
+            return procesosLogic.procesoPorID(idProceso);
+        }
     }
+
     /**
      * Método que trae la lista de procesos disponibles
-     * @return 
+     *
+     * @return
      */
     @WebMethod(operationName = "listaProcesos")
-    public ObjetoRetornaEntity listaProceso(){
-        ProcesosLogic procesosLogic=new ProcesosLogic();
+    public ObjetoRetornaEntity listaProceso() {
+        ProcesosLogic procesosLogic = new ProcesosLogic();
         return procesosLogic.listaProcesos();
     }
+
     /**
      * Método que ingresa un Subproceso nuevo
+     *
      * @param subproceso
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "ingresaSubProceso")
-    public SubprocesoEntity ingresaSubproceso(@WebParam(name = "subproceso")SubprocesoEntity subproceso){
-        SubProcesosLogic subProcesosLogic=new SubProcesosLogic();
-        return subProcesosLogic.ingresaSubProceso(subproceso);
+    public SubprocesoEntity ingresaSubproceso(@WebParam(name = "subproceso") SubprocesoEntity subproceso) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(subproceso.getNombreSubproceso(), "Subroceso"))) {
+            SubprocesoEntity ret = new SubprocesoEntity();
+            ret.setTrazaRespuesta(valida.valida(subproceso.getNombreSubproceso(), "Subroceso"));
+            return ret;
+        } else {
+            SubProcesosLogic subProcesosLogic = new SubProcesosLogic();
+            return subProcesosLogic.ingresaSubProceso(subproceso);
+        }
     }
+
     /**
-     * Método que actualiza un Subproceso 
+     * Método que actualiza un Subproceso
+     *
      * @param subproceso
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "actualizaSubProceso")
-    public SubprocesoEntity actualizaSubproceso(@WebParam(name = "subproceso")SubprocesoEntity subproceso){
-        SubProcesosLogic subProcesosLogic=new SubProcesosLogic();
-        return subProcesosLogic.actualizarSubprocesos(subproceso);
+    public SubprocesoEntity actualizaSubproceso(@WebParam(name = "subproceso") SubprocesoEntity subproceso) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(subproceso.getIdSubproceso(), "Subroceso"))) {
+            SubprocesoEntity ret = new SubprocesoEntity();
+            ret.setTrazaRespuesta(valida.valida(subproceso.getIdSubproceso(), "Subroceso"));
+            return ret;
+        } else {
+            SubProcesosLogic subProcesosLogic = new SubProcesosLogic();
+            return subProcesosLogic.actualizarSubprocesos(subproceso);
+        }
     }
+
     /**
      * Método que trae un subproceso filtrado por ID
-     * @param idSubproceso 
-     * @return 
+     *
+     * @param idSubproceso
+     * @return
      */
     @WebMethod(operationName = "subProcesoPorID")
-    public SubprocesoEntity subprocesoPorID(@WebParam(name = "subproceso")int idSubproceso){
-        SubProcesosLogic subProcesosLogic=new SubProcesosLogic();
-        return subProcesosLogic.subProcesoProID(idSubproceso);
+    public SubprocesoEntity subprocesoPorID(@WebParam(name = "subproceso") int idSubproceso) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idSubproceso, "Subroceso"))) {
+            SubprocesoEntity ret = new SubprocesoEntity();
+            ret.setTrazaRespuesta(valida.valida(idSubproceso, "Subroceso"));
+            return ret;
+        } else {
+            SubProcesosLogic subProcesosLogic = new SubProcesosLogic();
+            return subProcesosLogic.subProcesoProID(idSubproceso);
+        }
     }
+
     /**
      * Método que consulta la lista de subprocesos disponibles
-     * @return 
+     *
+     * @return
      */
     @WebMethod(operationName = "listaSubProcesos")
-    public ObjetoRetornaEntity listaSubprocesos(){
-        SubProcesosLogic subProcesosLogic=new SubProcesosLogic();
+    public ObjetoRetornaEntity listaSubprocesos() {
+        SubProcesosLogic subProcesosLogic = new SubProcesosLogic();
         return subProcesosLogic.listaSubproceso();
     }
-    
+
 }

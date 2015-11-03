@@ -42,7 +42,11 @@ public class ProcesosLogic {
         }
         return retorno;
     }
-    
+    /**
+     * Ingresa
+     * @param procesos
+     * @return 
+     */
     public ProcesosEntity ingresaProcesos(ProcesosEntity procesos){
         try {
             String validaConexion = initOperation();
@@ -66,7 +70,10 @@ public class ProcesosLogic {
         return procesos;
     }
     
-
+    /**
+     * MaxProcesos
+     * @return 
+     */
     private int maxProcesos() {
         int ret = -1;
         try {
@@ -83,7 +90,11 @@ public class ProcesosLogic {
         }
         return ret;
     }
-    
+    /**
+     * Actualiza
+     * @param procesos
+     * @return 
+     */
     public ProcesosEntity actualizarProcesos(ProcesosEntity procesos){
         try {
             String validaConexion = initOperation();
@@ -105,7 +116,10 @@ public class ProcesosLogic {
         }
         return procesos;
     }
-    
+    /**
+     * Consulta
+     * @return 
+     */
     public ObjetoRetornaEntity listaProcesos(){
         ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
         try {
@@ -128,7 +142,11 @@ public class ProcesosLogic {
         }
         return retorna;
     }
-    
+    /**
+     * PorID
+     * @param idProceso
+     * @return 
+     */
     public ProcesosEntity procesoPorID(int idProceso){
         ProcesosEntity procesos = new ProcesosEntity();
         String validaConexion = initOperation();

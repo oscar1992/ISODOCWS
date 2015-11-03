@@ -83,9 +83,10 @@ public class MenuLogic {
                             
                             for(MenuPermisosEntity item2:permPrimNivel){
                                 System.out.println("idm: "+item.getId_modulo());
-                                Query query2=sesion.createQuery("SELECT p FROM PermisosEntity p, ModuloEntity m WHERE p.id_modulo=m AND m.id_modulo=:idM2 AND p.asociadoNivel=2 AND p.asociadoMenu=:aM");
+                                Query query2=sesion.createQuery("SELECT p FROM RolesEntity r, UsuarioRolEntity ure, UsuarioEntity u, RolPermisoEntity rpe, PermisosEntity p, ModuloEntity m  WHERE ure.rol=r AND ure.usuario=u AND u.idUsuario=:idUsuario AND p.asociadoNivel=2 AND p.asociadoMenu=:aM AND m.id_modulo=:idM2 AND rpe.id_rol=r AND rpe.id_permiso=p");
                                 query2.setParameter("idM2", item.getId_modulo());
                                 query2.setParameter("aM", item2.getId_permiso());
+                                query2.setParameter("idUsuario", idUsuario);
                                 ArrayList<PermisosEntity> subLista=(ArrayList<PermisosEntity>) query2.list();
                                 ArrayList<MenuPermisosEntity> permSegNivel = listaMenuPermisos(subLista);
                                 item2.setSubNivel(permSegNivel);

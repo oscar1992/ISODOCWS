@@ -123,7 +123,7 @@ public class DepartamentoLogic {
                 retorna.setNumeroRespuesta(3);
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                Query query=sesion.createQuery("FROM DepartamentoEntity");
+                Query query=sesion.createQuery("FROM DepartamentoEntity d WHERE d.estadoDepartamento<>'E'");
                 retorna.setRetorna((ArrayList<Object>) query.list());
                 retorna.setTrazaRespuesta("Consulta tabla Departamentos exitosa");
                 retorna.setNumeroRespuesta(25);

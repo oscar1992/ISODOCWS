@@ -63,7 +63,7 @@ public class PermisosLogic {
                 sesion.save(rolPermiso);
                 tx.commit();
                 sesion.close();
-                rolPermiso.setTrazaRespuesta("Inserción de Permiso Exitosa");
+                rolPermiso.setTrazaRespuesta("Inserción de RolPermiso Exitosa");
                 rolPermiso.setNumeroRespuesta(15);
             }
         } catch (Exception e) {
@@ -109,7 +109,7 @@ public class PermisosLogic {
                 sesion.update(rolPermiso);
                 tx.commit();
                 sesion.close();
-                rolPermiso.setTrazaRespuesta("Actualización de Permiso Exitosa");
+                rolPermiso.setTrazaRespuesta("Actualización de RolPermiso Exitosa");
                 rolPermiso.setNumeroRespuesta(16);
             }
         } catch (Exception e) {

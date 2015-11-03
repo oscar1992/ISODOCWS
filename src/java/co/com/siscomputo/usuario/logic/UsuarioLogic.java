@@ -11,6 +11,7 @@ import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.administracion.persistencia.UsuarioEntity;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.xml.bind.annotation.XmlType;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -20,6 +21,7 @@ import org.hibernate.Transaction;
  *
  * @author LENOVO
  */
+
 public class UsuarioLogic {
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos

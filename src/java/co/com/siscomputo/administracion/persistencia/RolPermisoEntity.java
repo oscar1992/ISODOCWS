@@ -26,7 +26,7 @@ public class RolPermisoEntity extends ObjetoTraza implements Serializable {
     private int id_rol_permiso;
     @JoinColumn(name = "TROPE_TPERM")
     @ManyToOne
-    private ModuloEntity id_permiso;
+    private PermisosEntity id_permiso;
     @JoinColumn(name = "TROPE_TROLE")
     @ManyToOne
     private RolesEntity id_rol;
@@ -42,13 +42,13 @@ public class RolPermisoEntity extends ObjetoTraza implements Serializable {
         this.id_rol_permiso = id_rol_permiso;
     }
 
-    public ModuloEntity getId_permiso() {
+    public PermisosEntity getId_permiso() {
         return id_permiso;
     }
 
-    public void setId_permiso(ModuloEntity id_permiso) {
+    public void setId_permiso(PermisosEntity id_permiso) {
         this.id_permiso = id_permiso;
-    }
+    }    
 
     public RolesEntity getId_rol() {
         return id_rol;

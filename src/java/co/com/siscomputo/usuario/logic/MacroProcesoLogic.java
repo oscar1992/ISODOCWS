@@ -41,7 +41,11 @@ public class MacroProcesoLogic {
         }
         return retorno;
     }
-    
+    /**
+     * Ingresa
+     * @param macro
+     * @return 
+     */
     public MacroprocesosEntity ingresaMacroproceso(MacroprocesosEntity macro){
         try {
             String validaConexion = initOperation();
@@ -64,7 +68,10 @@ public class MacroProcesoLogic {
         }
         return macro;
     }
-
+    /**
+     * MaxID
+     * @return 
+     */
     private int maxMacro() {
         int ret = -1;
         try {
@@ -81,7 +88,11 @@ public class MacroProcesoLogic {
         }
         return ret;
     }
-    
+    /**
+     * Actualizar
+     * @param macro
+     * @return 
+     */
     public MacroprocesosEntity actualizarMacroproceso(MacroprocesosEntity macro){
         try {
             String validaConexion = initOperation();
@@ -103,7 +114,10 @@ public class MacroProcesoLogic {
         }
         return macro;
     }
-    
+    /**
+     * Consulta
+     * @return 
+     */
     public ObjetoRetornaEntity listaMacroProcesos(){
         ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
         try {
@@ -126,7 +140,11 @@ public class MacroProcesoLogic {
         }
         return retorna;
     }
-    
+    /**
+     * Por ID
+     * @param idMacro
+     * @return 
+     */
     public MacroprocesosEntity macroPorID(int idMacro){
         MacroprocesosEntity macro = new MacroprocesosEntity();
         String validaConexion = initOperation();

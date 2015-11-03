@@ -6,10 +6,10 @@
 package co.com.siscomputo.usuario.logic;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
-import co.com.siscomputo.administracion.persistencia.PaisEntity;
 import co.com.siscomputo.administracion.persistencia.SubprocesoEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
 import java.util.ArrayList;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -42,7 +42,11 @@ public class SubProcesosLogic {
         }
         return retorno;
     }
-    
+    /**
+     * Ingresa
+     * @param subpro
+     * @return 
+     */
     public SubprocesoEntity ingresaSubProceso(SubprocesoEntity subpro){
         try {
             String validaConexion = initOperation();
@@ -65,7 +69,10 @@ public class SubProcesosLogic {
         }
         return subpro;
     }
-
+    /**
+     * maxID
+     * @return 
+     */
     private int maxSubproceso() {
         int ret = -1;
         try {
@@ -82,7 +89,11 @@ public class SubProcesosLogic {
         }
         return ret;
     }
-    
+    /**
+     * Actualizar
+     * @param subpro
+     * @return 
+     */
     public SubprocesoEntity actualizarSubprocesos(SubprocesoEntity subpro){
         try {
             String validaConexion = initOperation();
@@ -104,7 +115,10 @@ public class SubProcesosLogic {
         }
         return subpro;
     }
-    
+    /**
+     * Consultar
+     * @return 
+     */
     public ObjetoRetornaEntity listaSubproceso(){
         ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
         try {
@@ -127,7 +141,11 @@ public class SubProcesosLogic {
         }
         return retorna;
     }
-    
+    /**
+     * porID
+     * @param idSubPro
+     * @return 
+     */
     public SubprocesoEntity subProcesoProID(int idSubPro){
         SubprocesoEntity subpro = new SubprocesoEntity();
         String validaConexion = initOperation();

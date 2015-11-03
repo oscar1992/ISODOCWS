@@ -80,7 +80,7 @@ public class CiudadLogic {
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
             } else {
-                Query query = sesion.createQuery("SELECT MAX(idPais) FROM PaisEntity");
+                Query query = sesion.createQuery("SELECT MAX(idCiudad) FROM CiudadEntity");
                 ret = (int) query.uniqueResult();
                 ret++;
             }
@@ -126,7 +126,7 @@ public class CiudadLogic {
                 retorna.setNumeroRespuesta(3);
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                Query query=sesion.createQuery("FROM CiudadEntity");
+                Query query=sesion.createQuery("FROM CiudadEntity C WHERE C.estadoCiudad<>'E'");
                 retorna.setRetorna((ArrayList<Object>) query.list());
                 retorna.setTrazaRespuesta("Consulta tabla Ciudades exitosa");
                 retorna.setNumeroRespuesta(28);

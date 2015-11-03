@@ -12,6 +12,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  *
@@ -19,13 +21,14 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "ADM_TUSUA")
+
 public class UsuarioEntity extends ObjetoTraza implements Serializable{
     @Id
     @Column(name = "USUA_USUA ")
     private int idUsuario;
-    @Column(name = "USUA_NOMB ")
+    @Column(name = "USUA_NOMB ")   
     private String nombre;
-    @Column(name = "USUA_PASS ")
+    @Column(name = "USUA_PASS ")    
     private String clave;    
     @Column(name = "USUA_CREA ")
     private int idCreador;
