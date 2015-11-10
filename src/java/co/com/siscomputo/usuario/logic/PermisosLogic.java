@@ -6,6 +6,7 @@
 package co.com.siscomputo.usuario.logic;
 
 import co.com.siscomputo.administracion.entites.ListaAsignaPermisosModulo;
+import co.com.siscomputo.administracion.entites.ListaAsignaPermisosPermiso;
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.administracion.persistencia.ModuloEntity;
 import co.com.siscomputo.administracion.persistencia.PermisosEntity;
@@ -75,9 +76,11 @@ public class PermisosLogic {
         }
         return rolPermiso;
     }
+
     /**
      * Método para encontrar el sihuiente id de la tabla rol-permisos
-     * @return 
+     *
+     * @return
      */
     public int maxRolPermiso() {
         int ret = -1;
@@ -95,9 +98,11 @@ public class PermisosLogic {
         }
         return ret;
     }
+
     /**
      * Método para actualizar un Rol-Perimiso
-     * @param rolPermiso 
+     *
+     * @param rolPermiso
      */
     public void actualizaRolPermiso(RolPermisoEntity rolPermiso) {
         try {
@@ -105,8 +110,7 @@ public class PermisosLogic {
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
                 rolPermiso.setNumeroRespuesta(3);
                 rolPermiso.setTrazaRespuesta("Error de Conexión " + validaConexion);
-            } else {
-                rolPermiso.setId_rol_permiso(maxRolPermiso());
+            } else {                
                 sesion.update(rolPermiso);
                 tx.commit();
                 sesion.close();
@@ -126,7 +130,7 @@ public class PermisosLogic {
      * lista de permisos del sistema
      *
      * @return
-     */    
+     */
     public ArrayList<ListaAsignaPermisosModulo> listaRolPermiso() {
         ArrayList<ListaAsignaPermisosModulo> listaRetorna = new ArrayList<>();
         try {
@@ -134,61 +138,78 @@ public class PermisosLogic {
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
             } else {
-                ListaAsignaPermisosModulo objLista = new ListaAsignaPermisosModulo();
-                Query query1 = sesion.createQuery("FROM ModuloEntity");
+                ArrayList<ListaAsignaPermisosModulo> listaGeneral = new ArrayList<>();
                 ArrayList<ModuloEntity> listaModulos = new ArrayList<>();
-                listaModulos = (ArrayList<ModuloEntity>) query1.list();
-                if (listaModulos != null) {                    
-                    ArrayList<PermisosEntity> listan1=new ArrayList<>();
-                    for (ModuloEntity item1 : listaModulos) {
-                        objLista=new ListaAsignaPermisosModulo();
-                        objLista.setModulo(item1);
-                        Query query2=sesion.createQuery("SELECT p FROM PermisosEntity p WHERE p.asociadoMenu=0 AND p.asociadoNivel=1 AND p.id_modulo=:modulo");                        
-                        query2.setParameter("modulo", item1);
-                        listan1=(ArrayList<PermisosEntity>)query2.list();
-                        ArrayList<PermisosEntity> listan2=new ArrayList<>();
-                        for(PermisosEntity item2: listan1){
-                            System.out.println("N1: "+item2.getNombre_permiso()+" - "+item2.getId_permiso());
-                            Query query3=sesion.createQuery("SELECT p FROM PermisosEntity p WHERE p.asociadoMenu=:asociado AND p.asociadoNivel=2 AND p.id_modulo=:modulo");
-                            query3.setParameter("modulo", item1);
-                            query3.setParameter("asociado", item2.getId_permiso());
-                            listan2.addAll((ArrayList<PermisosEntity>)query3.list());
-                            ArrayList<PermisosEntity> listan3=new ArrayList<>();
-                            for(PermisosEntity item3: listan2){
-                                System.out.println("listaN2: "+item3.getNombre_permiso());
-                                Query query4=sesion.createQuery("SELECT p FROM PermisosEntity p WHERE p.asociadoMenu=:asociado AND p.asociadoNivel=3 AND p.id_modulo=:modulo");
-                                query4.setParameter("modulo", item1);
-                                query4.setParameter("asociado", item3.getId_permiso());
-                                listan3.addAll((ArrayList<PermisosEntity>)query4.list());
-                                for(PermisosEntity item4: listan3){
-                                    System.out.println("listan3: "+item4.getNombre_permiso());
+                Query query = sesion.createQuery("FROM ModuloEntity");
+                listaModulos = (ArrayList<ModuloEntity>) query.list();
+                for (ModuloEntity modulo : listaModulos) {
+                    ListaAsignaPermisosModulo objetoListaGeneral = new ListaAsignaPermisosModulo();
+                    objetoListaGeneral.setModulo(modulo);
+                    ArrayList<ListaAsignaPermisosPermiso> listaN1 = new ArrayList<>();
+                    ArrayList<PermisosEntity> listaPermisosN1 = new ArrayList<>();
+                    Query query1 = sesion.createQuery("SELECT p FROM ModuloEntity m, PermisosEntity p WHERE p.id_modulo=m AND m.id_modulo=:idModulo AND p.asociadoNivel=1");
+                    query1.setParameter("idModulo", modulo.getId_modulo());
+                    listaPermisosN1 = (ArrayList<PermisosEntity>) query1.list();
+                    for (PermisosEntity permisos : listaPermisosN1) {
+                        ListaAsignaPermisosPermiso objetoPermisoN1 = new ListaAsignaPermisosPermiso();
+                        objetoPermisoN1.setPermiso(permisos);
+                        ArrayList<ListaAsignaPermisosPermiso> listaN2 = new ArrayList<>();
+                        ArrayList<PermisosEntity> listaPermisosN2 = new ArrayList<>();
+                        Query query2 = sesion.createQuery("SELECT p FROM ModuloEntity m, PermisosEntity p WHERE p.id_modulo=m AND m.id_modulo=:idModulo AND p.asociadoNivel=2 AND p.asociadoMenu=:asociadoMenu");
+                        query2.setParameter("idModulo", modulo.getId_modulo());
+                        query2.setParameter("asociadoMenu", permisos.getId_permiso());
+                        listaPermisosN2 = (ArrayList<PermisosEntity>) query2.list();
+                        for (PermisosEntity permisos2 : listaPermisosN2) {
+                            ListaAsignaPermisosPermiso objetoPermisoN2 = new ListaAsignaPermisosPermiso();
+                            objetoPermisoN2.setPermiso(permisos2);
+                            ArrayList<ListaAsignaPermisosPermiso> listaN3 = new ArrayList<>();
+                            ArrayList<PermisosEntity> listaPermisosN3 = new ArrayList<>();
+                            Query query3 = sesion.createQuery("SELECT p FROM ModuloEntity m, PermisosEntity p WHERE p.id_modulo=m AND m.id_modulo=:idModulo AND p.asociadoNivel=3 AND p.asociadoMenu=:asociadoMenu");
+                            query3.setParameter("idModulo", modulo.getId_modulo());
+                            query3.setParameter("asociadoMenu", permisos2.getId_permiso());
+                            listaPermisosN3 = (ArrayList<PermisosEntity>) query3.list();
+                            if (listaPermisosN3 != null) {
+                                for (PermisosEntity permisos3 : listaPermisosN3) {
+                                    ListaAsignaPermisosPermiso objetoPermisoN3 = new ListaAsignaPermisosPermiso();
+                                    objetoPermisoN3.setPermiso(permisos3);
+                                    listaN3.add(objetoPermisoN3);
                                 }
-                                objLista.setPermisoNivel3(listan3);
+                            }else{
+                                listaPermisosN3 = new ArrayList<PermisosEntity>();
                             }
-                            objLista.setPermisoNivel2(listan2);
+
+                            ListaAsignaPermisosPermiso objetoPermisoN3Aux = new ListaAsignaPermisosPermiso();
+                            objetoPermisoN3Aux.setPermiso(permisos2);
+                            
+                            listaN3.add(objetoPermisoN3Aux);
+                            objetoPermisoN2.setListaS(listaN3);
+                            listaN2.add(objetoPermisoN2);
                         }
-                        objLista.setPermisoNivel1(listan1);
-                        listaRetorna.add(objLista);
-                    }                    
+                        objetoPermisoN1.setListaS(listaN2);
+                        listaN1.add(objetoPermisoN1);
+                    }
+                    objetoListaGeneral.setPermisoNivel1(listaN1);
+                    listaGeneral.add(objetoListaGeneral);
                 }
-                
                 sesion.close();
+                listaRetorna = listaGeneral;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return listaRetorna;
     }
-    
-    public ObjetoRetornaEntity listaRolPermisoPorRol(int idRol){
-         ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
+
+    public ObjetoRetornaEntity listaRolPermisoPorRol(int idRol) {
+        ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
                 retorna.setNumeroRespuesta(3);
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                Query query=sesion.createQuery("FROM RolPermisoEntity p WHERE p.estadoProceso<>'E'");
+                Query query = sesion.createQuery("SELECT rpe FROM RolPermisoEntity rpe, RolesEntity r WHERE rpe.id_rol=r AND r.id_rol=:idRol");
+                query.setParameter("idRol", idRol);
                 retorna.setRetorna((ArrayList<Object>) query.list());
                 retorna.setTrazaRespuesta("Consulta tabla Procesos exitosa");
                 retorna.setNumeroRespuesta(21);
@@ -196,7 +217,7 @@ public class PermisosLogic {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            retorna=new ObjetoRetornaEntity();
+            retorna = new ObjetoRetornaEntity();
             retorna.setNumeroRespuesta(0);
             retorna.setTrazaRespuesta(e.getMessage());
         }

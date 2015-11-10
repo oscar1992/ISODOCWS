@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class ListaAsignaPermisosPermiso {
     private PermisosEntity permiso;
-    private ArrayList<PermisosEntity> listaS;
+    private ArrayList<ListaAsignaPermisosPermiso> listaS;
 
     public PermisosEntity getPermiso() {
         return permiso;
@@ -24,13 +24,12 @@ public class ListaAsignaPermisosPermiso {
         this.permiso = permiso;
     }
 
-    public ArrayList<PermisosEntity> getListaS() {
+    public ArrayList<ListaAsignaPermisosPermiso> getListaS() {
         return listaS;
     }
 
-    public void setListaS(ArrayList<PermisosEntity> listaS) {
+    public void setListaS(ArrayList<ListaAsignaPermisosPermiso> listaS) {
         this.listaS = listaS;
     }
-    
     
 }

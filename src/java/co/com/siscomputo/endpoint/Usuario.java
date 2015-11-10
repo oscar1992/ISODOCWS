@@ -17,6 +17,7 @@ import co.com.siscomputo.administracion.persistencia.FestivosEntity;
 import co.com.siscomputo.administracion.persistencia.MacroprocesosEntity;
 import co.com.siscomputo.administracion.persistencia.PaisEntity;
 import co.com.siscomputo.administracion.persistencia.ProcesosEntity;
+import co.com.siscomputo.administracion.persistencia.RolPermisoEntity;
 import co.com.siscomputo.administracion.persistencia.RolesEntity;
 import co.com.siscomputo.administracion.persistencia.SedeEmpresaEntity;
 import co.com.siscomputo.administracion.persistencia.SedeEntity;
@@ -24,6 +25,7 @@ import co.com.siscomputo.administracion.persistencia.SubprocesoEntity;
 import co.com.siscomputo.administracion.persistencia.UsuarioEntity;
 import co.com.siscomputo.administracion.persistencia.UsuarioMacroprocesoEntity;
 import co.com.siscomputo.administracion.persistencia.UsuarioProcesoEntity;
+import co.com.siscomputo.administracion.persistencia.UsuarioRolEntity;
 import co.com.siscomputo.administracion.persistencia.UsuarioSubprocesoEntity;
 import co.com.siscomputo.usuario.logic.AreaLogic;
 import co.com.siscomputo.usuario.logic.CiudadLogic;
@@ -42,6 +44,7 @@ import co.com.siscomputo.usuario.logic.SubProcesosLogic;
 import co.com.siscomputo.usuario.logic.UsuarioLogic;
 import co.com.siscomputo.usuario.logic.UsuarioMacroprocesoLogic;
 import co.com.siscomputo.usuario.logic.UsuarioProcesoLogic;
+import co.com.siscomputo.usuario.logic.UsuarioRolLogic;
 import co.com.siscomputo.usuario.logic.UsuarioSubprocesoLogic;
 import co.com.siscomputo.utilidades.Valida;
 import java.util.ArrayList;
@@ -1051,6 +1054,7 @@ public class Usuario {
 
     /**
      * Método que retorna una lista de relaciones entre Usuarios y Procesos
+     *
      * @return
      */
     @WebMethod(operationName = "listausuarioProcesos")
@@ -1079,7 +1083,9 @@ public class Usuario {
     }
 
     /**
-     * Método que permite Ingresar una relación usuario-SubProceso nuevo     *
+     * Método que permite Ingresar una relación usuario-SubProceso nuevo
+     *
+     *
      * @param usuSubproceso
      * @return
      */
@@ -1095,14 +1101,117 @@ public class Usuario {
             return usuarioSubprocesoLogic.actualizarUsuarioSubproceso(usuSubproceso);
         }
     }
+
     /**
      * Método que retorna una lista de relaciones entre Usuarios y Subrocesos
-     * @return 
+     *
+     * @return
      */
     @WebMethod(operationName = "listaUsuarioSubproceso")
-    public ObjetoRetornaEntity listaUsuarioSubprocesos(){
-        UsuarioSubprocesoLogic usuarioSubprocesoLogic=new UsuarioSubprocesoLogic();
+    public ObjetoRetornaEntity listaUsuarioSubprocesos() {
+        UsuarioSubprocesoLogic usuarioSubprocesoLogic = new UsuarioSubprocesoLogic();
         return usuarioSubprocesoLogic.listaSubProcesos();
     }
 
+    /**
+     * Método que trae una lista de las relaciones entre roles y permisos
+     *
+     * @param idRol
+     * @return
+     */
+    @WebMethod(operationName = "listaRolPermiso")
+    public ObjetoRetornaEntity listaRolPermiso(@WebParam(name = "idRol") int idRol) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idRol, "lista Rol-Permiso"))) {
+            ObjetoRetornaEntity ret = new ObjetoRetornaEntity();
+            ret.setTrazaRespuesta(valida.valida(idRol, "lista Rol-Permiso"));
+            return ret;
+        } else {
+            PermisosLogic permisosLogic = new PermisosLogic();
+            return permisosLogic.listaRolPermisoPorRol(idRol);
+        }
+    }
+
+    /**
+     * Método que permite insertar una relación entre Rol-Permiso
+     *
+     * @param rolPermiso
+     * @return
+     */
+    @WebMethod(operationName = "ingresarRolPermiso")
+    public RolPermisoEntity insertarRolPermiso(@WebParam(name = "RolPermiso") RolPermisoEntity rolPermiso) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(rolPermiso.getId_rol(), "lista Rol-Permiso"))) {
+            RolPermisoEntity ret = new RolPermisoEntity();
+            ret.setTrazaRespuesta(valida.valida(rolPermiso, "lista Rol-Permiso"));
+            return ret;
+        } else {
+            PermisosLogic permisosLogic = new PermisosLogic();
+            return permisosLogic.insertarRolPermiso(rolPermiso);
+        }
+    }
+    /**
+     * Método que permite inserttar una relación UsuarioRol nueva
+     * @param usuRol
+     * @return 
+     */
+    @WebMethod(operationName = "insertarUsuarioRol")
+    public ObjetoRetornaEntity insertarUsuarioRol(@WebParam(name = "usuarioRol") ArrayList<UsuarioRolEntity> usuRol) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(usuRol, "lista Rol-Permiso"))) {
+            System.out.println("ERROR");
+            ObjetoRetornaEntity ret = new ObjetoRetornaEntity();
+            ret.setTrazaRespuesta(valida.valida(usuRol, "lista Rol-Permiso"));
+            return ret;
+        } else {
+            UsuarioRolLogic usuarioRolLogic = new UsuarioRolLogic();
+            return usuarioRolLogic.insertarUsuarioRol(usuRol);
+        }
+    }
+    /**
+     * Método que permite actualizar una relación Usuario Rol
+     * @param usuRol
+     * @return 
+     */
+    @WebMethod(operationName = "actualizarUsuarioRol")
+    public UsuarioRolEntity actualizarUsuarioRol(@WebParam(name = "usuarioRol") UsuarioRolEntity usuRol) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(usuRol.getUsuario(), "lista Rol-Permiso"))) {
+            UsuarioRolEntity ret = new UsuarioRolEntity();
+            ret.setTrazaRespuesta(valida.valida(usuRol, "lista Rol-Permiso"));
+            return ret;
+        } else {
+            UsuarioRolLogic usuarioRolLogic = new UsuarioRolLogic();
+            return usuarioRolLogic.actualizarUsuarioRol(usuRol);
+        }
+    }
+    
+    @WebMethod(operationName = "listaUsuarioRol")
+    public ObjetoRetornaEntity listaUsuarioRol(@WebParam(name = "idUsuario") int idUsuario) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idUsuario, "lista Rol-Permiso"))) {
+            ObjetoRetornaEntity ret = new ObjetoRetornaEntity();
+            ret.setTrazaRespuesta(valida.valida(idUsuario, "lista Rol-Permiso"));
+            return ret;
+        } else {
+            UsuarioRolLogic ususRolLogic=new UsuarioRolLogic();
+            return ususRolLogic.listaRolPermisoPorRol(idUsuario);
+        }
+    }
+    /**
+     * Método que limpia los roles de un usuario antes de insertar los nuevos
+     * @param idUsuario 
+     */
+    @WebMethod(operationName = "limpiaUsuarioRoles")
+    public void limpiaUsuarioRoles(@WebParam(name = "idUsuario") int idUsuario){
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idUsuario, "lista Rol-Permiso"))) {
+            ObjetoRetornaEntity ret = new ObjetoRetornaEntity();
+            ret.setTrazaRespuesta(valida.valida(idUsuario, "lista Rol-Permiso"));
+            
+        } else {
+            UsuarioRolLogic ususRolLogic=new UsuarioRolLogic();
+            ususRolLogic.limpia(idUsuario);;
+        }
+    }
 }

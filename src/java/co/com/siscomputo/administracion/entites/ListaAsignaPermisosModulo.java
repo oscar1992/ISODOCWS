@@ -16,9 +16,8 @@ import java.util.ArrayList;
  */
 public class ListaAsignaPermisosModulo extends ObjetoTraza implements Serializable{
     private ModuloEntity modulo;
-    private ArrayList<PermisosEntity> permisoNivel1;
-    private ArrayList<PermisosEntity> permisoNivel2;
-    private ArrayList<PermisosEntity> permisoNivel3;
+    private ArrayList<ListaAsignaPermisosPermiso> permisoNivel1;
+    
 
     public ModuloEntity getModulo() {
         return modulo;
@@ -28,28 +27,12 @@ public class ListaAsignaPermisosModulo extends ObjetoTraza implements Serializab
         this.modulo = modulo;
     }
 
-    public ArrayList<PermisosEntity> getPermisoNivel1() {
+    public ArrayList<ListaAsignaPermisosPermiso> getPermisoNivel1() {
         return permisoNivel1;
     }
 
-    public void setPermisoNivel1(ArrayList<PermisosEntity> permisoNivel1) {
+    public void setPermisoNivel1(ArrayList<ListaAsignaPermisosPermiso> permisoNivel1) {
         this.permisoNivel1 = permisoNivel1;
-    }
-
-    public ArrayList<PermisosEntity> getPermisoNivel2() {
-        return permisoNivel2;
-    }
-
-    public void setPermisoNivel2(ArrayList<PermisosEntity> permisoNivel2) {
-        this.permisoNivel2 = permisoNivel2;
-    }
-
-    public ArrayList<PermisosEntity> getPermisoNivel3() {
-        return permisoNivel3;
-    }
-
-    public void setPermisoNivel3(ArrayList<PermisosEntity> permisoNivel3) {
-        this.permisoNivel3 = permisoNivel3;
     }
     
     
