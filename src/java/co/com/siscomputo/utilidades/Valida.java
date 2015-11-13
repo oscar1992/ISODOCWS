@@ -30,9 +30,9 @@ public class Valida {
                     }
                     break;
                 case "Integer":
-                    System.out.println("ENTERO???: "+valor);
+                    //System.out.println("ENTERO???: "+valor);
                     Integer compara=(Integer) valor;
-                    System.out.println("ENTERO???: "+compara);
+                    //System.out.println("ENTERO???: "+compara);
                     if(compara!=0){
                         retorno="Ok";
                     }else{

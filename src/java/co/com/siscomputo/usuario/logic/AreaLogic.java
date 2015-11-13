@@ -7,9 +7,9 @@ package co.com.siscomputo.usuario.logic;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.administracion.persistencia.AreaEntity;
-import co.com.siscomputo.administracion.persistencia.RolPermisoEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
 import java.util.ArrayList;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;

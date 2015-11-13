@@ -1203,7 +1203,7 @@ public class Usuario {
      * @param idUsuario 
      */
     @WebMethod(operationName = "limpiaUsuarioRoles")
-    public void limpiaUsuarioRoles(@WebParam(name = "idUsuario") int idUsuario){
+    public void limpiaUsuarioRoles(@WebParam(name = "idUsuario") int idUsuario, @WebParam(name = "idArea") int idArea){
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(idUsuario, "lista Rol-Permiso"))) {
             ObjetoRetornaEntity ret = new ObjetoRetornaEntity();
@@ -1211,7 +1211,20 @@ public class Usuario {
             
         } else {
             UsuarioRolLogic ususRolLogic=new UsuarioRolLogic();
-            ususRolLogic.limpia(idUsuario);;
+            ususRolLogic.limpia(idUsuario, idArea);
+        }
+    }
+    
+    @WebMethod(operationName = "listaUsuarioRolporAreaUsuario")
+    public ObjetoRetornaEntity listaUsuarioRolporAreaUsuario(@WebParam(name = "idArea")int idArea, @WebParam(name = "idUsuario")int idUsuario){
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idUsuario, "lista Rol-Permiso"))) {
+            ObjetoRetornaEntity ret = new ObjetoRetornaEntity();
+            ret.setTrazaRespuesta(valida.valida(idUsuario, "lista Rol-Permiso"));
+            return ret;
+        } else {
+            UsuarioRolLogic ususRolLogic=new UsuarioRolLogic();
+            return ususRolLogic.listaRolPermisoPorArea(idArea, idUsuario);
         }
     }
 }

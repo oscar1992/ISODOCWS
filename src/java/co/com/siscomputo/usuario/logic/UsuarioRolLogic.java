@@ -97,14 +97,15 @@ public class UsuarioRolLogic {
      *
      * @param idUsuario
      */
-    public void limpia(int idUsuario) {
+    public void limpia(int idUsuario, int idArea) {
         String validaConexion = initOperation();
         
         if (!"Ok".equalsIgnoreCase(validaConexion)) {
             System.out.println("error conexión: "+validaConexion);
         } else {
-            Query query = sesion.createQuery("delete UsuarioRolEntity WHERE usuario.idUsuario=:idUsuario");
+            Query query = sesion.createQuery("delete UsuarioRolEntity WHERE usuario.idUsuario=:idUsuario AND area.idArea=:idArea");
             query.setParameter("idUsuario", idUsuario);
+            query.setParameter("idArea", idArea);
             int result = query.executeUpdate();
             tx.commit();
             
@@ -177,6 +178,30 @@ public class UsuarioRolLogic {
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
                 Query query = sesion.createQuery("SELECT urp FROM UsuarioRolEntity urp, UsuarioEntity u WHERE urp.usuario=u AND u.idUsuario=:idUsuario");
+                query.setParameter("idUsuario", idUsuario);
+                retorna.setRetorna((ArrayList<Object>) query.list());
+                retorna.setTrazaRespuesta("Consulta tabla Usuario-Rol exitosa");
+                retorna.setNumeroRespuesta(21);
+                sesion.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            retorna = new ObjetoRetornaEntity();
+            retorna.setNumeroRespuesta(0);
+            retorna.setTrazaRespuesta(e.getMessage());
+        }
+        return retorna;
+    }
+    public ObjetoRetornaEntity listaRolPermisoPorArea(int idArea, int idUsuario) {
+        ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
+        try {
+            String validaConexion = initOperation();
+            if (!"Ok".equalsIgnoreCase(validaConexion)) {
+                retorna.setNumeroRespuesta(3);
+                retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
+            } else {
+                Query query = sesion.createQuery("SELECT urp FROM UsuarioRolEntity urp, AreaEntity a, UsuarioEntity u WHERE urp.area=a AND urp.usuario=u AND a.idArea=:idArea AND u.idUsuario=:idUsuario");
+                query.setParameter("idArea", idArea);
                 query.setParameter("idUsuario", idUsuario);
                 retorna.setRetorna((ArrayList<Object>) query.list());
                 retorna.setTrazaRespuesta("Consulta tabla Usuario-Rol exitosa");

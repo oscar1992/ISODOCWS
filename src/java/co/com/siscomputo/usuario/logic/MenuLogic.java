@@ -54,15 +54,15 @@ public class MenuLogic {
     public ArrayList<MenuModuloEntity> datosMenu(int idUsuario) {
         ArrayList<ModuloEntity> listaModulos = new ArrayList<>();
         ArrayList<MenuModuloEntity> listaMenuModulo = null;
-        System.out.println("IDDD: "+idUsuario);
+        System.out.println("IDDD: " + idUsuario);
         try {
             UsuarioLogic usuarioLogic = new UsuarioLogic();
-            ArrayList<Object> listaObjetoModulo=usuarioLogic.modulos(idUsuario).getRetorna();
-            for(Object item: listaObjetoModulo){
-                ModuloEntity modu=(ModuloEntity)item;
+            ArrayList<Object> listaObjetoModulo = usuarioLogic.modulos(idUsuario).getRetorna();
+            for (Object item : listaObjetoModulo) {
+                ModuloEntity modu = (ModuloEntity) item;
                 listaModulos.add(modu);
             }
-            
+
             if (listaModulos != null) {
                 String validaConexion = initOperation();
                 if (!"Ok".equalsIgnoreCase(validaConexion)) {
@@ -78,20 +78,32 @@ public class MenuLogic {
                         query.setParameter("idM", item.getId_modulo());
                         ArrayList<PermisosEntity> listaPermisos = (ArrayList<PermisosEntity>) query.list();
                         ArrayList<MenuPermisosEntity> permPrimNivel = listaMenuPermisos(listaPermisos);
-                        System.out.println("UUUUU");
-                        if(permPrimNivel!=null){
-                            
-                            for(MenuPermisosEntity item2:permPrimNivel){
-                                System.out.println("idm: "+item.getId_modulo());
-                                Query query2=sesion.createQuery("SELECT p FROM RolesEntity r, UsuarioRolEntity ure, UsuarioEntity u, RolPermisoEntity rpe, PermisosEntity p, ModuloEntity m  WHERE ure.rol=r AND ure.usuario=u AND u.idUsuario=:idUsuario AND p.asociadoNivel=2 AND p.asociadoMenu=:aM AND m.id_modulo=:idM2 AND rpe.id_rol=r AND rpe.id_permiso=p");
+                        
+                        if (permPrimNivel != null) {
+                            for (MenuPermisosEntity item2 : permPrimNivel) {
+                                //System.out.println("idm: " + item.getId_modulo());
+                                Query query2 = sesion.createQuery("SELECT distinct p FROM RolesEntity r, UsuarioRolEntity ure, UsuarioEntity u, RolPermisoEntity rpe, PermisosEntity p, ModuloEntity m  WHERE ure.rol=r AND ure.usuario=u AND u.idUsuario=:idUsuario AND p.asociadoNivel=2 AND p.asociadoMenu=:aM AND m.id_modulo=:idM2 AND rpe.id_rol=r AND rpe.id_permiso=p");
                                 query2.setParameter("idM2", item.getId_modulo());
                                 query2.setParameter("aM", item2.getId_permiso());
                                 query2.setParameter("idUsuario", idUsuario);
-                                ArrayList<PermisosEntity> subLista=(ArrayList<PermisosEntity>) query2.list();
+                                ArrayList<PermisosEntity> subLista = (ArrayList<PermisosEntity>) query2.list();
                                 ArrayList<MenuPermisosEntity> permSegNivel = listaMenuPermisos(subLista);
+                                if (permSegNivel != null) {
+                                    for (MenuPermisosEntity item3 : permSegNivel) {
+                                        System.out.println("idm2: "+item3.getNombre_permiso());                                        
+                                        Query query3 = sesion.createQuery("SELECT distinct p FROM RolesEntity r, UsuarioRolEntity ure, UsuarioEntity u, RolPermisoEntity rpe, PermisosEntity p, ModuloEntity m  WHERE ure.rol=r AND ure.usuario=u AND u.idUsuario=:idUsuario AND p.asociadoNivel=3 AND p.asociadoMenu=:aM AND m.id_modulo=:idM2 AND rpe.id_rol=r ");
+                                        query3.setParameter("idM2", item2.getId_permiso());
+                                        query3.setParameter("aM", item3.getId_permiso());
+                                        query3.setParameter("idUsuario", idUsuario);
+                                        ArrayList<PermisosEntity> sublista2=(ArrayList<PermisosEntity>) query3.list();
+                                        ArrayList<MenuPermisosEntity> permTerNivel=listaMenuPermisos(sublista2);
+                                        item3.setSubNivel(permTerNivel);
+                                    }
+                                    
+                                }
                                 item2.setSubNivel(permSegNivel);
                             }
-                            
+
                         }
                         mmeAuxiliar.setSubNivel(permPrimNivel);
                         listaMenuModulo.add(mmeAuxiliar);
@@ -106,8 +118,11 @@ public class MenuLogic {
         return listaMenuModulo;
 
     }
+
     /**
-     * Mapea la entidad de un moduloEntity a una clase entity que no tiene anotacion de hibernate
+     * Mapea la entidad de un moduloEntity a una clase entity que no tiene
+     * anotacion de hibernate
+     *
      * @param moduloE
      * @return Retorna un objeto de Menu Modulo Entity
      */
@@ -128,11 +143,12 @@ public class MenuLogic {
         }
         return rta;
     }
-    
+
     /**
      * Se crea una lista de permisos que van a ser un subnivel de otra lista
+     *
      * @param listaPermisos
-     * @return 
+     * @return
      */
     private ArrayList<MenuPermisosEntity> listaMenuPermisos(ArrayList<PermisosEntity> listaPermisos) {
         ArrayList<MenuPermisosEntity> rta = null;

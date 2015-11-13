@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package co.com.siscomputo.administracion.entites;
-
+import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 
 /**
@@ -12,6 +12,7 @@ import java.util.ArrayList;
  * @author LENOVO
  */
 public class MenuModuloEntity {
+
     private int idModulo;
     private String nombre;
     private String rutaModulo;
@@ -94,5 +95,4 @@ public class MenuModuloEntity {
         this.orden = orden;
     }
 
-    
 }

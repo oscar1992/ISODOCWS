@@ -13,10 +13,12 @@ import co.com.siscomputo.administracion.persistencia.PermisosEntity;
 import co.com.siscomputo.administracion.persistencia.RolPermisoEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
 import java.util.ArrayList;
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -110,7 +112,7 @@ public class PermisosLogic {
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
                 rolPermiso.setNumeroRespuesta(3);
                 rolPermiso.setTrazaRespuesta("Error de Conexión " + validaConexion);
-            } else {                
+            } else {
                 sesion.update(rolPermiso);
                 tx.commit();
                 sesion.close();
@@ -164,23 +166,27 @@ public class PermisosLogic {
                             objetoPermisoN2.setPermiso(permisos2);
                             ArrayList<ListaAsignaPermisosPermiso> listaN3 = new ArrayList<>();
                             ArrayList<PermisosEntity> listaPermisosN3 = new ArrayList<>();
-                            Query query3 = sesion.createQuery("SELECT p FROM ModuloEntity m, PermisosEntity p WHERE p.id_modulo=m AND m.id_modulo=:idModulo AND p.asociadoNivel=3 AND p.asociadoMenu=:asociadoMenu");
-                            query3.setParameter("idModulo", modulo.getId_modulo());
-                            query3.setParameter("asociadoMenu", permisos2.getId_permiso());
-                            listaPermisosN3 = (ArrayList<PermisosEntity>) query3.list();
+                            Criteria criteria = sesion.createCriteria(PermisosEntity.class);
+                            criteria.add(Restrictions.eq("id_modulo", modulo));
+                            criteria.add(Restrictions.eq("asociadoNivel", new Integer(3)));
+                            criteria.add(Restrictions.eq("asociadoMenu", new Integer(permisos2.getAsociadoMenu())));
+                            //Query query3 = sesion.createQuery("SELECT p FROM ModuloEntity m, PermisosEntity p WHERE p.id_modulo=m AND m.id_modulo=:idModulo AND p.asociadoNivel=3 AND p.asociadoMenu=:asociadoMenu");
+                            //query3.setParameter("idModulo", modulo.getId_modulo());
+                            //query3.setParameter("asociadoMenu", permisos2.getId_permiso());
+                            listaPermisosN3 = (ArrayList<PermisosEntity>) criteria.list();
                             if (listaPermisosN3 != null) {
                                 for (PermisosEntity permisos3 : listaPermisosN3) {
                                     ListaAsignaPermisosPermiso objetoPermisoN3 = new ListaAsignaPermisosPermiso();
                                     objetoPermisoN3.setPermiso(permisos3);
                                     listaN3.add(objetoPermisoN3);
                                 }
-                            }else{
+                            } else {
                                 listaPermisosN3 = new ArrayList<PermisosEntity>();
                             }
 
                             ListaAsignaPermisosPermiso objetoPermisoN3Aux = new ListaAsignaPermisosPermiso();
                             objetoPermisoN3Aux.setPermiso(permisos2);
-                            
+
                             listaN3.add(objetoPermisoN3Aux);
                             objetoPermisoN2.setListaS(listaN3);
                             listaN2.add(objetoPermisoN2);
