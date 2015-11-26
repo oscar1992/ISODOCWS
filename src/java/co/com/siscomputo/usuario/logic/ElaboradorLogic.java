@@ -1,26 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package co.com.siscomputo.usuario.logic;
 
-import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
-import co.com.siscomputo.administracion.persistencia.DepartamentoEntity;
+import co.com.siscomputo.administracion.persistencia.ElaboradorEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
-import java.util.ArrayList;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
+import java.util.ArrayList;
 
 /**
  *
  * @author LENOVO
  */
-public class DepartamentoLogic {
+public class ElaboradorLogic {
     private Session sesion;//Variable de la sesión y conexión de la base de datos
-
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
 
     /**
@@ -42,44 +36,46 @@ public class DepartamentoLogic {
         }
         return retorno;
     }
-    /**
-     * Método para insertar un departamento
-     * @param departamento
+    
+     /**
+     * Método que inserta un Aprobador Elaborador nuevo
+     * @param objetoElaborador
      * @return 
-     */
-    public DepartamentoEntity ingresaDepartamento(DepartamentoEntity departamento){
+     */    public ElaboradorEntity insertarElaborador(ElaboradorEntity objetoElaborador){
         try {
             String validaConexion = initOperation();
-            if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                departamento.setNumeroRespuesta(3);
-                departamento.setTrazaRespuesta("Error de Conexión " + validaConexion);
+            if (!"Ok".equalsIgnoreCase(validaConexion)) {                
+                objetoElaborador.setNumeroRespuesta(3);
+                objetoElaborador.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                departamento.setIdDepartamento(maxDepartamento());
-                sesion.save(departamento);
+                objetoElaborador.setIdElaborador(maxMetodo());
+                sesion.save(objetoElaborador);
                 tx.commit();
+
+                objetoElaborador.setTrazaRespuesta("Inserción de MetodoRecuperación exitoso");
+                objetoElaborador.setNumeroRespuesta(18);
                 sesion.close();
-                departamento.setTrazaRespuesta("Inserción de departamento Exitosa");
-                departamento.setNumeroRespuesta(23);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            departamento=new DepartamentoEntity();
-            departamento.setNumeroRespuesta(0);
+            objetoElaborador = new ElaboradorEntity();
+            objetoElaborador.setNumeroRespuesta(0);
+            objetoElaborador.setTrazaRespuesta(e.getMessage());
         }
-        return departamento;
+        return objetoElaborador;
     }
-    /**
-     * Método que trea el siguiente ID
+
+     /**
+     * Método que trae el siguiente ID de la tabla ADM_TELAB
      * @return 
-     */
-    public int maxDepartamento() {
+     */    private int maxMetodo() {
         int ret = -1;
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
             } else {
-                Query query = sesion.createQuery("SELECT MAX(idDepartamento) FROM DepartamentoEntity");
+                Query query = sesion.createQuery("SELECT MAX(idElaborador) FROM ElaboradorEntity");
                 ret = (int) query.uniqueResult();
                 ret++;
             }
@@ -88,37 +84,36 @@ public class DepartamentoLogic {
         }
         return ret;
     }
-    /**
-     * Método para actualizar un departamento
-     * @param departamento
+    
+     /**
+     * Método que actualiza un Aprobador Elaborador
+     * @param objetoElaborador
      * @return 
-     */
-    public DepartamentoEntity actualizaDepartamento(DepartamentoEntity departamento){
+     */ public ElaboradorEntity actualizarElaborador(ElaboradorEntity objetoElaborador){
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                departamento.setNumeroRespuesta(3);
-                departamento.setTrazaRespuesta("Error de Conexión " + validaConexion);
-            } else {
-                
-                sesion.update(departamento);
+                objetoElaborador.setNumeroRespuesta(3);
+                objetoElaborador.setTrazaRespuesta("Error de Conexión " + validaConexion);
+            } else {                
+                System.out.println("JJ");
+                sesion.update(objetoElaborador);
                 tx.commit();
                 sesion.close();
-                departamento.setTrazaRespuesta("Actualización de departamento Exitosa");
-                departamento.setNumeroRespuesta(24);
+                objetoElaborador.setTrazaRespuesta("Actualización de MetodoRecuperación exitoso");
+                objetoElaborador.setNumeroRespuesta(19);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            departamento=new DepartamentoEntity();
-            departamento.setNumeroRespuesta(0);
+            objetoElaborador = new ElaboradorEntity();
+            objetoElaborador.setNumeroRespuesta(0);
+            objetoElaborador.setTrazaRespuesta(e.getMessage());
         }
-        return departamento;
+        return objetoElaborador;
     }
-    /**
-     * Método para consultar la lista de departamentos
-     * @return 
-     */
-    public ObjetoRetornaEntity listaDepartamento(){
+     /**
+     * Método Método para consultar la lista de Aprobador Elaborador
+     */public ObjetoRetornaEntity listaElaborador(){
         ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
         try {
             String validaConexion = initOperation();
@@ -126,10 +121,10 @@ public class DepartamentoLogic {
                 retorna.setNumeroRespuesta(3);
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                Query query=sesion.createQuery("FROM DepartamentoEntity d WHERE d.estadoDepartamento<>'E'");
+                Query query=sesion.createQuery("FROM ElaboradorEntity d WHERE d.estadoElaborador<>'E'");
                 retorna.setRetorna((ArrayList<Object>) query.list());
-                retorna.setTrazaRespuesta("Consulta tabla Departamentos exitosa");
-                retorna.setNumeroRespuesta(25);
+                retorna.setTrazaRespuesta("Consulta tabla Elaborador exitosa");
+                retorna.setNumeroRespuesta(22);
                 sesion.close();
             }
         } catch (Exception e) {
@@ -138,30 +133,30 @@ public class DepartamentoLogic {
             retorna.setNumeroRespuesta(0);
             retorna.setTrazaRespuesta(e.getMessage());
         }
-        return retorna;
+        return retorna ;
     }
-    /**
-     * Método que devuelve un departamento filtrado por su Id
-     * @param idPais
+/**
+     * Método que devuelve un Aprobador Elaborador filtrado por su Id
+     * @param elaborador 
      * @return 
      */
-    public DepartamentoEntity deptoPorID(int idPais) {
-        DepartamentoEntity depto = new DepartamentoEntity();
+    public ElaboradorEntity ElaboradorPorID(int elaborador) {
+        ElaboradorEntity depto = new ElaboradorEntity();
         String validaConexion = initOperation();
         try {
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
                 depto.setNumeroRespuesta(3);
                 depto.setTrazaRespuesta("Error de Conexión: " + validaConexion);
             } else {
-                Query query=sesion.createQuery("FROM DepartamentoEntity p WHERE p.idDepartamento=:idS");
-                query.setParameter("idS", idPais);
-                depto=(DepartamentoEntity) query.uniqueResult();
-                depto.setTrazaRespuesta("Consulta de depto exitosa");
+                Query query=sesion.createQuery("FROM ElaboradorEntity p WHERE p.idElaborador=:idS");
+                query.setParameter("idS", elaborador);
+                depto=(ElaboradorEntity) query.uniqueResult();
+                depto.setTrazaRespuesta("Consulta de elaborador exitosa");
                 depto.setNumeroRespuesta(35);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            depto = new DepartamentoEntity();
+            depto = new ElaboradorEntity();
             depto.setNumeroRespuesta(0);
             depto.setTrazaRespuesta(e.getMessage());
         }

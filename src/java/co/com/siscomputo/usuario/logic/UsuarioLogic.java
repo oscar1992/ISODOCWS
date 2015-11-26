@@ -376,16 +376,4 @@ public class UsuarioLogic {
         return usuarioObjeto;
     }
     
-    public ObjetoRetornaEntity primeraVez(){
-        try {
-             String validaConexion = initOperation();
-            if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                
-            } else {
-                
-            }
-        } catch (Exception e) {
-        }
-        return null;
-    }
 }

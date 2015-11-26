@@ -3,4 +3,5 @@
   <endpoint implementation="co.com.siscomputo.endpoint.Usuario" name="Usuario" url-pattern="/Usuario"/>
   <endpoint implementation="co.com.siscomputo.endpoint.Usuario" name="Usuario" url-pattern="/Usuario"/>
   <endpoint implementation="co.com.siscomputo.endpoint.Usuario" name="Usuario" url-pattern="/Usuario"/>
+  <endpoint implementation="co.com.siscomputo.endpoint.Administacion" name="Administacion" url-pattern="/Administacion"/>
 </endpoints>

@@ -169,18 +169,21 @@ public class PermisosLogic {
                             Criteria criteria = sesion.createCriteria(PermisosEntity.class);
                             criteria.add(Restrictions.eq("id_modulo", modulo));
                             criteria.add(Restrictions.eq("asociadoNivel", new Integer(3)));
-                            criteria.add(Restrictions.eq("asociadoMenu", new Integer(permisos2.getAsociadoMenu())));
+                            criteria.add(Restrictions.eq("asociadoMenu", new Integer(permisos2.getId_permiso())));
                             //Query query3 = sesion.createQuery("SELECT p FROM ModuloEntity m, PermisosEntity p WHERE p.id_modulo=m AND m.id_modulo=:idModulo AND p.asociadoNivel=3 AND p.asociadoMenu=:asociadoMenu");
                             //query3.setParameter("idModulo", modulo.getId_modulo());
                             //query3.setParameter("asociadoMenu", permisos2.getId_permiso());
                             listaPermisosN3 = (ArrayList<PermisosEntity>) criteria.list();
+                            //System.out.println("TAMA: "+ permisos2.getAsociadoMenu());
                             if (listaPermisosN3 != null) {
                                 for (PermisosEntity permisos3 : listaPermisosN3) {
+                                    //System.out.println("tt: "+permisos3.getNombre_permiso()+" - "+permisos3.getId_permiso());
                                     ListaAsignaPermisosPermiso objetoPermisoN3 = new ListaAsignaPermisosPermiso();
                                     objetoPermisoN3.setPermiso(permisos3);
                                     listaN3.add(objetoPermisoN3);
                                 }
                             } else {
+                                System.out.println("nuevo");
                                 listaPermisosN3 = new ArrayList<PermisosEntity>();
                             }
 
@@ -205,7 +208,11 @@ public class PermisosLogic {
         }
         return listaRetorna;
     }
-
+    /**
+     * Método que tra la lista de permisos filtrados por un Rol
+     * @param idRol
+     * @return 
+     */
     public ObjetoRetornaEntity listaRolPermisoPorRol(int idRol) {
         ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
         try {

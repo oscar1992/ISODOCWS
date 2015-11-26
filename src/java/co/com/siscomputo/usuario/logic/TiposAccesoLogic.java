@@ -1,25 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package co.com.siscomputo.usuario.logic;
 
-import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
-import co.com.siscomputo.administracion.persistencia.AreaEntity;
+import co.com.siscomputo.administracion.persistencia.TiposAccesoEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
-import java.util.ArrayList;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
+import java.util.ArrayList;
 
 /**
  *
  * @author LENOVO
  */
-public class AreaLogic {
-
+public class TiposAccesoLogic {
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
 
@@ -42,46 +36,46 @@ public class AreaLogic {
         }
         return retorno;
     }
-/**
- * Método que permite ingresar un área nueva
- * @param area
- * @return 
- */
-    public AreaEntity ingresarArea(AreaEntity area) {
+    
+     /**
+     * Método que inserta un Tipo de Acceso nuevo
+     * @param objetoTiposAcceso
+     * @return 
+     */    public TiposAccesoEntity insertarTiposAcceso(TiposAccesoEntity objetoTiposAcceso){
         try {
             String validaConexion = initOperation();
-            if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                area.setNumeroRespuesta(3);
-                area.setTrazaRespuesta("Error de Conexión " + validaConexion);
+            if (!"Ok".equalsIgnoreCase(validaConexion)) {                
+                objetoTiposAcceso.setNumeroRespuesta(3);
+                objetoTiposAcceso.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                area.setIdArea(maxArea());
-                sesion.save(area);
+                objetoTiposAcceso.setIdTiposAcceso(maxMetodo());
+                sesion.save(objetoTiposAcceso);
                 tx.commit();
-                
-                area.setTrazaRespuesta("Inserción de Area exitoso");
-                area.setNumeroRespuesta(18);
+
+                objetoTiposAcceso.setTrazaRespuesta("Inserción de MetodoRecuperación exitoso");
+                objetoTiposAcceso.setNumeroRespuesta(18);
                 sesion.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
-            area = new AreaEntity();
-            area.setNumeroRespuesta(0);
-            area.setTrazaRespuesta(e.getMessage());
+            objetoTiposAcceso = new TiposAccesoEntity();
+            objetoTiposAcceso.setNumeroRespuesta(0);
+            objetoTiposAcceso.setTrazaRespuesta(e.getMessage());
         }
-        return area;
+        return objetoTiposAcceso;
     }
-    /**
-     * Método que trae el siguiente ID
+
+     /**
+     * Método que trae el siguiente ID de la tabla ADM_TACCE
      * @return 
-     */
-    public int maxArea() {
+     */    private int maxMetodo() {
         int ret = -1;
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
             } else {
-                Query query = sesion.createQuery("SELECT MAX(idArea) FROM AreaEntity");
+                Query query = sesion.createQuery("SELECT MAX(idTiposAcceso) FROM TiposAccesoEntity");
                 ret = (int) query.uniqueResult();
                 ret++;
             }
@@ -90,38 +84,37 @@ public class AreaLogic {
         }
         return ret;
     }
-    /**
-     * Método que permite actiulizar un área
-     * @param area
+    
+     /**
+     * Método que actualiza un Tipo de Acceso
+     * @param objetoTiposAcceso
      * @return 
-     */
-    public AreaEntity actualizarArea(AreaEntity area) {
+     */ public TiposAccesoEntity actualizarTiposAcceso(TiposAccesoEntity objetoTiposAcceso){
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                area.setNumeroRespuesta(3);
-                area.setTrazaRespuesta("Error de Conexión " + validaConexion);
-            } else {
-                
-                sesion.update(area);
+                objetoTiposAcceso.setNumeroRespuesta(3);
+                objetoTiposAcceso.setTrazaRespuesta("Error de Conexión " + validaConexion);
+            } else {                
+                System.out.println("JJ");
+                sesion.update(objetoTiposAcceso);
                 tx.commit();
                 sesion.close();
-                area.setTrazaRespuesta("Actualización de Area exitoso");
-                area.setNumeroRespuesta(19);
+                objetoTiposAcceso.setTrazaRespuesta("Actualización de MetodoRecuperación exitoso");
+                objetoTiposAcceso.setNumeroRespuesta(19);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            area = new AreaEntity();
-            area.setNumeroRespuesta(0);
-            area.setTrazaRespuesta(e.getMessage());
+            objetoTiposAcceso = new TiposAccesoEntity();
+            objetoTiposAcceso.setNumeroRespuesta(0);
+            objetoTiposAcceso.setTrazaRespuesta(e.getMessage());
         }
-        return area;
+        return objetoTiposAcceso;
     }
-    /**
-     * método que devuelve una lista de áreas
+     /**
+     * Método que permite actualizar un Tipo de Acceso
      * @return 
-     */
-    public ObjetoRetornaEntity listaArea() {
+     */public ObjetoRetornaEntity listaTiposAcceso(){
         ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
         try {
             String validaConexion = initOperation();
@@ -129,9 +122,9 @@ public class AreaLogic {
                 retorna.setNumeroRespuesta(3);
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                Query query=sesion.createQuery("FROM AreaEntity a WHERE a.estadoArea<>'E'");
+                Query query=sesion.createQuery("FROM TiposAccesoEntity d WHERE d.estadoTiposAcceso<>'E'");
                 retorna.setRetorna((ArrayList<Object>) query.list());
-                retorna.setTrazaRespuesta("Consulta tabla Areas exitosa");
+                retorna.setTrazaRespuesta("Consulta tabla TiposAcceso exitosa");
                 retorna.setNumeroRespuesta(22);
                 sesion.close();
             }

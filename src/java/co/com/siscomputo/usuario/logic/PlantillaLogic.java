@@ -1,25 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package co.com.siscomputo.usuario.logic;
 
-import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
-import co.com.siscomputo.administracion.persistencia.AreaEntity;
+import co.com.siscomputo.administracion.persistencia.PlantillaEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
-import java.util.ArrayList;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
+import java.util.ArrayList;
 
 /**
  *
  * @author LENOVO
  */
-public class AreaLogic {
-
+public class PlantillaLogic {
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
 
@@ -42,46 +35,46 @@ public class AreaLogic {
         }
         return retorno;
     }
-/**
- * Método que permite ingresar un área nueva
- * @param area
- * @return 
- */
-    public AreaEntity ingresarArea(AreaEntity area) {
+    
+     /**
+     * Método que inserta un Plantilla de Gestión Documental nuevo
+     * @param objetoPlantilla
+     * @return 
+     */    public PlantillaEntity insertarPlantilla(PlantillaEntity objetoPlantilla){
         try {
             String validaConexion = initOperation();
-            if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                area.setNumeroRespuesta(3);
-                area.setTrazaRespuesta("Error de Conexión " + validaConexion);
+            if (!"Ok".equalsIgnoreCase(validaConexion)) {                
+                objetoPlantilla.setNumeroRespuesta(3);
+                objetoPlantilla.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                area.setIdArea(maxArea());
-                sesion.save(area);
+                objetoPlantilla.setIdPlantilla(maxMetodo());
+                sesion.save(objetoPlantilla);
                 tx.commit();
-                
-                area.setTrazaRespuesta("Inserción de Area exitoso");
-                area.setNumeroRespuesta(18);
+
+                objetoPlantilla.setTrazaRespuesta("Inserción de MetodoRecuperación exitoso");
+                objetoPlantilla.setNumeroRespuesta(18);
                 sesion.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
-            area = new AreaEntity();
-            area.setNumeroRespuesta(0);
-            area.setTrazaRespuesta(e.getMessage());
+            objetoPlantilla = new PlantillaEntity();
+            objetoPlantilla.setNumeroRespuesta(0);
+            objetoPlantilla.setTrazaRespuesta(e.getMessage());
         }
-        return area;
+        return objetoPlantilla;
     }
-    /**
-     * Método que trae el siguiente ID
+
+     /**
+     * Método que trae el siguiente ID de la tabla ADM_TPLAN
      * @return 
-     */
-    public int maxArea() {
+     */    private int maxMetodo() {
         int ret = -1;
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
             } else {
-                Query query = sesion.createQuery("SELECT MAX(idArea) FROM AreaEntity");
+                Query query = sesion.createQuery("SELECT MAX(idPlantilla) FROM PlantillaEntity");
                 ret = (int) query.uniqueResult();
                 ret++;
             }
@@ -90,38 +83,37 @@ public class AreaLogic {
         }
         return ret;
     }
-    /**
-     * Método que permite actiulizar un área
-     * @param area
+    
+     /**
+     * Método que actualiza un Plantilla de Gestión Documental
+     * @param objetoPlantilla
      * @return 
-     */
-    public AreaEntity actualizarArea(AreaEntity area) {
+     */ public PlantillaEntity actualizarPlantilla(PlantillaEntity objetoPlantilla){
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                area.setNumeroRespuesta(3);
-                area.setTrazaRespuesta("Error de Conexión " + validaConexion);
-            } else {
-                
-                sesion.update(area);
+                objetoPlantilla.setNumeroRespuesta(3);
+                objetoPlantilla.setTrazaRespuesta("Error de Conexión " + validaConexion);
+            } else {                
+                System.out.println("JJ");
+                sesion.update(objetoPlantilla);
                 tx.commit();
                 sesion.close();
-                area.setTrazaRespuesta("Actualización de Area exitoso");
-                area.setNumeroRespuesta(19);
+                objetoPlantilla.setTrazaRespuesta("Actualización de MetodoRecuperación exitoso");
+                objetoPlantilla.setNumeroRespuesta(19);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            area = new AreaEntity();
-            area.setNumeroRespuesta(0);
-            area.setTrazaRespuesta(e.getMessage());
+            objetoPlantilla = new PlantillaEntity();
+            objetoPlantilla.setNumeroRespuesta(0);
+            objetoPlantilla.setTrazaRespuesta(e.getMessage());
         }
-        return area;
+        return objetoPlantilla;
     }
-    /**
-     * método que devuelve una lista de áreas
+     /**
+     * Método que permite actualizar un Plantilla de Gestión Documental
      * @return 
-     */
-    public ObjetoRetornaEntity listaArea() {
+     */public ObjetoRetornaEntity listaPlantilla(){
         ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
         try {
             String validaConexion = initOperation();
@@ -129,9 +121,9 @@ public class AreaLogic {
                 retorna.setNumeroRespuesta(3);
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                Query query=sesion.createQuery("FROM AreaEntity a WHERE a.estadoArea<>'E'");
+                Query query=sesion.createQuery("FROM PlantillaEntity d WHERE d.estadoPlantilla<>'E'");
                 retorna.setRetorna((ArrayList<Object>) query.list());
-                retorna.setTrazaRespuesta("Consulta tabla Areas exitosa");
+                retorna.setTrazaRespuesta("Consulta tabla Plantilla exitosa");
                 retorna.setNumeroRespuesta(22);
                 sesion.close();
             }

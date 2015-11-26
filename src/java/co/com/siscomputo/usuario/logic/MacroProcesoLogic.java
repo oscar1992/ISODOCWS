@@ -42,7 +42,7 @@ public class MacroProcesoLogic {
         return retorno;
     }
     /**
-     * Ingresa
+     * Método que ingresa un macro proceso nuevo
      * @param macro
      * @return 
      */
@@ -69,7 +69,7 @@ public class MacroProcesoLogic {
         return macro;
     }
     /**
-     * MaxID
+     * Método que trael el siguiente ID
      * @return 
      */
     private int maxMacro() {
@@ -89,7 +89,7 @@ public class MacroProcesoLogic {
         return ret;
     }
     /**
-     * Actualizar
+     * Método que actualiza un macro proceso
      * @param macro
      * @return 
      */
@@ -115,7 +115,7 @@ public class MacroProcesoLogic {
         return macro;
     }
     /**
-     * Consulta
+     * Método que trae la lista de macro procesos
      * @return 
      */
     public ObjetoRetornaEntity listaMacroProcesos(){
@@ -141,7 +141,7 @@ public class MacroProcesoLogic {
         return retorna;
     }
     /**
-     * Por ID
+     * Método que trae un macro proceso por ID
      * @param idMacro
      * @return 
      */

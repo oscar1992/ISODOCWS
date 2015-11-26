@@ -6,10 +6,9 @@
 package co.com.siscomputo.usuario.logic;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
-import co.com.siscomputo.administracion.persistencia.SubprocesoEntity;
+import co.com.siscomputo.administracion.persistencia.TiposDocumentalesEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
 import java.util.ArrayList;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -18,7 +17,7 @@ import org.hibernate.Transaction;
  *
  * @author LENOVO
  */
-public class SubProcesosLogic {
+public class TiposDocumentalesLogic {
     private Session sesion;//Variable de la sesión y conexión de la base de datos
 
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -43,44 +42,44 @@ public class SubProcesosLogic {
         return retorno;
     }
     /**
-     * Método que ingresa un nuevo subproceso
-     * @param subpro
+     * Método para ingresar un TipoDocumental
+     * @param tiposd
      * @return 
      */
-    public SubprocesoEntity ingresaSubProceso(SubprocesoEntity subpro){
+    public TiposDocumentalesEntity ingresaTipoDocuemtal(TiposDocumentalesEntity tiposd){
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                subpro.setNumeroRespuesta(3);
-                subpro.setTrazaRespuesta("Error de Conexión " + validaConexion);
+                tiposd.setNumeroRespuesta(3);
+                tiposd.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                subpro.setIdSubproceso(maxSubproceso());
-                sesion.save(subpro);
+                tiposd.setIdTipoDocumental(maxTiposDocuemntales());
+                sesion.save(tiposd);
                 tx.commit();
                 sesion.close();
-                subpro.setTrazaRespuesta("Inserción de Subproceso Exitosa");
-                subpro.setNumeroRespuesta(19);
+                tiposd.setTrazaRespuesta("Inserción de Tipos Documentales Exitosa");
+                tiposd.setNumeroRespuesta(19);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            subpro=new SubprocesoEntity();
-            subpro.setNumeroRespuesta(0);
-            subpro.setTrazaRespuesta(e.getMessage());            
+            tiposd=new TiposDocumentalesEntity();
+            tiposd.setNumeroRespuesta(0);
+            tiposd.setTrazaRespuesta(e.getMessage());            
         }
-        return subpro;
+        return tiposd;
     }
     /**
-     * Método que trae el siguente ID de la tabla subprocesos
+     * Método que retorna el siguiente ID de la tabla Tipos Documentales
      * @return 
      */
-    private int maxSubproceso() {
+    private int maxTiposDocuemntales() {
         int ret = -1;
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
             } else {
-                Query query = sesion.createQuery("SELECT MAX(idSubproceso) FROM SubprocesoEntity");
+                Query query = sesion.createQuery("SELECT MAX(idTipoDocumental) FROM TiposDocumentalesEntity");
                 ret = (int) query.uniqueResult();
                 ret++;
             }
@@ -90,36 +89,36 @@ public class SubProcesosLogic {
         return ret;
     }
     /**
-     * Método que actualiza un subproceso
-     * @param subpro
+     * Método para actualizar un Tipo Docuemtal
+     * @param tipod
      * @return 
      */
-    public SubprocesoEntity actualizarSubprocesos(SubprocesoEntity subpro){
+    public TiposDocumentalesEntity actualizaTipoDocuemtal(TiposDocumentalesEntity tipod){
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                subpro.setNumeroRespuesta(3);
-                subpro.setTrazaRespuesta("Error de Conexión " + validaConexion);
+                tipod.setNumeroRespuesta(3);
+                tipod.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {                
-                sesion.update(subpro);
+                sesion.update(tipod);
                 tx.commit();
                 sesion.close();
-                subpro.setTrazaRespuesta("Actualización de SubProceso Exitosa");
-                subpro.setNumeroRespuesta(20);
+                tipod.setTrazaRespuesta("Actualización de Tipo Documental Exitosa");
+                tipod.setNumeroRespuesta(20);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            subpro=new SubprocesoEntity();
-            subpro.setNumeroRespuesta(0);
-            subpro.setTrazaRespuesta(e.getMessage());            
+            tipod=new TiposDocumentalesEntity();
+            tipod.setNumeroRespuesta(0);
+            tipod.setTrazaRespuesta(e.getMessage());            
         }
-        return subpro;
+        return tipod;
     }
     /**
-     * Método que trae una lista de subprocesos
+     * Método que retorna la lista de tipos documentales disponibles
      * @return 
      */
-    public ObjetoRetornaEntity listaSubproceso(){
+    public ObjetoRetornaEntity listaTipoDcouemntal(){
         ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
         try {
             String validaConexion = initOperation();
@@ -127,9 +126,9 @@ public class SubProcesosLogic {
                 retorna.setNumeroRespuesta(3);
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                Query query=sesion.createQuery("FROM SubprocesoEntity p WHERE p.estadoSubproceso<>'E'");
+                Query query=sesion.createQuery("FROM TiposDocumentalesEntity p WHERE p.estadoTipoDocuemtal<>'E'");
                 retorna.setRetorna((ArrayList<Object>) query.list());
-                retorna.setTrazaRespuesta("Consulta tabla SubProcesos exitosa");
+                retorna.setTrazaRespuesta("Consulta tabla Tipos Documentales exitosa");
                 retorna.setNumeroRespuesta(21);
                 sesion.close();
             }
@@ -141,31 +140,6 @@ public class SubProcesosLogic {
         }
         return retorna;
     }
-    /**
-     * Método que trae un subproceso filtrado por su ID
-     * @param idSubPro
-     * @return 
-     */
-    public SubprocesoEntity subProcesoProID(int idSubPro){
-        SubprocesoEntity subpro = new SubprocesoEntity();
-        String validaConexion = initOperation();
-        try {
-            if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                subpro.setNumeroRespuesta(3);
-                subpro.setTrazaRespuesta("Error de Conexión: " + validaConexion);
-            } else {
-                Query query=sesion.createQuery("FROM SubprocesoEntity p WHERE p.idSubproceso=:idS");
-                query.setParameter("idS", idSubPro);
-                subpro=(SubprocesoEntity) query.uniqueResult();
-                subpro.setTrazaRespuesta("Consulta de subpro exitosa");
-                subpro.setNumeroRespuesta(35);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            subpro = new SubprocesoEntity();
-            subpro.setNumeroRespuesta(0);
-            subpro.setTrazaRespuesta(e.getMessage());
-        }
-        return subpro;
-    }
+    
+    
 }

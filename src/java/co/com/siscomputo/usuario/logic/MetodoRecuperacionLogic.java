@@ -6,9 +6,10 @@
 package co.com.siscomputo.usuario.logic;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
-import co.com.siscomputo.administracion.persistencia.PaisEntity;
+import co.com.siscomputo.administracion.persistencia.MetodoRecuperacionEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
 import java.util.ArrayList;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -17,9 +18,8 @@ import org.hibernate.Transaction;
  *
  * @author LENOVO
  */
-public class PaisLogic {
+public class MetodoRecuperacionLogic {
     private Session sesion;//Variable de la sesión y conexión de la base de datos
-
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
 
     /**
@@ -30,7 +30,7 @@ public class PaisLogic {
      */
     private String initOperation() {
         String retorno;
-        try {
+        try {                   
             if (sesion == null) {
                 sesion = HibernateUtil.getSessionFactory().openSession();
                 tx = sesion.beginTransaction();
@@ -42,44 +42,45 @@ public class PaisLogic {
         return retorno;
     }
     /**
-     * Método para ingresar un país
-     * @param pais
+     * Método que inserta un Método de recuperación nuevo
+     * @param objetoMetodoRecuperacion
      * @return 
      */
-    public PaisEntity ingresaPais(PaisEntity pais){
+    public MetodoRecuperacionEntity insertarMetodoRecuperacion(MetodoRecuperacionEntity objetoMetodoRecuperacion){
         try {
             String validaConexion = initOperation();
-            if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                pais.setNumeroRespuesta(3);
-                pais.setTrazaRespuesta("Error de Conexión " + validaConexion);
+            if (!"Ok".equalsIgnoreCase(validaConexion)) {                
+                objetoMetodoRecuperacion.setNumeroRespuesta(3);
+                objetoMetodoRecuperacion.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                pais.setIdPais(maxPais());
-                sesion.save(pais);
+                objetoMetodoRecuperacion.setIdMetodoRecuperacion(maxMetodo());
+                sesion.save(objetoMetodoRecuperacion);
                 tx.commit();
+
+                objetoMetodoRecuperacion.setTrazaRespuesta("Inserción de MetodoRecuperación exitoso");
+                objetoMetodoRecuperacion.setNumeroRespuesta(18);
                 sesion.close();
-                pais.setTrazaRespuesta("Inserción de Permiso Exitosa");
-                pais.setNumeroRespuesta(19);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            pais=new PaisEntity();
-            pais.setNumeroRespuesta(0);
-            pais.setTrazaRespuesta(e.getMessage());            
+            objetoMetodoRecuperacion = new MetodoRecuperacionEntity();
+            objetoMetodoRecuperacion.setNumeroRespuesta(0);
+            objetoMetodoRecuperacion.setTrazaRespuesta(e.getMessage());
         }
-        return pais;
+        return objetoMetodoRecuperacion;
     }
     /**
-     * Método que retorna el siguiente ID de la tabla Paises
+     * Método que trae el siguiente ID de la tabla ADM_TRECU
      * @return 
      */
-    public int maxPais() {
+    private int maxMetodo() {
         int ret = -1;
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
             } else {
-                Query query = sesion.createQuery("SELECT MAX(idPais) FROM PaisEntity");
+                Query query = sesion.createQuery("SELECT MAX(idDisposirciones) FROM MetodoRecuperacionEntity");
                 ret = (int) query.uniqueResult();
                 ret++;
             }
@@ -89,36 +90,37 @@ public class PaisLogic {
         return ret;
     }
     /**
-     * Método para actualizar un país
-     * @param pais
+     * Método que actualiza un Método de Recupración
+     * @param objetoMetodoRecuperacion
      * @return 
      */
-    public PaisEntity actualizaPais(PaisEntity pais){
+    public MetodoRecuperacionEntity actualizarMetodoRecuperacion(MetodoRecuperacionEntity objetoMetodoRecuperacion){
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                pais.setNumeroRespuesta(3);
-                pais.setTrazaRespuesta("Error de Conexión " + validaConexion);
+                objetoMetodoRecuperacion.setNumeroRespuesta(3);
+                objetoMetodoRecuperacion.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {                
-                sesion.update(pais);
+                System.out.println("JJ");
+                sesion.update(objetoMetodoRecuperacion);
                 tx.commit();
                 sesion.close();
-                pais.setTrazaRespuesta("Actualización de Permiso Exitosa");
-                pais.setNumeroRespuesta(20);
+                objetoMetodoRecuperacion.setTrazaRespuesta("Actualización de MetodoRecuperación exitoso");
+                objetoMetodoRecuperacion.setNumeroRespuesta(19);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            pais=new PaisEntity();
-            pais.setNumeroRespuesta(0);
-            pais.setTrazaRespuesta(e.getMessage());            
+            objetoMetodoRecuperacion = new MetodoRecuperacionEntity();
+            objetoMetodoRecuperacion.setNumeroRespuesta(0);
+            objetoMetodoRecuperacion.setTrazaRespuesta(e.getMessage());
         }
-        return pais;
+        return objetoMetodoRecuperacion;
     }
     /**
-     * Método que retorna la lista de países disponibles
+     * Método que trae una lista de Métodos de Recuperación
      * @return 
      */
-    public ObjetoRetornaEntity listaPais(){
+    public ObjetoRetornaEntity listaMetodosRecuperacion(){
         ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
         try {
             String validaConexion = initOperation();
@@ -126,10 +128,10 @@ public class PaisLogic {
                 retorna.setNumeroRespuesta(3);
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                Query query=sesion.createQuery("FROM PaisEntity p WHERE p.estadoPais<>'E'");
+                Query query=sesion.createQuery("FROM MetodoRecuperacionEntity d WHERE d.estadoMetodoRecuperacion<>'E'");
                 retorna.setRetorna((ArrayList<Object>) query.list());
-                retorna.setTrazaRespuesta("Consulta tabla Países exitosa");
-                retorna.setNumeroRespuesta(21);
+                retorna.setTrazaRespuesta("Consulta tabla MetodoRecuperacion exitosa");
+                retorna.setNumeroRespuesta(22);
                 sesion.close();
             }
         } catch (Exception e) {
@@ -138,33 +140,6 @@ public class PaisLogic {
             retorna.setNumeroRespuesta(0);
             retorna.setTrazaRespuesta(e.getMessage());
         }
-        return retorna;
-    }
-    /**
-     * Método que trae un País por ID
-     * @param idPais
-     * @return 
-     */
-    public PaisEntity paisPorID(int idPais) {
-        PaisEntity pais = new PaisEntity();
-        String validaConexion = initOperation();
-        try {
-            if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                pais.setNumeroRespuesta(3);
-                pais.setTrazaRespuesta("Error de Conexión: " + validaConexion);
-            } else {
-                Query query=sesion.createQuery("FROM PaisEntity p WHERE p.idPais=:idS");
-                query.setParameter("idS", idPais);
-                pais=(PaisEntity) query.uniqueResult();
-                pais.setTrazaRespuesta("Consulta de pais exitosa");
-                pais.setNumeroRespuesta(35);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            pais = new PaisEntity();
-            pais.setNumeroRespuesta(0);
-            pais.setTrazaRespuesta(e.getMessage());
-        }
-        return pais;
+        return retorna ;
     }
 }

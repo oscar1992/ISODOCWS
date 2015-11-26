@@ -22,6 +22,7 @@ import co.com.siscomputo.administracion.persistencia.RolesEntity;
 import co.com.siscomputo.administracion.persistencia.SedeEmpresaEntity;
 import co.com.siscomputo.administracion.persistencia.SedeEntity;
 import co.com.siscomputo.administracion.persistencia.SubprocesoEntity;
+import co.com.siscomputo.administracion.persistencia.TiposDocumentalesEntity;
 import co.com.siscomputo.administracion.persistencia.UsuarioEntity;
 import co.com.siscomputo.administracion.persistencia.UsuarioMacroprocesoEntity;
 import co.com.siscomputo.administracion.persistencia.UsuarioProcesoEntity;
@@ -41,6 +42,7 @@ import co.com.siscomputo.usuario.logic.RolesLogic;
 import co.com.siscomputo.usuario.logic.SedeEmpresaLogic;
 import co.com.siscomputo.usuario.logic.SedeLogic;
 import co.com.siscomputo.usuario.logic.SubProcesosLogic;
+import co.com.siscomputo.usuario.logic.TiposDocumentalesLogic;
 import co.com.siscomputo.usuario.logic.UsuarioLogic;
 import co.com.siscomputo.usuario.logic.UsuarioMacroprocesoLogic;
 import co.com.siscomputo.usuario.logic.UsuarioProcesoLogic;
@@ -1185,7 +1187,11 @@ public class Usuario {
             return usuarioRolLogic.actualizarUsuarioRol(usuRol);
         }
     }
-    
+    /**
+     * Método que permite retorna una lista de registros Usuario-Rol 
+     * @param idUsuario
+     * @return 
+     */
     @WebMethod(operationName = "listaUsuarioRol")
     public ObjetoRetornaEntity listaUsuarioRol(@WebParam(name = "idUsuario") int idUsuario) {
         Valida valida = new Valida();
@@ -1214,7 +1220,12 @@ public class Usuario {
             ususRolLogic.limpia(idUsuario, idArea);
         }
     }
-    
+    /**
+     * Método que consulta una lista de registros de usuarios por área
+     * @param idArea
+     * @param idUsuario
+     * @return 
+     */
     @WebMethod(operationName = "listaUsuarioRolporAreaUsuario")
     public ObjetoRetornaEntity listaUsuarioRolporAreaUsuario(@WebParam(name = "idArea")int idArea, @WebParam(name = "idUsuario")int idUsuario){
         Valida valida = new Valida();
@@ -1226,5 +1237,51 @@ public class Usuario {
             UsuarioRolLogic ususRolLogic=new UsuarioRolLogic();
             return ususRolLogic.listaRolPermisoPorArea(idArea, idUsuario);
         }
+    }
+    /**
+     * Método que permite isngresar un tipo documental nuevo
+     * @param tiposd
+     * @return 
+     */
+    @WebMethod(operationName = "insertarTiposDocumetales")
+    public TiposDocumentalesEntity ingresarTipoDocumental(@WebParam(name = "tiposd")TiposDocumentalesEntity tiposd){
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(tiposd, "Tipo Documental"))) {
+            System.out.println("ERROR");
+            TiposDocumentalesEntity ret = new TiposDocumentalesEntity();
+            ret.setTrazaRespuesta(valida.valida(tiposd, "Tipo Documental"));
+            return ret;
+        } else {
+            TiposDocumentalesLogic tiposDocumentalesLogic=new TiposDocumentalesLogic();
+            return tiposDocumentalesLogic.ingresaTipoDocuemtal(tiposd);
+        }
+    }
+    
+    /**
+     * Método que permite actualizar una¿ tipo documental
+     * @param tiposd
+     * @return 
+     */
+    @WebMethod(operationName = "actualizarTipoDocumental")
+    public TiposDocumentalesEntity actualizarTipoDocumental(@WebParam(name = "tiposd")TiposDocumentalesEntity tiposd){
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(tiposd, "Tipo Documental"))) {
+            System.out.println("ERROR");
+            TiposDocumentalesEntity ret = new TiposDocumentalesEntity();
+            ret.setTrazaRespuesta(valida.valida(tiposd, "Tipo Documental"));
+            return ret;
+        } else {
+            TiposDocumentalesLogic tiposDocumentalesLogic=new TiposDocumentalesLogic();
+            return tiposDocumentalesLogic.actualizaTipoDocuemtal(tiposd);
+        }
+    }
+    /**
+     * Método que devuelve una lista de registros de tipos documentales
+     * @return 
+     */
+    public ObjetoRetornaEntity listaTipoDocuemtal(){
+        TiposDocumentalesLogic tiposDocumentalesLogic=new TiposDocumentalesLogic();
+        return tiposDocumentalesLogic.listaTipoDcouemntal();
+                
     }
 }

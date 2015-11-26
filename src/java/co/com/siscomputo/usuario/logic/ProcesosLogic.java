@@ -43,7 +43,7 @@ public class ProcesosLogic {
         return retorno;
     }
     /**
-     * Ingresa
+     * Método que permite ingresar un proceso nuevo
      * @param procesos
      * @return 
      */
@@ -71,7 +71,7 @@ public class ProcesosLogic {
     }
     
     /**
-     * MaxProcesos
+     * Método que trae el siguiente ID de la tabla procesos
      * @return 
      */
     private int maxProcesos() {
@@ -91,7 +91,7 @@ public class ProcesosLogic {
         return ret;
     }
     /**
-     * Actualiza
+     * Método que actualiza un proceso
      * @param procesos
      * @return 
      */
@@ -117,7 +117,7 @@ public class ProcesosLogic {
         return procesos;
     }
     /**
-     * Consulta
+     * Método que trae una lista de procesos
      * @return 
      */
     public ObjetoRetornaEntity listaProcesos(){
@@ -143,7 +143,7 @@ public class ProcesosLogic {
         return retorna;
     }
     /**
-     * PorID
+     * Método que trae un proceso filtrado por ID
      * @param idProceso
      * @return 
      */
