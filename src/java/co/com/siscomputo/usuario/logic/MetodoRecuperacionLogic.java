@@ -80,7 +80,7 @@ public class MetodoRecuperacionLogic {
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
             } else {
-                Query query = sesion.createQuery("SELECT MAX(idDisposirciones) FROM MetodoRecuperacionEntity");
+                Query query = sesion.createQuery("SELECT MAX(idMetodoRecuperacion) FROM MetodoRecuperacionEntity");
                 ret = (int) query.uniqueResult();
                 ret++;
             }

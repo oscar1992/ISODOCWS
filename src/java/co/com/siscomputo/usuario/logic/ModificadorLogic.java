@@ -1,6 +1,7 @@
+
 package co.com.siscomputo.usuario.logic;
 
-import co.com.siscomputo.administracion.persistencia.PlantillaEntity;
+import co.com.siscomputo.administracion.persistencia.ModificadorEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  *
  * @author LENOVO
  */
-public class PlantillaLogic {
+public class ModificadorLogic {
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
 
@@ -37,35 +38,35 @@ public class PlantillaLogic {
     }
     
      /**
-     * Método que inserta un Plantilla de Gestión Documental nuevo
-     * @param objetoPlantilla
+     * Método que inserta un Aprobador Modificador nuevo
+     * @param objetoModificador
      * @return 
-     */    public PlantillaEntity insertarPlantilla(PlantillaEntity objetoPlantilla){
+     */    public ModificadorEntity insertarModificador(ModificadorEntity objetoModificador){
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {                
-                objetoPlantilla.setNumeroRespuesta(3);
-                objetoPlantilla.setTrazaRespuesta("Error de Conexión " + validaConexion);
+                objetoModificador.setNumeroRespuesta(3);
+                objetoModificador.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                objetoPlantilla.setIdPlantilla(maxMetodo());
-                sesion.save(objetoPlantilla);
+                objetoModificador.setIdModificador(maxMetodo());
+                sesion.save(objetoModificador);
                 tx.commit();
 
-                objetoPlantilla.setTrazaRespuesta("Inserción de MetodoRecuperación exitoso");
-                objetoPlantilla.setNumeroRespuesta(18);
+                objetoModificador.setTrazaRespuesta("Inserción de MetodoRecuperación exitoso");
+                objetoModificador.setNumeroRespuesta(18);
                 sesion.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
-            objetoPlantilla = new PlantillaEntity();
-            objetoPlantilla.setNumeroRespuesta(0);
-            objetoPlantilla.setTrazaRespuesta(e.getMessage());
+            objetoModificador = new ModificadorEntity();
+            objetoModificador.setNumeroRespuesta(0);
+            objetoModificador.setTrazaRespuesta(e.getMessage());
         }
-        return objetoPlantilla;
+        return objetoModificador;
     }
 
      /**
-     * Método que trae el siguiente ID de la tabla ADM_TPLAN
+     * Método que trae el siguiente ID de la tabla ADM_TMODI
      * @return 
      */    private int maxMetodo() {
         int ret = -1;
@@ -74,7 +75,7 @@ public class PlantillaLogic {
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
             } else {
-                Query query = sesion.createQuery("SELECT MAX(idPlantilla) FROM PlantillaEntity");
+                Query query = sesion.createQuery("SELECT MAX(idModificador) FROM ModificadorEntity");
                 ret = (int) query.uniqueResult();
                 ret++;
             }
@@ -85,35 +86,34 @@ public class PlantillaLogic {
     }
     
      /**
-     * Método que actualiza un Plantilla de Gestión Documental
-     * @param objetoPlantilla
+     * Método que actualiza un Aprobador Modificador
+     * @param objetoModificador
      * @return 
-     */ public PlantillaEntity actualizarPlantilla(PlantillaEntity objetoPlantilla){
+     */ public ModificadorEntity actualizarModificador(ModificadorEntity objetoModificador){
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                objetoPlantilla.setNumeroRespuesta(3);
-                objetoPlantilla.setTrazaRespuesta("Error de Conexión " + validaConexion);
+                objetoModificador.setNumeroRespuesta(3);
+                objetoModificador.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {                
                 System.out.println("JJ");
-                sesion.update(objetoPlantilla);
+                sesion.update(objetoModificador);
                 tx.commit();
                 sesion.close();
-                objetoPlantilla.setTrazaRespuesta("Actualización de MetodoRecuperación exitoso");
-                objetoPlantilla.setNumeroRespuesta(19);
+                objetoModificador.setTrazaRespuesta("Actualización de MetodoRecuperación exitoso");
+                objetoModificador.setNumeroRespuesta(19);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            objetoPlantilla = new PlantillaEntity();
-            objetoPlantilla.setNumeroRespuesta(0);
-            objetoPlantilla.setTrazaRespuesta(e.getMessage());
+            objetoModificador = new ModificadorEntity();
+            objetoModificador.setNumeroRespuesta(0);
+            objetoModificador.setTrazaRespuesta(e.getMessage());
         }
-        return objetoPlantilla;
+        return objetoModificador;
     }
      /**
-     * Método que permite actualizar un Plantilla de Gestión Documental
-     * @return 
-     */public ObjetoRetornaEntity listaPlantilla(){
+     * Método Método para consultar la lista de Aprobador Modificador
+     */public ObjetoRetornaEntity listaModificador(){
         ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
         try {
             String validaConexion = initOperation();
@@ -121,9 +121,9 @@ public class PlantillaLogic {
                 retorna.setNumeroRespuesta(3);
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                Query query=sesion.createQuery("FROM PlantillaEntity d WHERE d.estadoPlantilla<>'E'");
+                Query query=sesion.createQuery("FROM ModificadorEntity d WHERE d.estadoModificador<>'E'");
                 retorna.setRetorna((ArrayList<Object>) query.list());
-                retorna.setTrazaRespuesta("Consulta tabla Plantilla exitosa");
+                retorna.setTrazaRespuesta("Consulta tabla Modificador exitosa");
                 retorna.setNumeroRespuesta(22);
                 sesion.close();
             }
@@ -135,32 +135,31 @@ public class PlantillaLogic {
         }
         return retorna ;
     }
-     
-     /**
-     * Método que trae una Plantilla por ID
-     * @param idPlantilla
+/**
+     * Método que devuelve un Aprobador Modificador filtrado por su Id
+     * @param modificador
      * @return 
      */
-    public PlantillaEntity plantillaPorID(int idPlantilla) {
-        PlantillaEntity pais = new PlantillaEntity();
+    public ModificadorEntity ModificadorPorID(int modificador) {
+        ModificadorEntity depto = new ModificadorEntity();
         String validaConexion = initOperation();
         try {
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                pais.setNumeroRespuesta(3);
-                pais.setTrazaRespuesta("Error de Conexión: " + validaConexion);
+                depto.setNumeroRespuesta(3);
+                depto.setTrazaRespuesta("Error de Conexión: " + validaConexion);
             } else {
-                Query query=sesion.createQuery("FROM PlantillaEntity p WHERE p.idPlantilla=:idS");
-                query.setParameter("idS", idPlantilla);
-                pais=(PlantillaEntity) query.uniqueResult();
-                pais.setTrazaRespuesta("Consulta de pais exitosa");
-                pais.setNumeroRespuesta(35);
+                Query query=sesion.createQuery("FROM ModificadorEntity p WHERE p.idModificador=:idS");
+                query.setParameter("idS", modificador);
+                depto=(ModificadorEntity) query.uniqueResult();
+                depto.setTrazaRespuesta("Consulta de modificador exitosa");
+                depto.setNumeroRespuesta(35);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            pais = new PlantillaEntity();
-            pais.setNumeroRespuesta(0);
-            pais.setTrazaRespuesta(e.getMessage());
+            depto = new ModificadorEntity();
+            depto.setNumeroRespuesta(0);
+            depto.setTrazaRespuesta(e.getMessage());
         }
-        return pais;
+        return depto;
     }
 }

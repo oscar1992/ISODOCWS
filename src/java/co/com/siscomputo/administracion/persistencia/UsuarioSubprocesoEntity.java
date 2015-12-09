@@ -26,10 +26,13 @@ public class UsuarioSubprocesoEntity extends ObjetoTraza implements Serializable
     private int idUsuarioSubproceso;
     @JoinColumn(name = "USSU_USUA")
     @ManyToOne
-    private UsuarioEntity idusuario;
+    private UsuarioEntity idUsuario;
     @JoinColumn(name = "USSU_SUBP")
     @ManyToOne
     private SubprocesoEntity idSubprocesoEntity;
+    @JoinColumn(name = "USSU_ACCI")
+    @ManyToOne
+    private AccionEntity idAccion;
 
     public int getIdUsuarioSubproceso() {
         return idUsuarioSubproceso;
@@ -39,13 +42,15 @@ public class UsuarioSubprocesoEntity extends ObjetoTraza implements Serializable
         this.idUsuarioSubproceso = idUsuarioSubproceso;
     }
 
-    public UsuarioEntity getIdusuario() {
-        return idusuario;
+    public UsuarioEntity getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setIdusuario(UsuarioEntity idusuario) {
-        this.idusuario = idusuario;
+    public void setIdUsuario(UsuarioEntity idUsuario) {
+        this.idUsuario = idUsuario;
     }
+
+    
 
     public SubprocesoEntity getIdSubprocesoEntity() {
         return idSubprocesoEntity;
@@ -53,6 +58,14 @@ public class UsuarioSubprocesoEntity extends ObjetoTraza implements Serializable
 
     public void setIdSubprocesoEntity(SubprocesoEntity idSubprocesoEntity) {
         this.idSubprocesoEntity = idSubprocesoEntity;
+    }
+
+    public AccionEntity getIdAccion() {
+        return idAccion;
+    }
+
+    public void setIdAccion(AccionEntity idAccion) {
+        this.idAccion = idAccion;
     }
     
 }

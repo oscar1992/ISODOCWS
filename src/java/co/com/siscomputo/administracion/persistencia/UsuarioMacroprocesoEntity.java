@@ -30,6 +30,9 @@ public class UsuarioMacroprocesoEntity extends ObjetoTraza implements Serializab
     @JoinColumn(name = "USMA_USUA")
     @ManyToOne
     private UsuarioEntity idUsuario;
+    @JoinColumn(name = "USMA_ACCI")
+    @ManyToOne
+    private AccionEntity idAccion;
 
     public int getIdUsuarioMacroproceso() {
         return idUsuarioMacroproceso;
@@ -54,6 +57,13 @@ public class UsuarioMacroprocesoEntity extends ObjetoTraza implements Serializab
     public void setIdUsuario(UsuarioEntity idUsuario) {
         this.idUsuario = idUsuario;
     }
-    
+
+    public AccionEntity getIdAccion() {
+        return idAccion;
+    }
+
+    public void setIdAccion(AccionEntity idAccion) {
+        this.idAccion = idAccion;
+    }
     
 }

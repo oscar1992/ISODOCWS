@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -18,7 +20,8 @@ public class ElaboradorEntity extends ObjetoRetornaEntity implements Serializabl
     @Id
     @Column(name = "ELAB_ELAB")
     private int idElaborador;
-    @Column(name = "ELAB_USUA")
+    @JoinColumn(name = "ELAB_USUA")
+    @ManyToOne
     private UsuarioEntity usuarioElaborador;
     @Column(name = "ELAB_CREA")
     private int creadorElaborador;

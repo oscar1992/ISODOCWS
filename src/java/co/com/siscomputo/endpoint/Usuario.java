@@ -147,6 +147,22 @@ public class Usuario {
         }
 
     }
+    /**
+     * Web service operation Método de carga de lista de usuarios
+     *
+     * @return
+     */
+    @WebMethod(operationName = "listaUsuariosPorAccion")
+    public ObjetoRetornaEntity listaUsuariosPorAccion(@WebParam(name = "idAccion")int idAccion){
+        UsuarioLogic usuarioLogic = new UsuarioLogic();
+        try {
+            return usuarioLogic.listaUsuariosPorAccion(idAccion);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 
     /**
      * Web service operation Método que permite actualizar un usario
@@ -965,16 +981,15 @@ public class Usuario {
     }
 
     /**
-     * Método que permite Ingresar una relación usuario-Macroproceso nuevo
-     *
+     * Método que permite Ingresar una relación usuario-Macroproceso nuevo     *
      * @param ususmacro
      * @return
      */
     @WebMethod(operationName = "ingresarUsuarioMacroproceso")
-    public UsuarioMacroprocesoEntity ingresarUsuarioMacroproceso(@WebParam(name = "usuarioMacroproceso") UsuarioMacroprocesoEntity ususmacro) {
+    public ObjetoRetornaEntity ingresarUsuarioMacroproceso(@WebParam(name = "usuarioMacroproceso") ArrayList<UsuarioMacroprocesoEntity> ususmacro) {
         Valida valida = new Valida();
-        if (!"Ok".equalsIgnoreCase(valida.valida(ususmacro.getIdUsuario().getIdUsuario(), "Usuario-MacroProceso"))) {
-            UsuarioMacroprocesoEntity ret = new UsuarioMacroprocesoEntity();
+        if (!"Ok".equalsIgnoreCase(valida.valida(ususmacro, "Usuario-MacroProceso"))) {
+            ObjetoRetornaEntity ret = new ObjetoRetornaEntity();
             ret.setTrazaRespuesta(valida.valida(ususmacro, "Usuario-MacroProceso"));
             return ret;
         } else {
@@ -1015,22 +1030,76 @@ public class Usuario {
     }
 
     /**
-     * Método que permite Ingresar una relación usuario-Proceso nuevo
+     * Método que consulta los macroProcesos disponibles por usuario
      *
+     * @param idUsuario
+     * @return
+     */
+    @WebMethod(operationName = "listaUsuarioMacroProcesosPorUsuario")
+    public ObjetoRetornaEntity listaUsuarioMacroprocesoPorUsuario(@WebParam(name = "idUsuario") int idUsuario) {
+        UsuarioMacroprocesoLogic usuarioMacroprocesoLogic = new UsuarioMacroprocesoLogic();
+        return usuarioMacroprocesoLogic.listaMacroProcesosPorUsuario(idUsuario);
+    }
+
+    /**
+     * Método que consulta los macroProcesos disponibles por usuario
+     *
+     * @param idUsuario
+     * @return
+     */
+    @WebMethod(operationName = "listaUsuarioMacroProcesosPorUsuarioAccion")
+    public ObjetoRetornaEntity listaUsuarioMacroprocesoPorUsuarioAccion(@WebParam(name = "idUsuario") int idUsuario, @WebParam(name = "idAccion") int idAccion) {
+        UsuarioMacroprocesoLogic usuarioMacroprocesoLogic = new UsuarioMacroprocesoLogic();
+        return usuarioMacroprocesoLogic.listaMacroProcesosPorUsuarioAccion(idUsuario, idAccion);
+    }
+    /**
+     * Método que consulta los macroProcesos disponibles por usuario
+     *
+     * @param idUsuario
+     * @param idAccion
+     * @param tipo
+     * @return
+     */
+    @WebMethod(operationName = "listaUsuarioSelecionPorUsuarioAccion")
+    public ObjetoRetornaEntity listaUsuarioSelecionPorUsuarioAccion(@WebParam(name = "idUsuario") int idUsuario, @WebParam(name = "idAccion") int idAccion,@WebParam(name = "tipo")int tipo) {
+        UsuarioMacroprocesoLogic usuarioMacroprocesoLogic = new UsuarioMacroprocesoLogic();
+        return usuarioMacroprocesoLogic.listaProcesosPorUsuarioAccion(idUsuario, idAccion, tipo);
+    }
+
+    /**
+     * Método que limpia los roles de un usuario antes de insertar los nuevos
+     *
+     * @param idUsuario
+     */
+    @WebMethod(operationName = "limpiaUsuarioMacroProceso")
+    public void limpiaUsuarioMacroProceso(@WebParam(name = "idUsuario") int idUsuario, @WebParam(name = "idAccion") int idAccion) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idUsuario, "lista Rol-Permiso"))) {
+            ObjetoRetornaEntity ret = new ObjetoRetornaEntity();
+            ret.setTrazaRespuesta(valida.valida(idUsuario, "lista Rol-Permiso"));
+
+        } else {
+            UsuarioMacroprocesoLogic usuarioMacroprocesoLogic = new UsuarioMacroprocesoLogic();
+            usuarioMacroprocesoLogic.limpia(idUsuario, idAccion);
+        }
+    }
+
+    /**
+     * Método que permite Ingresar una relación usuario-Proceso nuevo
      *
      * @param usuProceso
      * @return
      */
     @WebMethod(operationName = "ingresarUsuarioProcesos")
-    public UsuarioProcesoEntity ingresarUsuarioProceso(@WebParam(name = "UsuarioProceso") UsuarioProcesoEntity usuProceso) {
+    public ObjetoRetornaEntity ingresarUsuarioProceso(@WebParam(name = "UsuarioProceso") ArrayList<UsuarioProcesoEntity> usuProceso) {
         Valida valida = new Valida();
-        if (!"Ok".equalsIgnoreCase(valida.valida(usuProceso.getIdUsuario().getIdUsuario(), "Usuario-Proceso"))) {
-            UsuarioProcesoEntity ret = new UsuarioProcesoEntity();
+        if (!"Ok".equalsIgnoreCase(valida.valida(usuProceso, "Usuario-Proceso"))) {
+            ObjetoRetornaEntity ret = new ObjetoRetornaEntity();
             ret.setTrazaRespuesta(valida.valida(usuProceso, "Usuario-Proceso"));
             return ret;
         } else {
             UsuarioProcesoLogic usuarioProcesoLogic = new UsuarioProcesoLogic();
-            return usuarioProcesoLogic.ingresarUsuarioProceso(usuProceso);
+            return usuarioProcesoLogic.ingresaUsuarioProceso(usuProceso);
         }
     }
 
@@ -1066,16 +1135,58 @@ public class Usuario {
     }
 
     /**
+     * Método que consulta los macroProcesos disponibles por usuario
+     *
+     * @param idUsuario
+     * @return
+     */
+    @WebMethod(operationName = "listaUsuarioProcesosPorUsuario")
+    public ObjetoRetornaEntity listaUsuarioProcesoPorUsuario(@WebParam(name = "idUsuario") int idUsuario) {
+        UsuarioProcesoLogic UsuarioProcesoLogic = new UsuarioProcesoLogic();
+        return UsuarioProcesoLogic.listaMacroProcesosPorUsuario(idUsuario);
+    }
+
+    /**
+     * Método que consulta los macroProcesos disponibles por usuario
+     *
+     * @param idUsuario
+     * @return
+     */
+    @WebMethod(operationName = "listaUsuarioProcesosPorUsuarioAccion")
+    public ObjetoRetornaEntity listaUsuarioProcesoPorUsuarioAccion(@WebParam(name = "idUsuario") int idUsuario, @WebParam(name = "idAccion") int idAccion) {
+        UsuarioProcesoLogic UsuarioProcesoLogic = new UsuarioProcesoLogic();
+        return UsuarioProcesoLogic.listaMacroProcesosPorUsuarioAccion(idUsuario, idAccion);
+    }
+
+    /**
+     * Método que limpia los roles de un usuario antes de insertar los nuevos
+     *
+     * @param idUsuario
+     */
+    @WebMethod(operationName = "limpiaUsuarioProceso")
+    public void limpiaUsuarioProceso(@WebParam(name = "idUsuario") int idUsuario, @WebParam(name = "idAccion") int idAccion) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idUsuario, "lista Rol-Permiso"))) {
+            ObjetoRetornaEntity ret = new ObjetoRetornaEntity();
+            ret.setTrazaRespuesta(valida.valida(idUsuario, "lista Rol-Permiso"));
+
+        } else {
+            UsuarioProcesoLogic UsuarioProcesoLogic = new UsuarioProcesoLogic();
+            UsuarioProcesoLogic.limpia(idUsuario, idAccion);
+        }
+    }
+
+    /**
      * Método que permite Ingresar una relación usuario-Subproceso nuevo
      *
      * @param usuSubproceso
      * @return
      */
     @WebMethod(operationName = "ingresarUsuarioSubproceso")
-    public UsuarioSubprocesoEntity ingresarUsuarioSubprocesos(@WebParam(name = "UsuarioSubproceso") UsuarioSubprocesoEntity usuSubproceso) {
+    public ObjetoRetornaEntity ingresarUsuarioSubprocesos(@WebParam(name = "UsuarioSubproceso") ArrayList<UsuarioSubprocesoEntity> usuSubproceso) {
         Valida valida = new Valida();
-        if (!"Ok".equalsIgnoreCase(valida.valida(usuSubproceso.getIdusuario().getIdUsuario(), "Usuario-SubProceso"))) {
-            UsuarioSubprocesoEntity ret = new UsuarioSubprocesoEntity();
+        if (!"Ok".equalsIgnoreCase(valida.valida(usuSubproceso, "Usuario-SubProceso"))) {
+            ObjetoRetornaEntity ret = new ObjetoRetornaEntity();
             ret.setTrazaRespuesta(valida.valida(usuSubproceso, "Usuario-SubProceso"));
             return ret;
         } else {
@@ -1094,7 +1205,7 @@ public class Usuario {
     @WebMethod(operationName = "actualizarUsuarioSubproceso")
     public UsuarioSubprocesoEntity actualizarUsuarioSubprocesos(@WebParam(name = "UsuarioSubproceso") UsuarioSubprocesoEntity usuSubproceso) {
         Valida valida = new Valida();
-        if (!"Ok".equalsIgnoreCase(valida.valida(usuSubproceso.getIdusuario().getIdUsuario(), "Usuario-SubProceso"))) {
+        if (!"Ok".equalsIgnoreCase(valida.valida(usuSubproceso, "Usuario-SubProceso"))) {
             UsuarioSubprocesoEntity ret = new UsuarioSubprocesoEntity();
             ret.setTrazaRespuesta(valida.valida(usuSubproceso, "Usuario-SubProceso"));
             return ret;
@@ -1113,6 +1224,48 @@ public class Usuario {
     public ObjetoRetornaEntity listaUsuarioSubprocesos() {
         UsuarioSubprocesoLogic usuarioSubprocesoLogic = new UsuarioSubprocesoLogic();
         return usuarioSubprocesoLogic.listaSubProcesos();
+    }
+
+    /**
+     * Método que consulta los procesos disponibles por usuario
+     *
+     * @param idUsuario
+     * @return
+     */
+    @WebMethod(operationName = "listaUsuarioSubprocesosPorUsuario")
+    public ObjetoRetornaEntity listaUsuarioSubprocesoPorUsuario(@WebParam(name = "idUsuario") int idUsuario) {
+        UsuarioSubprocesoLogic UsuarioSubprocesoLogic = new UsuarioSubprocesoLogic();
+        return UsuarioSubprocesoLogic.listaSubProcesosPorUsuario(idUsuario);
+    }
+
+    /**
+     * Método que consulta los procesos disponibles por usuario
+     *
+     * @param idUsuario
+     * @return
+     */
+    @WebMethod(operationName = "listaUsuarioSubprocesosPorUsuarioAccion")
+    public ObjetoRetornaEntity listaUsuarioSubprocesoPorUsuarioAccion(@WebParam(name = "idUsuario") int idUsuario, @WebParam(name = "idAccion") int idAccion) {
+        UsuarioSubprocesoLogic UsuarioSubprocesoLogic = new UsuarioSubprocesoLogic();
+        return UsuarioSubprocesoLogic.listaMacroProcesosPorUsuarioAccion(idUsuario, idAccion);
+    }
+
+    /**
+     * Método que limpia los procesos de un usuario antes de insertar los nuevos
+     *
+     * @param idUsuario
+     */
+    @WebMethod(operationName = "limpiaUsuarioSubproceso")
+    public void limpiaUsuarioSubproceso(@WebParam(name = "idUsuario") int idUsuario, @WebParam(name = "idAccion") int idAccion) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idUsuario, "lista Rol-Permiso"))) {
+            ObjetoRetornaEntity ret = new ObjetoRetornaEntity();
+            ret.setTrazaRespuesta(valida.valida(idUsuario, "lista Rol-Permiso"));
+
+        } else {
+            UsuarioSubprocesoLogic UsuarioSubprocesoLogic = new UsuarioSubprocesoLogic();
+            UsuarioSubprocesoLogic.limpia(idUsuario, idAccion);
+        }
     }
 
     /**
@@ -1152,10 +1305,12 @@ public class Usuario {
             return permisosLogic.insertarRolPermiso(rolPermiso);
         }
     }
+
     /**
      * Método que permite inserttar una relación UsuarioRol nueva
+     *
      * @param usuRol
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "insertarUsuarioRol")
     public ObjetoRetornaEntity insertarUsuarioRol(@WebParam(name = "usuarioRol") ArrayList<UsuarioRolEntity> usuRol) {
@@ -1170,10 +1325,12 @@ public class Usuario {
             return usuarioRolLogic.insertarUsuarioRol(usuRol);
         }
     }
+
     /**
      * Método que permite actualizar una relación Usuario Rol
+     *
      * @param usuRol
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "actualizarUsuarioRol")
     public UsuarioRolEntity actualizarUsuarioRol(@WebParam(name = "usuarioRol") UsuarioRolEntity usuRol) {
@@ -1187,10 +1344,12 @@ public class Usuario {
             return usuarioRolLogic.actualizarUsuarioRol(usuRol);
         }
     }
+
     /**
-     * Método que permite retorna una lista de registros Usuario-Rol 
+     * Método que permite retorna una lista de registros Usuario-Rol
+     *
      * @param idUsuario
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "listaUsuarioRol")
     public ObjetoRetornaEntity listaUsuarioRol(@WebParam(name = "idUsuario") int idUsuario) {
@@ -1200,51 +1359,57 @@ public class Usuario {
             ret.setTrazaRespuesta(valida.valida(idUsuario, "lista Rol-Permiso"));
             return ret;
         } else {
-            UsuarioRolLogic ususRolLogic=new UsuarioRolLogic();
+            UsuarioRolLogic ususRolLogic = new UsuarioRolLogic();
             return ususRolLogic.listaRolPermisoPorRol(idUsuario);
         }
     }
+
     /**
      * Método que limpia los roles de un usuario antes de insertar los nuevos
-     * @param idUsuario 
+     *
+     * @param idUsuario
      */
     @WebMethod(operationName = "limpiaUsuarioRoles")
-    public void limpiaUsuarioRoles(@WebParam(name = "idUsuario") int idUsuario, @WebParam(name = "idArea") int idArea){
+    public void limpiaUsuarioRoles(@WebParam(name = "idUsuario") int idUsuario, @WebParam(name = "idArea") int idArea) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(idUsuario, "lista Rol-Permiso"))) {
             ObjetoRetornaEntity ret = new ObjetoRetornaEntity();
             ret.setTrazaRespuesta(valida.valida(idUsuario, "lista Rol-Permiso"));
-            
+
         } else {
-            UsuarioRolLogic ususRolLogic=new UsuarioRolLogic();
+            UsuarioRolLogic ususRolLogic = new UsuarioRolLogic();
             ususRolLogic.limpia(idUsuario, idArea);
         }
     }
+
     /**
      * Método que consulta una lista de registros de usuarios por área
+     *
      * @param idArea
      * @param idUsuario
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "listaUsuarioRolporAreaUsuario")
-    public ObjetoRetornaEntity listaUsuarioRolporAreaUsuario(@WebParam(name = "idArea")int idArea, @WebParam(name = "idUsuario")int idUsuario){
+    public ObjetoRetornaEntity listaUsuarioRolporAreaUsuario(@WebParam(name = "idArea") int idArea, @WebParam(name = "idUsuario") int idUsuario) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(idUsuario, "lista Rol-Permiso"))) {
             ObjetoRetornaEntity ret = new ObjetoRetornaEntity();
             ret.setTrazaRespuesta(valida.valida(idUsuario, "lista Rol-Permiso"));
             return ret;
         } else {
-            UsuarioRolLogic ususRolLogic=new UsuarioRolLogic();
+            UsuarioRolLogic ususRolLogic = new UsuarioRolLogic();
             return ususRolLogic.listaRolPermisoPorArea(idArea, idUsuario);
         }
     }
+
     /**
      * Método que permite isngresar un tipo documental nuevo
+     *
      * @param tiposd
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "insertarTiposDocumetales")
-    public TiposDocumentalesEntity ingresarTipoDocumental(@WebParam(name = "tiposd")TiposDocumentalesEntity tiposd){
+    public TiposDocumentalesEntity ingresarTipoDocumental(@WebParam(name = "tiposd") TiposDocumentalesEntity tiposd) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(tiposd, "Tipo Documental"))) {
             System.out.println("ERROR");
@@ -1252,18 +1417,19 @@ public class Usuario {
             ret.setTrazaRespuesta(valida.valida(tiposd, "Tipo Documental"));
             return ret;
         } else {
-            TiposDocumentalesLogic tiposDocumentalesLogic=new TiposDocumentalesLogic();
+            TiposDocumentalesLogic tiposDocumentalesLogic = new TiposDocumentalesLogic();
             return tiposDocumentalesLogic.ingresaTipoDocuemtal(tiposd);
         }
     }
-    
+
     /**
      * Método que permite actualizar una¿ tipo documental
+     *
      * @param tiposd
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "actualizarTipoDocumental")
-    public TiposDocumentalesEntity actualizarTipoDocumental(@WebParam(name = "tiposd")TiposDocumentalesEntity tiposd){
+    public TiposDocumentalesEntity actualizarTipoDocumental(@WebParam(name = "tiposd") TiposDocumentalesEntity tiposd) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(tiposd, "Tipo Documental"))) {
             System.out.println("ERROR");
@@ -1271,17 +1437,38 @@ public class Usuario {
             ret.setTrazaRespuesta(valida.valida(tiposd, "Tipo Documental"));
             return ret;
         } else {
-            TiposDocumentalesLogic tiposDocumentalesLogic=new TiposDocumentalesLogic();
+            TiposDocumentalesLogic tiposDocumentalesLogic = new TiposDocumentalesLogic();
             return tiposDocumentalesLogic.actualizaTipoDocuemtal(tiposd);
         }
     }
+
     /**
      * Método que devuelve una lista de registros de tipos documentales
-     * @return 
+     *
+     * @return
      */
-    public ObjetoRetornaEntity listaTipoDocuemtal(){
-        TiposDocumentalesLogic tiposDocumentalesLogic=new TiposDocumentalesLogic();
+    public ObjetoRetornaEntity listaTipoDocuemtal() {
+        TiposDocumentalesLogic tiposDocumentalesLogic = new TiposDocumentalesLogic();
         return tiposDocumentalesLogic.listaTipoDcouemntal();
-                
+
+    }
+    /**
+     * Método que permite isngresar un tipo documental nuevo
+     *
+     * @param tiposd
+     * @return
+     */
+    @WebMethod(operationName = "tiposDocumetalesPorID")
+    public TiposDocumentalesEntity tipoDocumentalPorID(@WebParam(name = "idipos") int idTipos) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idTipos, "Tipo Documental"))) {
+            System.out.println("ERROR");
+            TiposDocumentalesEntity ret = new TiposDocumentalesEntity();
+            ret.setTrazaRespuesta(valida.valida(idTipos, "Tipo Documental"));
+            return ret;
+        } else {
+            TiposDocumentalesLogic tiposDocumentalesLogic = new TiposDocumentalesLogic();
+            return tiposDocumentalesLogic.tipoDocumentalPorID(idTipos);
+        }
     }
 }

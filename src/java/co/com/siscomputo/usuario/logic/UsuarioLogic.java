@@ -11,7 +11,6 @@ import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.administracion.persistencia.UsuarioEntity;
 import java.util.ArrayList;
 import java.util.Date;
-import javax.xml.bind.annotation.XmlType;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -376,4 +375,27 @@ public class UsuarioLogic {
         return usuarioObjeto;
     }
     
+    public ObjetoRetornaEntity listaUsuariosPorAccion(int idAccion){
+        ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
+        
+        try {
+            String validaConexion = initOperation();
+            if (!"Ok".equalsIgnoreCase(validaConexion)) {
+                
+            } else {
+                Query query = sesion.createQuery("SELECT DISTINCT  m.idUsuario  FROM UsuarioEntity u, AccionEntity a, UsuarioMacroprocesoEntity m WHERE m.idAccion=a AND a.idAccion=:idA");
+                query.setParameter("idA", idAccion);
+                
+                retorna.setRetorna((ArrayList<Object>) query.list());
+                retorna.setNumeroRespuesta(10);
+                retorna.setTrazaRespuesta("Carga de permisos Fltrados");
+                sesion.close();
+            }
+        } catch (Exception e) {
+            retorna.setNumeroRespuesta(3);
+            retorna.setTrazaRespuesta("ERROR: "+e);
+            e.printStackTrace();
+        }
+        return retorna;
+    }
 }

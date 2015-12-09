@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package co.com.siscomputo.administracion.entites;
-import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 
 /**

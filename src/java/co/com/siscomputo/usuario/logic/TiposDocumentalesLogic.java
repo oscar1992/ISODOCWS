@@ -141,5 +141,31 @@ public class TiposDocumentalesLogic {
         return retorna;
     }
     
-    
+    /**
+     * Método que trae un País por ID
+     * @param idTiposDocumentales
+     * @return 
+     */
+    public TiposDocumentalesEntity tipoDocumentalPorID(int idTiposDocumentales) {
+        TiposDocumentalesEntity pais = new TiposDocumentalesEntity();
+        String validaConexion = initOperation();
+        try {
+            if (!"Ok".equalsIgnoreCase(validaConexion)) {
+                pais.setNumeroRespuesta(3);
+                pais.setTrazaRespuesta("Error de Conexión: " + validaConexion);
+            } else {
+                Query query=sesion.createQuery("FROM TiposDocumentalesEntity p WHERE p.idTipoDocumental=:idS");
+                query.setParameter("idS", idTiposDocumentales);
+                pais=(TiposDocumentalesEntity) query.uniqueResult();
+                pais.setTrazaRespuesta("Consulta de pais exitosa");
+                pais.setNumeroRespuesta(35);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            pais = new TiposDocumentalesEntity();
+            pais.setNumeroRespuesta(0);
+            pais.setTrazaRespuesta(e.getMessage());
+        }
+        return pais;
+    }
 }

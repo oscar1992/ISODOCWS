@@ -69,7 +69,7 @@ public class UsuarioRolLogic {
 
                 int siguiente = maxUsuarioRol();
                 for (UsuarioRolEntity usrol : usurol) {
-                    System.out.println("SIGUIENTE: " + siguiente);
+                    
                     UsuarioRolEntity usuarioRolEntity = usrol;
                     usuarioRolEntity.setId_usuario_rol(siguiente);
                     siguiente++;
@@ -85,7 +85,7 @@ public class UsuarioRolLogic {
         } catch (Exception e) {
             e.printStackTrace();
             retorna = new ObjetoRetornaEntity();
-            retorna.setNumeroRespuesta(0);
+            retorna.setNumeroRespuesta(0) ;
             retorna.setTrazaRespuesta(e.getMessage());
         }
         return retorna;
@@ -93,8 +93,7 @@ public class UsuarioRolLogic {
 
     /**
      * Método que limpia las asiganaciones que tiene un usuario antes de que
-     * ingresen las nuevas asignaciones de roles
-     *
+     * ingresen las nuevas asignaciones de roles     *
      * @param idUsuario
      */
     public void limpia(int idUsuario, int idArea) {

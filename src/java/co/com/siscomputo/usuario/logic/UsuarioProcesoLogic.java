@@ -43,30 +43,39 @@ public class UsuarioProcesoLogic {
     }
     /**
      * Método que permite ingresar una relación usuario-proceso nueva
+     * @param usumacro
      * @param usuproceso
      * @return 
      */
-    public UsuarioProcesoEntity ingresarUsuarioProceso(UsuarioProcesoEntity usuproceso){
+    public ObjetoRetornaEntity ingresaUsuarioProceso(ArrayList<UsuarioProcesoEntity> usumacro){
+        ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
+        ArrayList<Object> listaretorna=new ArrayList<>();
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                usuproceso.setNumeroRespuesta(3);
-                usuproceso.setTrazaRespuesta("Error de Conexión " + validaConexion);
+                retorna.setNumeroRespuesta(3);
+                retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                usuproceso.setIdUsuarioProceso(maxMacro());
-                sesion.save(usuproceso);
+                int siguiente=maxMacro();
+                for(UsuarioProcesoEntity usuarioProceso: usumacro){
+                    UsuarioProcesoEntity usuarioProcesoEntity=usuarioProceso;
+                    usuarioProcesoEntity.setIdUsuarioProceso(siguiente);
+                    siguiente++;
+                    sesion.save(usuarioProcesoEntity);
+                    listaretorna.add(usuarioProcesoEntity);
+                }                
                 tx.commit();
                 sesion.close();
-                usuproceso.setTrazaRespuesta("Inserción de Usuario-Proceso Exitosa");
-                usuproceso.setNumeroRespuesta(19);
+                retorna.setTrazaRespuesta("Inserción de Usuario-Proceso Exitosa");
+                retorna.setNumeroRespuesta(19);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            usuproceso=new UsuarioProcesoEntity();
-            usuproceso.setNumeroRespuesta(0);
-            usuproceso.setTrazaRespuesta(e.getMessage());            
+            retorna=new ObjetoRetornaEntity();
+            retorna.setNumeroRespuesta(0);
+            retorna.setTrazaRespuesta(e.getMessage());            
         }
-        return usuproceso;
+        return retorna;
     }
     /**
      * Método que retorna el ID máximo de la tabla relacional usuario-proceso
@@ -139,5 +148,81 @@ public class UsuarioProcesoLogic {
             retorna.setTrazaRespuesta(e.getMessage());
         }
         return retorna;
+    }
+    /**
+     * Método que retorna una lista de relaciones Usuarios-Procesos
+     * @return 
+     */
+    public ObjetoRetornaEntity listaMacroProcesosPorUsuario(int idUsuario){
+        ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
+        try {
+            String validaConexion = initOperation();
+            if (!"Ok".equalsIgnoreCase(validaConexion)) {
+                retorna.setNumeroRespuesta(3);
+                retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
+            } else {
+                Query query=sesion.createQuery("SELECT ump FROM UsuarioProcesoEntity ump, UsuarioEntity u WHERE ump.idUsuario=u AND u.idUsuario=:idUsuario");
+                query.setParameter("idUsuario", idUsuario);
+                retorna.setRetorna((ArrayList<Object>) query.list());
+                retorna.setTrazaRespuesta("Consulta tabla usuario-Proceso exitosa");
+                retorna.setNumeroRespuesta(21);
+                sesion.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            retorna=new ObjetoRetornaEntity();
+            retorna.setNumeroRespuesta(0);
+            retorna.setTrazaRespuesta(e.getMessage());
+        }
+        return retorna;
+    }
+    /**
+     * Método que retorna una lista de relaciones Usuarios-Procesos
+     * @return 
+     */
+    public ObjetoRetornaEntity listaMacroProcesosPorUsuarioAccion(int idUsuario, int idAccion){
+        ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
+        try {
+            String validaConexion = initOperation();
+            if (!"Ok".equalsIgnoreCase(validaConexion)) {
+                retorna.setNumeroRespuesta(3);
+                retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
+            } else {
+                Query query=sesion.createQuery("SELECT ump FROM UsuarioProcesoEntity ump, UsuarioEntity u, AccionEntity a WHERE ump.idUsuario=u AND ump.idAccion=a AND u.idUsuario=:idUsuario AND a.idAccion=:idAccion");
+                query.setParameter("idUsuario", idUsuario);
+                query.setParameter("idAccion", idAccion);
+                retorna.setRetorna((ArrayList<Object>) query.list());
+                retorna.setTrazaRespuesta("Consulta tabla usuario-Proceso exitosa");
+                retorna.setNumeroRespuesta(21);
+                sesion.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            retorna=new ObjetoRetornaEntity();
+            retorna.setNumeroRespuesta(0);
+            retorna.setTrazaRespuesta(e.getMessage());
+        }
+        return retorna;
+    }
+    /**
+     * Método que limpia las asiganaciones que tiene un usuario antes de que
+     * ingresen las nuevas asignaciones de macroprocesos     *
+     * @param idUsuario
+     * @param idAccion
+     */
+    public void limpia(int idUsuario, int idAccion) {
+        String validaConexion = initOperation();
+        
+        if (!"Ok".equalsIgnoreCase(validaConexion)) {
+            System.out.println("error conexión: "+validaConexion);
+        } else {
+            Query query = sesion.createQuery("delete UsuarioProcesoEntity WHERE idUsuario.idUsuario=:idUsuario AND idAccion.idAccion=:idAccion");
+            query.setParameter("idUsuario", idUsuario);
+            query.setParameter("idAccion", idAccion);
+            int result = query.executeUpdate();
+            tx.commit();
+            
+            System.out.println("LIMPIA: " + result);
+        }
     }
 }

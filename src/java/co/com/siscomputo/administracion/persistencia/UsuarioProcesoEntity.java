@@ -30,6 +30,9 @@ public class UsuarioProcesoEntity extends ObjetoTraza implements Serializable {
     @JoinColumn(name = "USPR_PROC")
     @ManyToOne
     private ProcesosEntity idProceso;
+    @JoinColumn(name = "USPR_ACCI")
+    @ManyToOne
+    private AccionEntity idAccion;
 
     public int getIdUsuarioProceso() {
         return idUsuarioProceso;
@@ -53,6 +56,14 @@ public class UsuarioProcesoEntity extends ObjetoTraza implements Serializable {
 
     public void setIdProceso(ProcesosEntity idProceso) {
         this.idProceso = idProceso;
+    }
+
+    public AccionEntity getIdAccion() {
+        return idAccion;
+    }
+
+    public void setIdAccion(AccionEntity idAccion) {
+        this.idAccion = idAccion;
     }
     
 }
