@@ -9,11 +9,14 @@ import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.administracion.persistencia.AccionEntity;
 import co.com.siscomputo.administracion.persistencia.DisposicionesEntity;
 import co.com.siscomputo.administracion.persistencia.ElaboradorEntity;
+import co.com.siscomputo.administracion.persistencia.GrupoProcesoEntity;
 import co.com.siscomputo.administracion.persistencia.GrupoUsuariosEntity;
 import co.com.siscomputo.administracion.persistencia.MetodoProteccionEntity;
 import co.com.siscomputo.administracion.persistencia.MetodoRecuperacionEntity;
 import co.com.siscomputo.administracion.persistencia.ModificadorEntity;
+import co.com.siscomputo.administracion.persistencia.NivelEntity;
 import co.com.siscomputo.administracion.persistencia.PlantillaEntity;
+import co.com.siscomputo.administracion.persistencia.ProcesoEntity;
 import co.com.siscomputo.administracion.persistencia.TipoAlmacenamientoEntity;
 import co.com.siscomputo.administracion.persistencia.TipoControlDistribucionEntity;
 import co.com.siscomputo.administracion.persistencia.TiposAccesoEntity;
@@ -21,11 +24,14 @@ import co.com.siscomputo.administracion.persistencia.UsuarioGrupoUsuarioEntity;
 import co.com.siscomputo.usuario.logic.AccionLogic;
 import co.com.siscomputo.usuario.logic.DisposicionesLogic;
 import co.com.siscomputo.usuario.logic.ElaboradorLogic;
+import co.com.siscomputo.usuario.logic.GrupoProcesoLogic;
 import co.com.siscomputo.usuario.logic.GrupoUsuariosLogic;
 import co.com.siscomputo.usuario.logic.MetodoProteccionLogic;
 import co.com.siscomputo.usuario.logic.MetodoRecuperacionLogic;
 import co.com.siscomputo.usuario.logic.ModificadorLogic;
+import co.com.siscomputo.usuario.logic.NivelLogic;
 import co.com.siscomputo.usuario.logic.PlantillaLogic;
+import co.com.siscomputo.usuario.logic.ProcesoLogic;
 import co.com.siscomputo.usuario.logic.TipoAlmacenamientoLogic;
 import co.com.siscomputo.usuario.logic.TipoControlDistribucionLogic;
 import co.com.siscomputo.usuario.logic.TiposAccesoLogic;
@@ -628,8 +634,11 @@ public class Administacion {
             return metodoRecuperacionLogic.actualizarGrupoUsuarios(objeto);
         }
     }
+
     /**
-     * Método que trae un grupo de usuarios por ID     *
+     * Método que trae un grupo de usuarios por ID
+     *
+     *
      * @return
      */
     @WebMethod(operationName = "grupoUsuariosPorId")
@@ -644,8 +653,7 @@ public class Administacion {
             return metodoRecuperacionLogic.GrupoPorId(idGrupo);
         }
     }
-    
-    
+
     /**
      * Método que trae una lista de Grupo de Usuarios
      *
@@ -697,13 +705,16 @@ public class Administacion {
             return metodoRecuperacionLogic.actualizarUsuarioGrupoUsuario(objeto);
         }
     }
-    
+    /**
+     * Método que limpia parte de la relacion entre usuario-GrupoUsuario
+     * @param idGrupo 
+     */
     @WebMethod(operationName = "limpiaUsuarioGrupoUsuario")
-    public void limpiaUsuarioGrupoUsuario(@WebParam(name = "idGrupo")int idGrupo){
-        UsuarioGrupoUsuarioLogic usuarioGrupoUsuarioLogic=new UsuarioGrupoUsuarioLogic();
+    public void limpiaUsuarioGrupoUsuario(@WebParam(name = "idGrupo") int idGrupo) {
+        UsuarioGrupoUsuarioLogic usuarioGrupoUsuarioLogic = new UsuarioGrupoUsuarioLogic();
         usuarioGrupoUsuarioLogic.limpia(idGrupo);
     }
-    
+
     /**
      * Método que trae una lista de relacion entre Usuarios y Grupos de Usuarios
      *
@@ -714,23 +725,203 @@ public class Administacion {
         UsuarioGrupoUsuarioLogic usuarioGrupoUsuarioLogic = new UsuarioGrupoUsuarioLogic();
         return usuarioGrupoUsuarioLogic.listaUsuarioGrupoUsuario();
     }
+
     /**
-     * Método que trae una lista de relacion entre Usuarios y Grupos de Usuarios Filtrado por id de grupo
+     * Método que trae una lista de relacion entre Usuarios y Grupos de Usuarios
+     * Filtrado por id de grupo
+     *
      * @param objeto
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "listaUsuarioGrupoUsuarioPorGrupo")
-    public ObjetoRetornaEntity listaUsuarioGrupoUsuarioPorGrupo(@WebParam(name = "idGrupo")int idGrupo){
+    public ObjetoRetornaEntity listaUsuarioGrupoUsuarioPorGrupo(@WebParam(name = "idGrupo") int idGrupo) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(idGrupo, "Sede"))) {
             UsuarioGrupoUsuarioEntity ret = new UsuarioGrupoUsuarioEntity();
             ret.setTrazaRespuesta(valida.valida(idGrupo, "Sede"));
             return ret;
         } else {
-            UsuarioGrupoUsuarioLogic metodoRecuperacionLogic=new UsuarioGrupoUsuarioLogic();
+            UsuarioGrupoUsuarioLogic metodoRecuperacionLogic = new UsuarioGrupoUsuarioLogic();
             return metodoRecuperacionLogic.listaUsuarioGrupoUsuarioPorGrupo(idGrupo);
         }
     }
+
+    /**
+     * Método que permite insertar un Procesos nuevo
+     *
+     * @param objeto
+     * @return
+     */
+    @WebMethod(operationName = "insertarProceso")
+    public ProcesoEntity insertarProceso(@WebParam(name = "objeto") ProcesoEntity objeto) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getNombreProceso(), "Sede"))) {
+            ProcesoEntity ret = new ProcesoEntity();
+            ret.setTrazaRespuesta(valida.valida(objeto.getNombreProceso(), "Sede"));
+            return ret;
+        } else {
+            ProcesoLogic procesoLogic = new ProcesoLogic();
+            return procesoLogic.insertarProceso(objeto);
+        }
+    }
+
+    /**
+     * Método que permite actualizar un Procesos
+     *
+     * @param objeto
+     * @return
+     */
+    @WebMethod(operationName = "actualizarProceso")
+    public ProcesoEntity actualizarProceso(@WebParam(name = "objeto") ProcesoEntity objeto) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getNombreProceso(), "Sede"))) {
+            ProcesoEntity ret = new ProcesoEntity();
+            ret.setTrazaRespuesta(valida.valida(objeto.getNombreProceso(), "Sede"));
+            return ret;
+        } else {
+            ProcesoLogic metodoRecuperacionLogic = new ProcesoLogic();
+            return metodoRecuperacionLogic.actualizarProceso(objeto);
+        }
+    }
+
+    /**
+     * Método que trae una lista de Procesos
+     *
+     * @return
+     */
+    @WebMethod(operationName = "listaProceso")
+    public ObjetoRetornaEntity listaProceso() {
+        ProcesoLogic procesoLogic = new ProcesoLogic();
+        return procesoLogic.listaProceso();
+
+    }
+    /**
+     * Método que trae un proceso por su ID
+     * @param idProceso
+     * @return 
+     */
+    @WebMethod(operationName = "procesoPorId2")
+    public ProcesoEntity procesoPorId2(@WebParam(name = "idProceso") int idProceso) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idProceso, "idGrupo"))) {
+            ProcesoEntity ret = new ProcesoEntity();
+            ret.setTrazaRespuesta(valida.valida(idProceso, "idGrupo"));
+            return ret;
+        } else {
+            ProcesoLogic procesoLogic = new ProcesoLogic();
+            return procesoLogic.procesoPorId(idProceso);
+        }
+    }
+    /**
+     * Método que permite insertar un Grupo de Usuarios y Procesos nuevo
+     * @param objeto
+     * @return 
+     */
+    @WebMethod(operationName = "insertarGrupoProceso")
+    public ObjetoRetornaEntity insertarGrupoProceso(@WebParam(name = "objeto") ArrayList<GrupoProcesoEntity> lista){
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(lista, "GrupoProceso"))) {
+            GrupoProcesoEntity ret = new GrupoProcesoEntity();
+            ret.setTrazaRespuesta(valida.valida(lista, "GrupoProceso"));
+            return ret;
+        } else {
+        GrupoProcesoLogic grupoProcesoLogic=new GrupoProcesoLogic();
+        return grupoProcesoLogic.insertarGrupoProceso(lista);
+        }
+}
+     /**
+     * Método que permite actualizar un Grupo de Usuarios y Procesos
+     * @param objeto
+     * @return 
+     */
+    @WebMethod(operationName = "actualizarGrupoProceso")
+    public GrupoProcesoEntity actualizarGrupoProceso(@WebParam(name = "objeto")GrupoProcesoEntity objeto){
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getGrupoUsuarioProceso(), "Sede"))) {
+            GrupoProcesoEntity ret = new GrupoProcesoEntity();
+            ret.setTrazaRespuesta(valida.valida(objeto.getGrupoUsuarioProceso(), "Sede"));
+            return ret;
+        } else {
+            GrupoProcesoLogic metodoRecuperacionLogic=new GrupoProcesoLogic();
+            return metodoRecuperacionLogic.actualizarGrupoProceso(objeto);
+        }
+    }
+    /**
+     * Método que trae una lista de Grupo de Usuarios y Procesos
+     * @param idGrupo
+     * @return 
+     */
+    @WebMethod(operationName = "listaGrupoProceso")
+    public ObjetoRetornaEntity listaGrupoProceso(@WebParam(name = "idGrupo")int idGrupo){
+        GrupoProcesoLogic grupoProcesoLogic=new GrupoProcesoLogic();
+        return grupoProcesoLogic.listaGrupoProceso(idGrupo);
+     
+    }
+    /**
+     * Método que trae una lista de Grupo de Usuarios y Procesos
+     * @param idGrupo
+     * @param idProceso
+     * @return 
+     */
+    @WebMethod(operationName = "listaGrupoProcesoAccion")
+    public ObjetoRetornaEntity listaGrupoProcesoAccion(@WebParam(name = "idGrupo")int idGrupo, @WebParam(name = "idProceso")int idProceso){
+        GrupoProcesoLogic grupoProcesoLogic=new GrupoProcesoLogic();
+        return grupoProcesoLogic.listaGrupoProcesoAccion(idGrupo, idProceso);
+     
+    }
     
+    /**
+     * Método que limpia parte de la relacion entre GrupoUsuario-Proceso
+     * @param idGrupo 
+     */
+    @WebMethod(operationName = "limpiaUsuarioGrupoProceso")
+    public void limpiaGrupoProceso(@WebParam(name = "idGrupo") int idGrupo,@WebParam(name = "idProceso") int idProceso) {
+        GrupoProcesoLogic grupoProcesoLogic=new GrupoProcesoLogic();
+        grupoProcesoLogic.limpia(idGrupo, idProceso);
+    }
     
+    /**
+     * Método que permite insertar un Nivel de Proceso nuevo
+     * @param objeto
+     * @return 
+     */
+    @WebMethod(operationName = "insertarNivel")
+    public NivelEntity insertarNivel(@WebParam(name = "objeto") NivelEntity objeto){
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getNombreNivel(), "Sede"))) {
+            NivelEntity ret = new NivelEntity();
+            ret.setTrazaRespuesta(valida.valida(objeto.getNombreNivel(), "Sede"));
+            return ret;
+        } else {
+        NivelLogic nivelLogic=new NivelLogic();
+        return nivelLogic.insertarNivel(objeto);
+        }
+}
+     /**
+     * Método que permite actualizar un Nivel de Proceso
+     * @param objeto
+     * @return 
+     */
+    @WebMethod(operationName = "actualizarNivel")
+    public NivelEntity actualizarNivel(@WebParam(name = "objeto")NivelEntity objeto){
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getNombreNivel(), "Sede"))) {
+            NivelEntity ret = new NivelEntity();
+            ret.setTrazaRespuesta(valida.valida(objeto.getNombreNivel(), "Sede"));
+            return ret;
+        } else {
+            NivelLogic metodoRecuperacionLogic=new NivelLogic();
+            return metodoRecuperacionLogic.actualizarNivel(objeto);
+        }
+    }
+    /**
+     * Método que trae una lista de Nivel de Proceso
+     * @return 
+     */
+    @WebMethod(operationName = "listaNivel")
+    public ObjetoRetornaEntity listaNivel(){
+        NivelLogic nivelLogic=new NivelLogic();
+        return nivelLogic.listaNivel();
+     
+    }
 }

@@ -41,6 +41,9 @@
     <mapping class="co.com.siscomputo.administracion.persistencia.AccionEntity"/>
     <mapping class="co.com.siscomputo.administracion.persistencia.GrupoUsuariosEntity"/>
     <mapping class="co.com.siscomputo.administracion.persistencia.UsuarioGrupoUsuarioEntity"/>
+    <mapping class="co.com.siscomputo.administracion.persistencia.ProcesoEntity"/>
+    <mapping class="co.com.siscomputo.administracion.persistencia.GrupoProcesoEntity"/>
+    <mapping class="co.com.siscomputo.administracion.persistencia.NivelEntity"/>
     <mapping class="co.com.siscomputo.gestiondocumental.persistencia.DocumentoEntity"/>
     <mapping class="co.com.siscomputo.gestiondocumental.persistencia.DocumentoProcesoEntity"/>
   </session-factory>
