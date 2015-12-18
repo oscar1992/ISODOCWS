@@ -10,7 +10,6 @@ import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import java.util.ArrayList;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
@@ -177,7 +176,11 @@ public class GrupoProcesoLogic {
     }
     /**
      * Método Método para consultar la lista de Grupo de Usuarios y Procesos
-     */public ObjetoRetornaEntity listaGrupoProcesoAccion(int idGrupo, int idProceso){
+     * @param idGrupo
+     * @param idProceso
+     * @return 
+     */
+    public ObjetoRetornaEntity listaGrupoProcesoAccion(int idGrupo, int idProceso){
         ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
         try {
             String validaConexion = initOperation();
@@ -190,6 +193,41 @@ public class GrupoProcesoLogic {
                 //criteria.setProjection(Projections.distinct(Projections.property("procesoGrupoProceso")));
                 criteria.add(Restrictions.eq("gup.idGrupoUsuarios", idGrupo));      
                 criteria.add(Restrictions.eq("pgp.idProceso", idProceso));      
+                try {
+                    retorna.setRetorna((ArrayList<Object>) criteria.list());
+                } catch (Exception e) {
+                    System.out.println("vacio");
+                    e.printStackTrace();
+                }
+                retorna.setTrazaRespuesta("Consulta tabla GrupoProceso exitosa");
+                retorna.setNumeroRespuesta(22);
+                sesion.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            retorna=new ObjetoRetornaEntity();
+            retorna.setNumeroRespuesta(0);
+            retorna.setTrazaRespuesta(e.getMessage());
+        }
+        return retorna ;
+    }
+    /**
+     * Método Método para consultar la lista de Grupo de Usuarios y Procesos por Acción
+     * @param idAccion
+     * @return 
+     */
+    public ObjetoRetornaEntity listaGrupoProcesoPorAccion(int idAccion){
+        ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
+        try {
+            String validaConexion = initOperation();
+            if (!"Ok".equalsIgnoreCase(validaConexion)) {
+                retorna.setNumeroRespuesta(3);
+                retorna.setTrazaRespuesta("Error de Conexión " +  validaConexion);
+            } else {
+                Criteria criteria=sesion.createCriteria(GrupoProcesoEntity.class).createAlias("grupoUsuarioProceso", "gup");
+                criteria.createAlias("procesoGrupoProceso", "pgp");
+                //criteria.setProjection(Projections.distinct(Projections.property("procesoGrupoProceso")));
+                criteria.add(Restrictions.eq("accionGrupoProceso.idAccion", idAccion));                
                 try {
                     retorna.setRetorna((ArrayList<Object>) criteria.list());
                 } catch (Exception e) {
