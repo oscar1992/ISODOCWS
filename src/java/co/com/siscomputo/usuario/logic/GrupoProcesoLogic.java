@@ -214,9 +214,10 @@ public class GrupoProcesoLogic {
     /**
      * Método Método para consultar la lista de Grupo de Usuarios y Procesos por Acción
      * @param idAccion
+     * @param idProceso
      * @return 
      */
-    public ObjetoRetornaEntity listaGrupoProcesoPorAccion(int idAccion){
+    public ObjetoRetornaEntity listaGrupoProcesoPorAccion(int idAccion, int idProceso){
         ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
         try {
             String validaConexion = initOperation();
@@ -227,6 +228,7 @@ public class GrupoProcesoLogic {
                 Criteria criteria=sesion.createCriteria(GrupoProcesoEntity.class).createAlias("grupoUsuarioProceso", "gup");
                 criteria.createAlias("procesoGrupoProceso", "pgp");
                 //criteria.setProjection(Projections.distinct(Projections.property("procesoGrupoProceso")));
+                criteria.add(Restrictions.eq("procesoGrupoProceso.idProceso", idProceso));                
                 criteria.add(Restrictions.eq("accionGrupoProceso.idAccion", idAccion));                
                 try {
                     retorna.setRetorna((ArrayList<Object>) criteria.list());
