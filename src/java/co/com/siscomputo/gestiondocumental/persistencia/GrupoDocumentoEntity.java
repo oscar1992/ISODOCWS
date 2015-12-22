@@ -37,7 +37,7 @@ private GrupoUsuariosEntity grupousuariosGrupoDocumento;
 @JoinColumn(name = "GRDO_ACCI")
 @ManyToOne
 private AccionEntity accionGrupoDocumento;
-@Column(name = "FECH")
+@Column(name = "GRDO_FECH")
 private Date fecha;
 
         public int getIdGrupoDocumento() {

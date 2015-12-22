@@ -46,5 +46,6 @@
     <mapping class="co.com.siscomputo.administracion.persistencia.NivelEntity"/>
     <mapping class="co.com.siscomputo.gestiondocumental.persistencia.DocumentoEntity"/>
     <mapping class="co.com.siscomputo.gestiondocumental.persistencia.DocumentoProcesoEntity"/>
+    <mapping class="co.com.siscomputo.gestiondocumental.persistencia.GrupoDocumentoEntity"/>
   </session-factory>
 </hibernate-configuration>
