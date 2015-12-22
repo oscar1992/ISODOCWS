@@ -5,7 +5,6 @@
  */
 package co.com.siscomputo.gestiondocumental.persistencia;
 
-
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.administracion.persistencia.AccionEntity;
 import co.com.siscomputo.administracion.persistencia.GrupoUsuariosEntity;
@@ -24,23 +23,24 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "GDO_TGRDO")
-public class GrupoDocumentoEntity extends ObjetoRetornaEntity implements Serializable{
+public class GrupoDocumentoEntity extends ObjetoRetornaEntity implements Serializable {
+
     @Id
     @Column(name = "GRDO_GRDO")
-private int idGrupoDocumento;
-@JoinColumn(name = "GRDO_DOCU")
-@ManyToOne
-private DocumentoEntity documentoGrupoDocumento;
-@JoinColumn(name = "GRDO_GRUP")
-@ManyToOne
-private GrupoUsuariosEntity grupousuariosGrupoDocumento;
-@JoinColumn(name = "GRDO_ACCI")
-@ManyToOne
-private AccionEntity accionGrupoDocumento;
-@Column(name = "GRDO_FECH")
-private Date fecha;
+    private int idGrupoDocumento;
+    @JoinColumn(name = "GRDO_DOCU")
+    @ManyToOne
+    private DocumentoEntity documentoGrupoDocumento;
+    @JoinColumn(name = "GRDO_GRUP")
+    @ManyToOne
+    private GrupoUsuariosEntity grupousuariosGrupoDocumento;
+    @JoinColumn(name = "GRDO_ACCI")
+    @ManyToOne
+    private AccionEntity accionGrupoDocumento;
+    @Column(name = "GRDO_FECH")
+    private String fecha;
 
-        public int getIdGrupoDocumento() {
+    public int getIdGrupoDocumento() {
         return idGrupoDocumento;
     }
 
@@ -72,6 +72,13 @@ private Date fecha;
         this.accionGrupoDocumento = accionGrupoDocumento;
     }
 
-}
+    public String getFecha() {
+        return fecha;
+    }
 
-   
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+
+     
+}

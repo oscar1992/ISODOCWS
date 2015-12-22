@@ -1,4 +1,3 @@
-
 package co.com.siscomputo.gestiondocumental.logic;
 
 import co.com.siscomputo.gestiondocumental.persistencia.GrupoDocumentoEntity;
@@ -16,6 +15,7 @@ import org.hibernate.criterion.Restrictions;
  * @author LENOVO
  */
 public class GrupoDocumentoLogic {
+
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
 
@@ -38,19 +38,26 @@ public class GrupoDocumentoLogic {
         }
         return retorno;
     }
-    
-     /**
+
+    /**
      * Método que inserta un Grupos por Documento nuevo
+     *
      * @param objetoGrupoDocumento
-     * @return 
-     */    public GrupoDocumentoEntity insertarGrupoDocumento(GrupoDocumentoEntity objetoGrupoDocumento){
+     * @return
+     */
+    public GrupoDocumentoEntity insertarGrupoDocumento(GrupoDocumentoEntity objetoGrupoDocumento) {
         try {
             String validaConexion = initOperation();
-            if (!"Ok".equalsIgnoreCase(validaConexion)) {                
+            if (!"Ok".equalsIgnoreCase(validaConexion)) {
                 objetoGrupoDocumento.setNumeroRespuesta(3);
                 objetoGrupoDocumento.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
                 objetoGrupoDocumento.setIdGrupoDocumento(maxMetodo());
+                if (objetoGrupoDocumento.getFecha() == null) {
+                    System.out.println("NULO");
+                } else {
+                    System.out.println("FECHA: " + objetoGrupoDocumento.getFecha().toString());
+                }
                 sesion.save(objetoGrupoDocumento);
                 tx.commit();
 
@@ -67,10 +74,12 @@ public class GrupoDocumentoLogic {
         return objetoGrupoDocumento;
     }
 
-     /**
+    /**
      * Método que trae el siguiente ID de la tabla GDO_TGRDO
-     * @return 
-     */    private int maxMetodo() {
+     *
+     * @return
+     */
+    private int maxMetodo() {
         int ret = -1;
         try {
             String validaConexion = initOperation();
@@ -86,18 +95,20 @@ public class GrupoDocumentoLogic {
         }
         return ret;
     }
-    
-     /**
+
+    /**
      * Método que actualiza un Grupos por Documento
+     *
      * @param objetoGrupoDocumento
-     * @return 
-     */ public GrupoDocumentoEntity actualizarGrupoDocumento(GrupoDocumentoEntity objetoGrupoDocumento){
+     * @return
+     */
+    public GrupoDocumentoEntity actualizarGrupoDocumento(GrupoDocumentoEntity objetoGrupoDocumento) {
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
                 objetoGrupoDocumento.setNumeroRespuesta(3);
                 objetoGrupoDocumento.setTrazaRespuesta("Error de Conexión " + validaConexion);
-            } else {                
+            } else {
                 System.out.println("JJ");
                 sesion.update(objetoGrupoDocumento);
                 tx.commit();
@@ -113,18 +124,20 @@ public class GrupoDocumentoLogic {
         }
         return objetoGrupoDocumento;
     }
-     /**
+
+    /**
      * Método Método para consultar la lista de Grupos por Documento
-     */public ObjetoRetornaEntity listaGrupoDocumento(){
-        ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
+     */
+    public ObjetoRetornaEntity listaGrupoDocumento() {
+        ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
                 retorna.setNumeroRespuesta(3);
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                Criteria criteria=sesion.createCriteria(GrupoDocumentoEntity.class);
-                criteria.add(Restrictions.eq("estadoGrupoDocumento", "E"));      
+                Criteria criteria = sesion.createCriteria(GrupoDocumentoEntity.class);
+                criteria.add(Restrictions.eq("estadoGrupoDocumento", "E"));
                 retorna.setRetorna((ArrayList<Object>) criteria.list());
                 retorna.setTrazaRespuesta("Consulta tabla GrupoDocumento exitosa");
                 retorna.setNumeroRespuesta(22);
@@ -132,10 +145,10 @@ public class GrupoDocumentoLogic {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            retorna=new ObjetoRetornaEntity();
+            retorna = new ObjetoRetornaEntity();
             retorna.setNumeroRespuesta(0);
             retorna.setTrazaRespuesta(e.getMessage());
         }
-        return retorna ;
+        return retorna;
     }
 }

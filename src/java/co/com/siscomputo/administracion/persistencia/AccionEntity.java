@@ -28,6 +28,8 @@ public class AccionEntity extends ObjetoRetornaEntity implements Serializable {
     private int actualizadorAccion;
     @Column(name = "ACCI_ESTA")
     private String estadoAccion;
+    @Column(name = "ACCI_ORDE")
+    private String ordenAccion;
 
     public int getIdAccion() {
         return idAccion;
@@ -77,4 +79,12 @@ public class AccionEntity extends ObjetoRetornaEntity implements Serializable {
         this.estadoAccion = estadoAccion;
     }
 
+    public String getOrdenAccion() {
+        return ordenAccion;
+    }
+
+    public void setOrdenAccion(String ordenAccion) {
+        this.ordenAccion = ordenAccion;
+    }
+    
 }
