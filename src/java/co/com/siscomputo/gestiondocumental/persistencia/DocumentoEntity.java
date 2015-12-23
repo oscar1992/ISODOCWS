@@ -1,6 +1,7 @@
 package co.com.siscomputo.gestiondocumental.persistencia;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
+import co.com.siscomputo.administracion.persistencia.AccionEntity;
 import co.com.siscomputo.administracion.persistencia.MacroprocesosEntity;
 import co.com.siscomputo.administracion.persistencia.PlantillaEntity;
 import co.com.siscomputo.administracion.persistencia.ProcesosEntity;
@@ -46,7 +47,10 @@ public class DocumentoEntity extends ObjetoRetornaEntity implements Serializable
     @JoinColumn(name="DOCU_SUBP")
     @ManyToOne
     private SubprocesoEntity subProcesoProcesoDocumento;
-
+    @JoinColumn(name = "DOCU_ACCI")
+    @ManyToOne
+    private AccionEntity accionDocumento;
+    
     public int getIdDocumento() {
         return idDocumento;
     }
@@ -118,6 +122,14 @@ public class DocumentoEntity extends ObjetoRetornaEntity implements Serializable
 
     public void setSubProcesoProcesoDocumento(SubprocesoEntity subProcesoProcesoDocumento) {
         this.subProcesoProcesoDocumento = subProcesoProcesoDocumento;
+    }
+
+    public AccionEntity getAccionDocumento() {
+        return accionDocumento;
+    }
+
+    public void setAccionDocumento(AccionEntity accionDocumento) {
+        this.accionDocumento = accionDocumento;
     }
     
 }

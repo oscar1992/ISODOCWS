@@ -21,6 +21,7 @@ import co.com.siscomputo.administracion.persistencia.TipoAlmacenamientoEntity;
 import co.com.siscomputo.administracion.persistencia.TipoControlDistribucionEntity;
 import co.com.siscomputo.administracion.persistencia.TiposAccesoEntity;
 import co.com.siscomputo.administracion.persistencia.UsuarioGrupoUsuarioEntity;
+import co.com.siscomputo.gestiondocumental.logic.DocumentoLogic;
 import co.com.siscomputo.gestiondocumental.logic.GrupoDocumentoLogic;
 import co.com.siscomputo.gestiondocumental.persistencia.GrupoDocumentoEntity;
 import co.com.siscomputo.usuario.logic.AccionLogic;
@@ -94,7 +95,7 @@ public class Administacion {
      *
      * @return
      */
-    @WebMethod(operationName = "listaDisposiciones")
+    @WebMethod(operationName = "ListaDisposiciones")
     public ObjetoRetornaEntity listaDisposiciones() {
         DisposicionesLogic disposicionesLogic = new DisposicionesLogic();
         return disposicionesLogic.listaDisposicion();
@@ -896,8 +897,10 @@ public class Administacion {
             return grupoProcesoLogic.listaGrupoProcesoAccion(idGrupo, idProceso);
         }
     }
+
     /**
      * Método que trae una lista de Grupo de Usuarios y Procesos
+     *
      * @param idAccion
      * @return
      */
@@ -974,49 +977,57 @@ public class Administacion {
         return nivelLogic.listaNivel();
 
     }
-    
+
     /**
      * Método que permite insertar un Grupos por Documento nuevo
+     *
      * @param objeto
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "insertarGrupoDocumento")
-    public GrupoDocumentoEntity insertarGrupoDocumento(@WebParam(name = "objeto") GrupoDocumentoEntity objeto){
+    public GrupoDocumentoEntity insertarGrupoDocumento(@WebParam(name = "objeto") GrupoDocumentoEntity objeto) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getDocumentoGrupoDocumento(), "Sede"))) {
             GrupoDocumentoEntity ret = new GrupoDocumentoEntity();
             ret.setTrazaRespuesta(valida.valida(objeto.getDocumentoGrupoDocumento(), "Sede"));
             return ret;
         } else {
-        GrupoDocumentoLogic grupoDocumentoLogic=new GrupoDocumentoLogic();
-        return grupoDocumentoLogic.insertarGrupoDocumento(objeto);
+            GrupoDocumentoLogic grupoDocumentoLogic = new GrupoDocumentoLogic();
+            return grupoDocumentoLogic.insertarGrupoDocumento(objeto);
         }
-}
-     /**
+    }
+
+    /**
      * Método que permite actualizar un Grupos por Documento
+     *
      * @param objeto
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "actualizarGrupoDocumento")
-    public GrupoDocumentoEntity actualizarGrupoDocumento(@WebParam(name = "objeto")GrupoDocumentoEntity objeto){
+    public GrupoDocumentoEntity actualizarGrupoDocumento(@WebParam(name = "objeto") GrupoDocumentoEntity objeto) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getDocumentoGrupoDocumento(), "Sede"))) {
             GrupoDocumentoEntity ret = new GrupoDocumentoEntity();
             ret.setTrazaRespuesta(valida.valida(objeto.getDocumentoGrupoDocumento(), "Sede"));
             return ret;
         } else {
-            GrupoDocumentoLogic metodoRecuperacionLogic=new GrupoDocumentoLogic();
+            GrupoDocumentoLogic metodoRecuperacionLogic = new GrupoDocumentoLogic();
             return metodoRecuperacionLogic.actualizarGrupoDocumento(objeto);
         }
     }
+
     /**
      * Método que trae una lista de Grupos por Documento
-     * @return 
+     *
+     * @return
      */
     @WebMethod(operationName = "listaGrupoDocumento")
-    public ObjetoRetornaEntity listaGrupoDocumento(){
-        GrupoDocumentoLogic grupoDocumentoLogic=new GrupoDocumentoLogic();
+    public ObjetoRetornaEntity listaGrupoDocumento() {
+        GrupoDocumentoLogic grupoDocumentoLogic = new GrupoDocumentoLogic();
         return grupoDocumentoLogic.listaGrupoDocumento();
-     
+
     }
+
+    
+
 }

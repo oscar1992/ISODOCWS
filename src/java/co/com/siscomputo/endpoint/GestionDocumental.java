@@ -6,6 +6,7 @@
 package co.com.siscomputo.endpoint;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
+import co.com.siscomputo.administracion.persistencia.AccionEntity;
 import co.com.siscomputo.gestiondocumental.persistencia.DocumentoEntity;
 import co.com.siscomputo.gestiondocumental.logic.DocumentoLogic;
 import co.com.siscomputo.gestiondocumental.logic.DocumentoProcesoLogic;
@@ -107,5 +108,21 @@ public class GestionDocumental {
         DocumentoProcesoLogic documentoProcesoLogic=new DocumentoProcesoLogic();
         return documentoProcesoLogic.listaDocumentoProceso();
      }
-    
+    /**
+     * Método que trae una lista de Documentos por Acción     *
+     * @param accion
+     * @return
+     */
+    @WebMethod(operationName = "listaDocumentoPorAccion")
+    public ObjetoRetornaEntity listaDocumentoPorAccion(@WebParam(name = "AccionE") AccionEntity accion) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(accion.getIdAccion(), "Acción"))) {
+            ObjetoRetornaEntity ret = new ObjetoRetornaEntity();
+            ret.setTrazaRespuesta(valida.valida(accion.getIdAccion(), "Acción"));
+            return ret;
+        } else {
+            DocumentoLogic documentoLogic = new DocumentoLogic();
+            return documentoLogic.DocumentosPorAccion(accion);
+        }
+    }
 }

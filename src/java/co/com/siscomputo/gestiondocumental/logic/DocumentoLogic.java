@@ -7,7 +7,10 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
+import co.com.siscomputo.administracion.persistencia.AccionEntity;
 import java.util.ArrayList;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -164,6 +167,32 @@ public class DocumentoLogic {
         }
         return retorna;
     }
-    
-    
+    /**
+     * Método que trae una lista de documetnos por Acción
+     * @param idAccion
+     * @return 
+     */
+    public ObjetoRetornaEntity DocumentosPorAccion(AccionEntity idAccion){
+        ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
+        try {
+            String validaConexion = initOperation();
+            if (!"Ok".equalsIgnoreCase(validaConexion)) {
+                retorna.setNumeroRespuesta(3);
+                retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
+            } else {
+                Criteria criteria=sesion.createCriteria(DocumentoEntity.class);
+                criteria.add(Restrictions.eq("accionDocumento", idAccion));
+                retorna.setRetorna((ArrayList<Object>) criteria.list());
+                retorna.setTrazaRespuesta("Consulta tabla Documentos exitosa");
+                retorna.setNumeroRespuesta(21);
+                sesion.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            retorna=new ObjetoRetornaEntity();
+            retorna.setNumeroRespuesta(0);
+            retorna.setTrazaRespuesta(e.getMessage());
+        }
+        return retorna;
+    }
 }
