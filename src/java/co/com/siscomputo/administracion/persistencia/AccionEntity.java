@@ -86,5 +86,7 @@ public class AccionEntity extends ObjetoRetornaEntity implements Serializable {
     public void setOrdenAccion(String ordenAccion) {
         this.ordenAccion = ordenAccion;
     }
+
+
     
 }
