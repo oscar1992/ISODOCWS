@@ -599,7 +599,24 @@ public class Administacion {
         AccionLogic accionLogic = new AccionLogic();
         return accionLogic.listaAccion();
     }
-
+    /**
+     * Método que consulta una acción por ID
+     * @param idAccion
+     * @return 
+     */
+    @WebMethod(operationName = "accionPorId")
+    public AccionEntity accionPorId(@WebParam(name = "idAccion") int idAccion) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idAccion, "Acción"))) {
+            AccionEntity ret = new AccionEntity();
+            ret.setTrazaRespuesta(valida.valida(idAccion, "Acción"));
+            return ret;
+        } else {
+            AccionLogic metodoRecuperacionLogic = new AccionLogic();
+            return metodoRecuperacionLogic.AccionPorId(idAccion);
+        }
+    }
+    
     /**
      * Método que permite insertar un Grupo de Usuarios nuevo
      *

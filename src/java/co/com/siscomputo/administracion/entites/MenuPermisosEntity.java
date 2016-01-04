@@ -4,14 +4,14 @@
  * and open the template in the editor.
  */
 package co.com.siscomputo.administracion.entites;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author LENOVO
  */
-public class MenuPermisosEntity {
+public class MenuPermisosEntity implements Serializable{
     private int id_permiso;
     private String nombre_permiso;
     private ArrayList<MenuPermisosEntity> subNivel;
