@@ -12,6 +12,9 @@ import co.com.siscomputo.gestiondocumental.persistencia.GrupoDocumentoEntity;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -162,14 +165,37 @@ public class AccionLogic {
                 retorna.setNumeroRespuesta(3);
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                Criteria criteria2=sesion.createCriteria(UsuarioGrupoUsuarioEntity.class);
-                criteria2.add(Restrictions.eq("usuario.idUsuario", idUsuario));
-                ArrayList<Object> laux=(ArrayList<Object>) criteria2.list();
+                /*Criteria criteria2=sesion.createCriteria(UsuarioGrupoUsuarioEntity.class)
+                .createCriteria("usuario")
+                .add(Restrictions.eq("idUsuario", idUsuario));
                 
+                ArrayList<UsuarioGrupoUsuarioEntity> laux=(ArrayList<UsuarioGrupoUsuarioEntity>) criteria2.list();
+                ArrayList<Object> lgue=new ArrayList<>();
+                for(UsuarioGrupoUsuarioEntity ugue:laux){
+                lgue.add(ugue.getGrupoUsuario());
+                }
                 Criteria criteria=sesion.createCriteria(GrupoDocumentoEntity.class);
-                criteria.add(Restrictions.in("grupousuariosGrupoDocumento", Arrays.asList(laux)));
-                ArrayList<Object> laux2=(ArrayList<Object>) criteria.list();
-                retorna.setRetorna(laux2);
+                criteria.add(Property.forName("grupousuariosGrupoDocumento").in(lgue));
+                criteria.setProjection(Projections.distinct(Projections.property("grupousuariosGrupoDocumento")));
+                ArrayList<GrupoUsuariosEntity> gpe=(ArrayList<GrupoUsuariosEntity>) criteria.list();
+                
+                Criteria criteria3=sesion.createCriteria(GrupoDocumentoEntity.class)
+                        .add(Property.forName("grupousuariosGrupoDocumento").in(lgue));
+                criteria3.setProjection(Projections.groupProperty("grupousuariosGrupoDocumento"));
+                ArrayList<GrupoDocumentoEntity> gde=(ArrayList<GrupoDocumentoEntity>) criteria3.list();
+                
+                ArrayList<Object> acciones=new ArrayList<>();
+                for(GrupoDocumentoEntity grupo:gde){
+                    acciones.add(grupo.getAccionGrupoDocumento());
+                }*/
+                Criteria criteria=sesion.createCriteria(UsuarioGrupoUsuarioEntity.class)
+                        .add(Restrictions.eq("usuario.idUsuario", idUsuario))
+                        .setProjection(Projections.groupProperty("grupoUsuario"));
+                Criteria criteria1=sesion.createCriteria(GrupoDocumentoEntity.class);
+                criteria1.add(Property.forName("grupousuariosGrupoDocumento").in(criteria.list()));
+                criteria1.setProjection(Projections.groupProperty("accionGrupoDocumento"));
+                ArrayList<Object> listaR=(ArrayList<Object>) criteria1.list();
+                retorna.setRetorna(listaR);
                 retorna.setTrazaRespuesta("Consulta tabla Accion exitosa");
                 retorna.setNumeroRespuesta(22);
                 sesion.close();

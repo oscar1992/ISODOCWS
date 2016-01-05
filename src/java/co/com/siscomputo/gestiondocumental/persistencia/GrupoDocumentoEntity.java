@@ -9,7 +9,6 @@ import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.administracion.persistencia.AccionEntity;
 import co.com.siscomputo.administracion.persistencia.GrupoUsuariosEntity;
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;

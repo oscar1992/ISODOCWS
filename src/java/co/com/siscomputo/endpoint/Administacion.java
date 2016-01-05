@@ -617,7 +617,8 @@ public class Administacion {
     }
     /**
      * Método que consulta una acción por ID
-     * @param idAccion
+     * @param idUsuario
+     * @
      * @return 
      */
     @WebMethod(operationName = "accionPorUsuario")
