@@ -6,7 +6,11 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
+import co.com.siscomputo.administracion.persistencia.GrupoUsuariosEntity;
+import co.com.siscomputo.administracion.persistencia.UsuarioGrupoUsuarioEntity;
+import co.com.siscomputo.gestiondocumental.persistencia.GrupoDocumentoEntity;
 import java.util.ArrayList;
+import java.util.Arrays;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
@@ -133,6 +137,39 @@ public class AccionLogic {
             } else {
                 Query query = sesion.createQuery("FROM AccionEntity d WHERE d.estadoAccion<>'E'");
                 retorna.setRetorna((ArrayList<Object>) query.list());
+                retorna.setTrazaRespuesta("Consulta tabla Accion exitosa");
+                retorna.setNumeroRespuesta(22);
+                sesion.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            retorna = new ObjetoRetornaEntity();
+            retorna.setNumeroRespuesta(0);
+            retorna.setTrazaRespuesta(e.getMessage());
+        }
+        return retorna;
+    }
+    /**
+     * Método Método para consultar la lista de Acciones asociada a un grupo de usuarios
+     * @param idUsuario
+     * @return 
+     */
+    public ObjetoRetornaEntity listaAccionPorUsuario(int idUsuario) {
+        ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
+        try {
+            String validaConexion = initOperation();
+            if (!"Ok".equalsIgnoreCase(validaConexion)) {
+                retorna.setNumeroRespuesta(3);
+                retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
+            } else {
+                Criteria criteria2=sesion.createCriteria(UsuarioGrupoUsuarioEntity.class);
+                criteria2.add(Restrictions.eq("usuario.idUsuario", idUsuario));
+                ArrayList<Object> laux=(ArrayList<Object>) criteria2.list();
+                
+                Criteria criteria=sesion.createCriteria(GrupoDocumentoEntity.class);
+                criteria.add(Restrictions.in("grupousuariosGrupoDocumento", Arrays.asList(laux)));
+                ArrayList<Object> laux2=(ArrayList<Object>) criteria.list();
+                retorna.setRetorna(laux2);
                 retorna.setTrazaRespuesta("Consulta tabla Accion exitosa");
                 retorna.setNumeroRespuesta(22);
                 sesion.close();

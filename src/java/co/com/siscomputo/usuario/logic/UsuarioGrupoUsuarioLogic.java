@@ -6,8 +6,11 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
+import co.com.siscomputo.administracion.persistencia.GrupoUsuariosEntity;
 import co.com.siscomputo.administracion.persistencia.UsuarioEntity;
 import java.util.ArrayList;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -64,7 +67,7 @@ public class UsuarioGrupoUsuarioLogic {
                     listaObjeto.add(usuarioGrupoUsuarioEntity);
                 }
                 tx.commit();
-                retorna.setTrazaRespuesta("Inserción de MetodoRecuperación exitoso");
+                retorna.setTrazaRespuesta("Inserción de usuario - grupousuario exitoso");
                 retorna.setNumeroRespuesta(18);
                 sesion.close();
             }
@@ -202,4 +205,32 @@ public class UsuarioGrupoUsuarioLogic {
             System.out.println("LIMPIA: " + result);
         }
     }
+    
+    /**
+     * Método que retorna un grupo de usuario por id de Usuario
+     * @param idGrupo
+     * @return 
+     */ 
+    public ObjetoRetornaEntity GrupoPorUsuario(int idUsuario){
+         ObjetoRetornaEntity gu=new ObjetoRetornaEntity();
+         try {
+             String validaConexion = initOperation();
+            if (!"Ok".equalsIgnoreCase(validaConexion)) {
+                gu.setNumeroRespuesta(3);
+                gu.setTrazaRespuesta("Error de Conexión " + validaConexion);
+            } else {
+                Criteria criteria=sesion.createCriteria(UsuarioGrupoUsuarioEntity.class);
+                criteria.add(Restrictions.eq("usuario.idUsuario", idUsuario));
+                
+                gu.setRetorna((ArrayList<Object>) criteria.list());
+                gu.setTrazaRespuesta("Consulta GrupoUsuarios exitosa");
+                gu.setNumeroRespuesta(22);
+                sesion.close();
+            }
+         } catch (Exception e) {
+             e.printStackTrace();
+         }
+         return gu;
+     }
+    
 }

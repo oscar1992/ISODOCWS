@@ -21,7 +21,6 @@ import co.com.siscomputo.administracion.persistencia.TipoAlmacenamientoEntity;
 import co.com.siscomputo.administracion.persistencia.TipoControlDistribucionEntity;
 import co.com.siscomputo.administracion.persistencia.TiposAccesoEntity;
 import co.com.siscomputo.administracion.persistencia.UsuarioGrupoUsuarioEntity;
-import co.com.siscomputo.gestiondocumental.logic.DocumentoLogic;
 import co.com.siscomputo.gestiondocumental.logic.GrupoDocumentoLogic;
 import co.com.siscomputo.gestiondocumental.persistencia.GrupoDocumentoEntity;
 import co.com.siscomputo.usuario.logic.AccionLogic;
@@ -616,6 +615,23 @@ public class Administacion {
             return metodoRecuperacionLogic.AccionPorId(idAccion);
         }
     }
+    /**
+     * Método que consulta una acción por ID
+     * @param idAccion
+     * @return 
+     */
+    @WebMethod(operationName = "accionPorUsuario")
+    public ObjetoRetornaEntity accionPorUsuario(@WebParam(name = "idUsuario") int idUsuario) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idUsuario, "Acción"))) {
+            AccionEntity ret = new AccionEntity();
+            ret.setTrazaRespuesta(valida.valida(idUsuario, "Acción"));
+            return ret;
+        } else {
+            AccionLogic metodoRecuperacionLogic = new AccionLogic();
+            return metodoRecuperacionLogic.listaAccionPorUsuario(idUsuario);
+        }
+    }
     
     /**
      * Método que permite insertar un Grupo de Usuarios nuevo
@@ -657,8 +673,6 @@ public class Administacion {
 
     /**
      * Método que trae un grupo de usuarios por ID
-     *
-     *
      * @return
      */
     @WebMethod(operationName = "grupoUsuariosPorId")
@@ -671,6 +685,22 @@ public class Administacion {
         } else {
             GrupoUsuariosLogic metodoRecuperacionLogic = new GrupoUsuariosLogic();
             return metodoRecuperacionLogic.GrupoPorId(idGrupo);
+        }
+    }
+    /**
+     * Método que trae un grupo de usuarios por ID
+     * @return
+     */
+    @WebMethod(operationName = "grupoUsuariosPorUsuario")
+    public ObjetoRetornaEntity grupoUsuariosPorUsuario(@WebParam(name = "idUsuario") int idUsuario) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idUsuario, "idUsuario"))) {
+           ObjetoRetornaEntity ret = new ObjetoRetornaEntity();
+            ret.setTrazaRespuesta(valida.valida(idUsuario, "idUsuario"));
+            return ret;
+        } else {
+            UsuarioGrupoUsuarioLogic metodoRecuperacionLogic = new UsuarioGrupoUsuarioLogic();
+            return metodoRecuperacionLogic.GrupoPorUsuario(idUsuario);
         }
     }
 

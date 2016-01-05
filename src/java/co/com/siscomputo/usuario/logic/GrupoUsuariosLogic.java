@@ -7,7 +7,10 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
+import co.com.siscomputo.administracion.persistencia.UsuarioGrupoUsuarioEntity;
 import java.util.ArrayList;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -160,4 +163,5 @@ public class GrupoUsuariosLogic {
          }
          return gu;
      }
+    
 }
