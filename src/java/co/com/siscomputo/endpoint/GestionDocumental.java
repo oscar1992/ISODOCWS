@@ -10,7 +10,9 @@ import co.com.siscomputo.administracion.persistencia.AccionEntity;
 import co.com.siscomputo.gestiondocumental.persistencia.DocumentoEntity;
 import co.com.siscomputo.gestiondocumental.logic.DocumentoLogic;
 import co.com.siscomputo.gestiondocumental.logic.DocumentoProcesoLogic;
+import co.com.siscomputo.gestiondocumental.logic.DocumentoRolLogic;
 import co.com.siscomputo.gestiondocumental.persistencia.DocumentoProcesoEntity;
+import co.com.siscomputo.gestiondocumental.persistencia.DocumentoRolEntity;
 import co.com.siscomputo.utilidades.Valida;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -124,5 +126,50 @@ public class GestionDocumental {
             DocumentoLogic documentoLogic = new DocumentoLogic();
             return documentoLogic.DocumentosPorAccion(accion);
         }
+    }
+    
+    /**
+     * Método que permite insertar un Documentos Rol nuevo
+     * @param objeto
+     * @return 
+     */
+    @WebMethod(operationName = "insertarDocumentoRol")
+    public DocumentoRolEntity insertarDocumentoRol(@WebParam(name = "objeto") DocumentoRolEntity objeto){
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getRolesentityDocumentoRol(), "Sede"))) {
+            DocumentoRolEntity ret = new DocumentoRolEntity();
+            ret.setTrazaRespuesta(valida.valida(objeto.getRolesentityDocumentoRol(), "Sede"));
+            return ret;
+        } else {
+        DocumentoRolLogic documentoRolLogic=new DocumentoRolLogic();
+        return documentoRolLogic.insertarDocumentoRol(objeto);
+        }
+}
+     /**
+     * Método que permite actualizar un Documentos Rol
+     * @param objeto
+     * @return 
+     */
+    @WebMethod(operationName = "actualizarDocumentoRol")
+    public DocumentoRolEntity actualizarDocumentoRol(@WebParam(name = "objeto")DocumentoRolEntity objeto){
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getRolesentityDocumentoRol(), "Sede"))) {
+            DocumentoRolEntity ret = new DocumentoRolEntity();
+            ret.setTrazaRespuesta(valida.valida(objeto.getRolesentityDocumentoRol(), "Sede"));
+            return ret;
+        } else {
+            DocumentoRolLogic metodoRecuperacionLogic=new DocumentoRolLogic();
+            return metodoRecuperacionLogic.actualizarDocumentoRol(objeto);
+        }
+    }
+    /**
+     * Método que trae una lista de Documentos Rol
+     * @return 
+     */
+    @WebMethod(operationName = "listaDocumentoRol")
+    public ObjetoRetornaEntity listaDocumentoRol(){
+        DocumentoRolLogic documentoRolLogic=new DocumentoRolLogic();
+        return documentoRolLogic.listaDocumentoRol();
+     
     }
 }
