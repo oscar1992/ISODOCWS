@@ -306,6 +306,23 @@ public class Usuario {
             return rolesLogic.actualizarRol(rol);
         }
     }
+    /**
+     * Metodo que busca un rol por su ID     
+     * @param idRol
+     * @return
+     */
+    @WebMethod(operationName = "rolPorId")
+    public RolesEntity rolPorId(@WebParam(name = "rol") int idRol) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idRol, "Rol"))) {
+            RolesEntity ret = new RolesEntity();
+            ret.setTrazaRespuesta(valida.valida(idRol, "Rol"));
+            return ret;
+        } else {
+            RolesLogic rolesLogic = new RolesLogic();
+            return rolesLogic.rolPorId(idRol);
+        }
+    }
 
     /**
      * Método que trae una lista de objetos para construir el árbol de los

@@ -5,6 +5,7 @@ import co.com.siscomputo.administracion.persistencia.AccionEntity;
 import co.com.siscomputo.administracion.persistencia.EmpresaEntity;
 import co.com.siscomputo.administracion.persistencia.MacroprocesosEntity;
 import co.com.siscomputo.administracion.persistencia.PlantillaEntity;
+import co.com.siscomputo.administracion.persistencia.ProcesoEntity;
 import co.com.siscomputo.administracion.persistencia.ProcesosEntity;
 import co.com.siscomputo.administracion.persistencia.SubprocesoEntity;
 import co.com.siscomputo.administracion.persistencia.TiposDocumentalesEntity;
@@ -14,6 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -54,6 +56,9 @@ public class DocumentoEntity extends ObjetoRetornaEntity implements Serializable
     @JoinColumn(name = "DOCU_EMPR")
     @ManyToOne
     private EmpresaEntity empresaDocumento;
+    @JoinColumn(name = "DOCU_PROC2")
+    @OneToOne
+    private ProcesoEntity procesoDocumento;
     
     public int getIdDocumento() {
         return idDocumento;
@@ -142,6 +147,14 @@ public class DocumentoEntity extends ObjetoRetornaEntity implements Serializable
 
     public void setEmpresaDocumento(EmpresaEntity empresaDocumento) {
         this.empresaDocumento = empresaDocumento;
+    }
+
+    public ProcesoEntity getProcesoDocumento() {
+        return procesoDocumento;
+    }
+
+    public void setProcesoDocumento(ProcesoEntity procesoDocumento) {
+        this.procesoDocumento = procesoDocumento;
     }
     
     

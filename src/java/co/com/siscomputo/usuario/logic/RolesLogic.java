@@ -9,9 +9,11 @@ import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.administracion.persistencia.RolesEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
 import java.util.ArrayList;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -141,5 +143,29 @@ public class RolesLogic {
         }
         return rol;
     }
-
+    /**
+     * Método que crea la lista de roles del sistema
+     *
+     * @param idRol
+     * @return
+     */
+    public RolesEntity rolPorId(int idRol) {
+        RolesEntity retorna = new RolesEntity();
+        try {
+            initOperation();
+            Criteria criteria=sesion.createCriteria(RolesEntity.class);
+            criteria.add(Restrictions.ne("estado_rol", "E"));
+            criteria.add(Restrictions.eq("id_rol", idRol));
+            
+            retorna=(RolesEntity) criteria.uniqueResult();
+            retorna.setTrazaRespuesta("Carga de Roles exitosa");
+            retorna.setNumeroRespuesta(12);
+            sesion.close();
+        } catch (Exception e) {
+            retorna.setNumeroRespuesta(3);
+            retorna.setTrazaRespuesta("ERROR: " + e);
+            e.printStackTrace();
+        }
+        return retorna;
+    }
 }
