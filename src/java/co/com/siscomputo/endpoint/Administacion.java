@@ -1013,6 +1013,23 @@ public class Administacion {
             return metodoRecuperacionLogic.actualizarNivel(objeto);
         }
     }
+    /**
+     * Método que permite traer un nivel por ID     * @param idNivel
+     * @param idNivel
+     * @return
+     */
+    @WebMethod(operationName = "nivelPorId")
+    public NivelEntity nivelPorId(@WebParam(name = "idNivel") Integer idNivel) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idNivel, "idNuvel"))) {
+            NivelEntity ret = new NivelEntity();
+            ret.setTrazaRespuesta(valida.valida(idNivel, "idNuvel"));
+            return ret;
+        } else {
+            NivelLogic metodoRecuperacionLogic = new NivelLogic();
+            return metodoRecuperacionLogic.nivelPorId(idNivel);
+        }
+    }
 
     /**
      * Método que trae una lista de Nivel de Proceso

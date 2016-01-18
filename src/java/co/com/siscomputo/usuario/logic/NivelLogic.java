@@ -146,4 +146,32 @@ public class NivelLogic {
         }
         return retorna;
     }
+    /**
+     * Método que trae un nivel por su ID
+     * @param idNivel
+     * @return 
+     */
+    public NivelEntity nivelPorId(int idNivel){
+        NivelEntity retorna = new NivelEntity();
+        try {
+            String validaConexion = initOperation();
+            if (!"Ok".equalsIgnoreCase(validaConexion)) {
+                retorna.setNumeroRespuesta(3);
+                retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
+            } else {
+                Criteria criteria = sesion.createCriteria(NivelEntity.class);
+                criteria.add(Restrictions.ne("idNivel", idNivel));
+                retorna.setRetorna((ArrayList<Object>) criteria.list());
+                retorna.setTrazaRespuesta("Consulta tabla Nivel exitosa");
+                retorna.setNumeroRespuesta(22);
+                sesion.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            retorna = new NivelEntity();
+            retorna.setNumeroRespuesta(0);
+            retorna.setTrazaRespuesta(e.getMessage());
+        }
+        return retorna;
+    }
 }
