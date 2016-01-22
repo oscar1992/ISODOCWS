@@ -194,6 +194,7 @@ public class AccionLogic {
                 Criteria criteria1=sesion.createCriteria(GrupoDocumentoEntity.class);
                 criteria1.add(Property.forName("grupousuariosGrupoDocumento").in(criteria.list()));
                 criteria1.setProjection(Projections.groupProperty("accionGrupoDocumento"));
+                //ArrayList<Object> listaR=(ArrayList<Object>) criteria1.list();
                 ArrayList<Object> listaR=(ArrayList<Object>) criteria1.list();
                 retorna.setRetorna(listaR);
                 retorna.setTrazaRespuesta("Consulta tabla Accion exitosa");

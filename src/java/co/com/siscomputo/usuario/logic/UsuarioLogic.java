@@ -73,7 +73,7 @@ public class UsuarioLogic {
                     objetoLogin = new ObjetoLogin();
                     objetoLogin.setAcceso(false);
                     objetoLogin.setNumeroRespuesta(2);
-                    objetoLogin.setTrazaRespuesta("Error de autenticación.");
+                    objetoLogin.setTrazaRespuesta("Usuario/Clave Incorrecto");
                 } else {
                     objetoLogin = new ObjetoLogin();
                     objetoLogin.setAcceso(true);

@@ -160,8 +160,40 @@ public class NivelLogic {
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
                 Criteria criteria = sesion.createCriteria(NivelEntity.class);
-                criteria.add(Restrictions.ne("idNivel", idNivel));
+                criteria.add(Restrictions.eq("idNivel", idNivel));
                 retorna.setRetorna((ArrayList<Object>) criteria.list());
+                retorna.setTrazaRespuesta("Consulta tabla Nivel exitosa");
+                retorna.setNumeroRespuesta(22);
+                sesion.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            retorna = new NivelEntity();
+            retorna.setNumeroRespuesta(0);
+            retorna.setTrazaRespuesta(e.getMessage());
+        }
+        return retorna;
+    }
+    /**
+     * Método que permite traer el nivel anterior al que se recibe de parametro por orden de Secuencia
+     * @param idNivel
+     * @return 
+     */
+    public NivelEntity anteriorNivel(int idNivel){
+        NivelEntity retorna = new NivelEntity();
+        try {
+            String validaConexion = initOperation();
+            if (!"Ok".equalsIgnoreCase(validaConexion)) {
+                retorna.setNumeroRespuesta(3);
+                retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
+            } else {
+                Criteria criteria = sesion.createCriteria(NivelEntity.class);
+                criteria.add(Restrictions.eq("idNivel", idNivel));
+                NivelEntity nivelAux=(NivelEntity) criteria.uniqueResult();
+                int secu=nivelAux.getSecuenciaNivel()-1;
+                Criteria criteria1=sesion.createCriteria(NivelEntity.class);
+                criteria1.add(Restrictions.eq("secuenciaNivel", secu));
+                retorna=(NivelEntity)  criteria1.uniqueResult();
                 retorna.setTrazaRespuesta("Consulta tabla Nivel exitosa");
                 retorna.setNumeroRespuesta(22);
                 sesion.close();
