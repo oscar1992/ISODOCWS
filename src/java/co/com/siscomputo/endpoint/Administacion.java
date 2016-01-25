@@ -617,6 +617,24 @@ public class Administacion {
     }
     /**
      * Método que consulta una acción por ID
+     * 
+     * @param idUsuario
+     * @return 
+     */
+    @WebMethod(operationName = "accionesPorUsuario")
+    public ObjetoRetornaEntity accionesPorUsuario(@WebParam(name = "idUsuario") int idUsuario) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idUsuario, "Acción"))) {
+            ObjetoRetornaEntity ret = new ObjetoRetornaEntity();
+            ret.setTrazaRespuesta(valida.valida(idUsuario, "Acción"));
+            return ret;
+        } else {
+            AccionLogic metodoRecuperacionLogic = new AccionLogic();
+            return metodoRecuperacionLogic.accionesPorUsuario(idUsuario);
+        }
+    }
+    /**
+     * Método que consulta una acción por ID
      * @param idUsuario
      * @
      * @return 
@@ -1028,6 +1046,23 @@ public class Administacion {
         } else {
             NivelLogic metodoRecuperacionLogic = new NivelLogic();
             return metodoRecuperacionLogic.nivelPorId(idNivel);
+        }
+    }
+    /**
+     * Método que permite traer el nivel anterior al que se recibe de parametro por orden de Secuencia
+     * @param idNivel
+     * @return
+     */
+    @WebMethod(operationName = "anteriorNivel")
+    public NivelEntity anteriorNivel(@WebParam(name = "idNivel") Integer idNivel) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idNivel, "idNuvel"))) {
+            NivelEntity ret = new NivelEntity();
+            ret.setTrazaRespuesta(valida.valida(idNivel, "idNuvel"));
+            return ret;
+        } else {
+            NivelLogic metodoRecuperacionLogic = new NivelLogic();
+            return metodoRecuperacionLogic.anteriorNivel(idNivel);
         }
     }
 
