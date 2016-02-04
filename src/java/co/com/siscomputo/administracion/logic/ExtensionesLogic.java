@@ -1,6 +1,6 @@
-package co.com.siscomputo.gestiondocumental.logic;
+package co.com.siscomputo.administracion.logic;
 
-import co.com.siscomputo.gestiondocumental.persistencia.DocumentoRolEntity;
+import co.com.siscomputo.administracion.persistencia.ExtensionesEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -8,14 +8,13 @@ import org.hibernate.Transaction;
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import java.util.ArrayList;
 import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
 import org.hibernate.criterion.Restrictions;
 
 /**
  *
  * @author LENOVO
  */
-public class DocumentoRolLogic {
+public class ExtensionesLogic {
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -41,44 +40,37 @@ public class DocumentoRolLogic {
     }
 
     /**
-     * Método que inserta un Documentos Rol nuevo
+     * Método que inserta un Extensiones de Archivo nuevo
      *
-     * @param objetoDocumentoRol
+     * @param objetoExtensiones
      * @return
      */
-    public DocumentoRolEntity insertarDocumentoRol(DocumentoRolEntity objetoDocumentoRol) {
+    public ExtensionesEntity insertarExtensiones(ExtensionesEntity objetoExtensiones) {
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                objetoDocumentoRol.setNumeroRespuesta(3);
-                objetoDocumentoRol.setTrazaRespuesta("Error de Conexión " + validaConexion);
+                objetoExtensiones.setNumeroRespuesta(3);
+                objetoExtensiones.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                objetoDocumentoRol.setIdDocumentoRol(maxMetodo());
-                sesion.save(objetoDocumentoRol);
+                objetoExtensiones.setIdExtensiones(maxMetodo());
+                sesion.save(objetoExtensiones);
                 tx.commit();
 
-                objetoDocumentoRol.setTrazaRespuesta("Inserción de MetodoRecuperación exitoso");
-                objetoDocumentoRol.setNumeroRespuesta(18);
-
+                objetoExtensiones.setTrazaRespuesta("Inserción de MetodoRecuperación exitoso");
+                objetoExtensiones.setNumeroRespuesta(18);
+                sesion.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
-            objetoDocumentoRol = new DocumentoRolEntity();
-            objetoDocumentoRol.setNumeroRespuesta(0);
-            objetoDocumentoRol.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();  
-
-            } catch (HibernateException hibernateException) {
-                hibernateException.printStackTrace();
-            }
+            objetoExtensiones = new ExtensionesEntity();
+            objetoExtensiones.setNumeroRespuesta(0);
+            objetoExtensiones.setTrazaRespuesta(e.getMessage());
         }
-        return objetoDocumentoRol;
+        return objetoExtensiones;
     }
 
     /**
-     * Método que trae el siguiente ID de la tabla GDO_TDORO
+     * Método que trae el siguiente ID de la tabla ADM_TEXTE
      *
      * @return
      */
@@ -89,7 +81,7 @@ public class DocumentoRolLogic {
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
             } else {
-                Query query = sesion.createQuery("SELECT MAX(idDocumentoRol) FROM DocumentoRolEntity");
+                Query query = sesion.createQuery("SELECT MAX(idExtensiones) FROM ExtensionesEntity");
                 ret = (int) query.uniqueResult();
                 ret++;
             }
@@ -100,45 +92,38 @@ public class DocumentoRolLogic {
     }
 
     /**
-     * Método que actualiza un Documentos Rol
+     * Método que actualiza un Extensiones de Archivo
      *
-     * @param objetoDocumentoRol
+     * @param objetoExtensiones
      * @return
      */
-    public DocumentoRolEntity actualizarDocumentoRol(DocumentoRolEntity objetoDocumentoRol) {
+    public ExtensionesEntity actualizarExtensiones(ExtensionesEntity objetoExtensiones) {
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                objetoDocumentoRol.setNumeroRespuesta(3);
-                objetoDocumentoRol.setTrazaRespuesta("Error de Conexión " + validaConexion);
+                objetoExtensiones.setNumeroRespuesta(3);
+                objetoExtensiones.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
                 System.out.println("JJ");
-                sesion.update(objetoDocumentoRol);
+                sesion.update(objetoExtensiones);
                 tx.commit();
-
-                objetoDocumentoRol.setTrazaRespuesta("Actualización de MetodoRecuperación exitoso");
-                objetoDocumentoRol.setNumeroRespuesta(19);
+                sesion.close();
+                objetoExtensiones.setTrazaRespuesta("Actualización de MetodoRecuperación exitoso");
+                objetoExtensiones.setNumeroRespuesta(19);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            objetoDocumentoRol = new DocumentoRolEntity();
-            objetoDocumentoRol.setNumeroRespuesta(0);
-            objetoDocumentoRol.setTrazaRespuesta(e.getMessage());
-        }finally{
-            try {
-                sesion.close();  
-                
-            } catch (HibernateException hibernateException) {
-                hibernateException.printStackTrace();
-            }
+            objetoExtensiones = new ExtensionesEntity();
+            objetoExtensiones.setNumeroRespuesta(0);
+            objetoExtensiones.setTrazaRespuesta(e.getMessage());
         }
-        return objetoDocumentoRol;
+        return objetoExtensiones;
     }
 
     /**
-     * Método Método para consultar la lista de Documentos Rol
+     * Método Método para consultar la lista de Extensiones de Archivo
      */
-    public ObjetoRetornaEntity listaDocumentoRol() {
+    public ObjetoRetornaEntity listaExtensiones() {
         ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
         try {
             String validaConexion = initOperation();
@@ -146,27 +131,21 @@ public class DocumentoRolLogic {
                 retorna.setNumeroRespuesta(3);
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                Criteria criteria = sesion.createCriteria(DocumentoRolEntity.class);
-
-                if (!criteria.list().isEmpty()) {
+                Criteria criteria = sesion.createCriteria(ExtensionesEntity.class);
+                
+                if (criteria.list().isEmpty()) {
+                } else {
                     retorna.setRetorna((ArrayList<Object>) criteria.list());
                 }
-                retorna.setTrazaRespuesta("Consulta tabla DocumentoRol exitosa");
+                retorna.setTrazaRespuesta("Consulta tabla Extensiones exitosa");
                 retorna.setNumeroRespuesta(22);
-
+                sesion.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
             retorna = new ObjetoRetornaEntity();
             retorna.setNumeroRespuesta(0);
             retorna.setTrazaRespuesta(e.getMessage());
-        }finally{
-            try {
-                sesion.close();  
-                
-            } catch (HibernateException hibernateException) {
-                hibernateException.printStackTrace();
-            }
         }
         return retorna;
     }

@@ -11,8 +11,10 @@ import co.com.siscomputo.gestiondocumental.persistencia.DocumentoEntity;
 import co.com.siscomputo.gestiondocumental.logic.DocumentoLogic;
 import co.com.siscomputo.gestiondocumental.logic.DocumentoProcesoLogic;
 import co.com.siscomputo.gestiondocumental.logic.DocumentoRolLogic;
+import co.com.siscomputo.gestiondocumental.logic.UsuarioDocumentoLogic;
 import co.com.siscomputo.gestiondocumental.persistencia.DocumentoProcesoEntity;
 import co.com.siscomputo.gestiondocumental.persistencia.DocumentoRolEntity;
+import co.com.siscomputo.gestiondocumental.persistencia.UsuarioDocumentoEntity;
 import co.com.siscomputo.utilidades.Valida;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -170,6 +172,51 @@ public class GestionDocumental {
     public ObjetoRetornaEntity listaDocumentoRol(){
         DocumentoRolLogic documentoRolLogic=new DocumentoRolLogic();
         return documentoRolLogic.listaDocumentoRol();
+     
+    }
+    
+    /**
+     * Método que permite insertar un Relación Usuario Docuemento nuevo
+     * @param objeto
+     * @return 
+     */
+    @WebMethod(operationName = "insertarUsuarioDocumento")
+    public UsuarioDocumentoEntity insertarUsuarioDocumento(@WebParam(name = "objeto") UsuarioDocumentoEntity objeto){
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getUsuarioUsuarioDocumento(), "Sede"))) {
+            UsuarioDocumentoEntity ret = new UsuarioDocumentoEntity();
+            ret.setTrazaRespuesta(valida.valida(objeto.getUsuarioUsuarioDocumento(), "Sede"));
+            return ret;
+        } else {
+        UsuarioDocumentoLogic usuarioDocumentoLogic=new UsuarioDocumentoLogic();
+        return usuarioDocumentoLogic.insertarUsuarioDocumento(objeto);
+        }
+}
+     /**
+     * Método que permite actualizar un Relación Usuario Docuemento
+     * @param objeto
+     * @return 
+     */
+    @WebMethod(operationName = "actualizarUsuarioDocumento")
+    public UsuarioDocumentoEntity actualizarUsuarioDocumento(@WebParam(name = "objeto")UsuarioDocumentoEntity objeto){
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getUsuarioUsuarioDocumento(), "Sede"))) {
+            UsuarioDocumentoEntity ret = new UsuarioDocumentoEntity();
+            ret.setTrazaRespuesta(valida.valida(objeto.getUsuarioUsuarioDocumento(), "Sede"));
+            return ret;
+        } else {
+            UsuarioDocumentoLogic metodoRecuperacionLogic=new UsuarioDocumentoLogic();
+            return metodoRecuperacionLogic.actualizarUsuarioDocumento(objeto);
+        }
+    }
+    /**
+     * Método que trae una lista de Relación Usuario Docuemento
+     * @return 
+     */
+    @WebMethod(operationName = "listaUsuarioDocumento")
+    public ObjetoRetornaEntity listaUsuarioDocumento(){
+        UsuarioDocumentoLogic usuarioDocumentoLogic=new UsuarioDocumentoLogic();
+        return usuarioDocumentoLogic.listaUsuarioDocumento();
      
     }
 }

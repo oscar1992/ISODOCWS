@@ -1,22 +1,20 @@
-package co.com.siscomputo.gestiondocumental.logic;
 
-import co.com.siscomputo.gestiondocumental.persistencia.GrupoDocumentoEntity;
+package co.com.siscomputo.administracion.logic;
+
+import co.com.siscomputo.administracion.persistencia.TipoAlmacenamientoEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import java.util.ArrayList;
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.criterion.Restrictions;
 
 /**
  *
  * @author LENOVO
  */
-public class GrupoDocumentoLogic {
-
+public class TipoAlmacenamientoLogic {
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
 
@@ -39,38 +37,31 @@ public class GrupoDocumentoLogic {
         }
         return retorno;
     }
-
-    /**
-     * Método que inserta un Grupos por Documento nuevo
-     *
-     * @param objetoGrupoDocumento
-     * @return
-     */
-    public GrupoDocumentoEntity insertarGrupoDocumento(GrupoDocumentoEntity objetoGrupoDocumento) {
+    
+     /**
+     * Método que inserta un Tipo de Almacenamiento nuevo
+     * @param objetoTipoAlmacenamiento
+     * @return 
+     */    public TipoAlmacenamientoEntity insertarTipoAlmacenamiento(TipoAlmacenamientoEntity objetoTipoAlmacenamiento){
         try {
             String validaConexion = initOperation();
-            if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                objetoGrupoDocumento.setNumeroRespuesta(3);
-                objetoGrupoDocumento.setTrazaRespuesta("Error de Conexión " + validaConexion);
+            if (!"Ok".equalsIgnoreCase(validaConexion)) {                
+                objetoTipoAlmacenamiento.setNumeroRespuesta(3);
+                objetoTipoAlmacenamiento.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                objetoGrupoDocumento.setIdGrupoDocumento(maxMetodo());
-                if (objetoGrupoDocumento.getFecha() == null) {
-                    System.out.println("NULO");
-                } else {
-                    System.out.println("FECHA: " + objetoGrupoDocumento.getFecha().toString());
-                }
-                sesion.save(objetoGrupoDocumento);
+                objetoTipoAlmacenamiento.setIdTipoAlmacenamiento(maxMetodo());
+                sesion.save(objetoTipoAlmacenamiento);
                 tx.commit();
 
-                objetoGrupoDocumento.setTrazaRespuesta("Inserción de MetodoRecuperación exitoso");
-                objetoGrupoDocumento.setNumeroRespuesta(18);
+                objetoTipoAlmacenamiento.setTrazaRespuesta("Inserción de MetodoRecuperación exitoso");
+                objetoTipoAlmacenamiento.setNumeroRespuesta(18);
                  
             }
         } catch (Exception e) {
             e.printStackTrace();
-            objetoGrupoDocumento = new GrupoDocumentoEntity();
-            objetoGrupoDocumento.setNumeroRespuesta(0);
-            objetoGrupoDocumento.setTrazaRespuesta(e.getMessage());
+            objetoTipoAlmacenamiento = new TipoAlmacenamientoEntity();
+            objetoTipoAlmacenamiento.setNumeroRespuesta(0);
+            objetoTipoAlmacenamiento.setTrazaRespuesta(e.getMessage());
         }finally{
             try {
                 sesion.close();  
@@ -79,22 +70,20 @@ public class GrupoDocumentoLogic {
                 hibernateException.printStackTrace();
             }
         }
-        return objetoGrupoDocumento;
+        return objetoTipoAlmacenamiento;
     }
 
-    /**
-     * Método que trae el siguiente ID de la tabla GDO_TGRDO
-     *
-     * @return
-     */
-    private int maxMetodo() {
+     /**
+     * Método que trae el siguiente ID de la tabla ADM_TALMA
+     * @return 
+     */    private int maxMetodo() {
         int ret = -1;
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
             } else {
-                Query query = sesion.createQuery("SELECT MAX(idGrupoDocumento) FROM GrupoDocumentoEntity");
+                Query query = sesion.createQuery("SELECT MAX(idTipoAlmacenamiento) FROM TipoAlmacenamientoEntity");
                 ret = (int) query.uniqueResult();
                 ret++;
             }
@@ -103,32 +92,30 @@ public class GrupoDocumentoLogic {
         }
         return ret;
     }
-
-    /**
-     * Método que actualiza un Grupos por Documento
-     *
-     * @param objetoGrupoDocumento
-     * @return
-     */
-    public GrupoDocumentoEntity actualizarGrupoDocumento(GrupoDocumentoEntity objetoGrupoDocumento) {
+    
+     /**
+     * Método que actualiza un Tipo de Almacenamiento
+     * @param objetoTipoAlmacenamiento
+     * @return 
+     */ public TipoAlmacenamientoEntity actualizarTipoAlmacenamiento(TipoAlmacenamientoEntity objetoTipoAlmacenamiento){
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                objetoGrupoDocumento.setNumeroRespuesta(3);
-                objetoGrupoDocumento.setTrazaRespuesta("Error de Conexión " + validaConexion);
-            } else {
+                objetoTipoAlmacenamiento.setNumeroRespuesta(3);
+                objetoTipoAlmacenamiento.setTrazaRespuesta("Error de Conexión " + validaConexion);
+            } else {                
                 System.out.println("JJ");
-                sesion.update(objetoGrupoDocumento);
+                sesion.update(objetoTipoAlmacenamiento);
                 tx.commit();
                  
-                objetoGrupoDocumento.setTrazaRespuesta("Actualización de MetodoRecuperación exitoso");
-                objetoGrupoDocumento.setNumeroRespuesta(19);
+                objetoTipoAlmacenamiento.setTrazaRespuesta("Actualización de MetodoRecuperación exitoso");
+                objetoTipoAlmacenamiento.setNumeroRespuesta(19);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            objetoGrupoDocumento = new GrupoDocumentoEntity();
-            objetoGrupoDocumento.setNumeroRespuesta(0);
-            objetoGrupoDocumento.setTrazaRespuesta(e.getMessage());
+            objetoTipoAlmacenamiento = new TipoAlmacenamientoEntity();
+            objetoTipoAlmacenamiento.setNumeroRespuesta(0);
+            objetoTipoAlmacenamiento.setTrazaRespuesta(e.getMessage());
         }finally{
             try {
                 sesion.close();  
@@ -137,30 +124,28 @@ public class GrupoDocumentoLogic {
                 hibernateException.printStackTrace();
             }
         }
-        return objetoGrupoDocumento;
+        return objetoTipoAlmacenamiento;
     }
-
-    /**
-     * Método Método para consultar la lista de Grupos por Documento
-     */
-    public ObjetoRetornaEntity listaGrupoDocumento() {
-        ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
+     /**
+     * Método que permite actualizar un Tipo de Almacenamiento
+     * @return 
+     */public ObjetoRetornaEntity listaTipoAlmacenamiento(){
+        ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
                 retorna.setNumeroRespuesta(3);
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                Criteria criteria = sesion.createCriteria(GrupoDocumentoEntity.class);
-                criteria.add(Restrictions.eq("estadoGrupoDocumento", "E"));
-                retorna.setRetorna((ArrayList<Object>) criteria.list());
-                retorna.setTrazaRespuesta("Consulta tabla GrupoDocumento exitosa");
+                Query query=sesion.createQuery("FROM TipoAlmacenamientoEntity d WHERE d.estadoTipoAlmacenamiento<>'E'");
+                retorna.setRetorna((ArrayList<Object>) query.list());
+                retorna.setTrazaRespuesta("Consulta tabla TipoAlmacenamiento exitosa");
                 retorna.setNumeroRespuesta(22);
                  
             }
         } catch (Exception e) {
             e.printStackTrace();
-            retorna = new ObjetoRetornaEntity();
+            retorna=new ObjetoRetornaEntity();
             retorna.setNumeroRespuesta(0);
             retorna.setTrazaRespuesta(e.getMessage());
         }finally{
@@ -171,6 +156,6 @@ public class GrupoDocumentoLogic {
                 hibernateException.printStackTrace();
             }
         }
-        return retorna;
+        return retorna ;
     }
 }

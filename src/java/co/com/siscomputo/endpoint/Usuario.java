@@ -28,26 +28,26 @@ import co.com.siscomputo.administracion.persistencia.UsuarioMacroprocesoEntity;
 import co.com.siscomputo.administracion.persistencia.UsuarioProcesoEntity;
 import co.com.siscomputo.administracion.persistencia.UsuarioRolEntity;
 import co.com.siscomputo.administracion.persistencia.UsuarioSubprocesoEntity;
-import co.com.siscomputo.usuario.logic.AreaLogic;
-import co.com.siscomputo.usuario.logic.CiudadLogic;
-import co.com.siscomputo.usuario.logic.DepartamentoLogic;
-import co.com.siscomputo.usuario.logic.EmpresaLogic;
-import co.com.siscomputo.usuario.logic.FestivosLogic;
-import co.com.siscomputo.usuario.logic.MacroProcesoLogic;
-import co.com.siscomputo.usuario.logic.MenuLogic;
-import co.com.siscomputo.usuario.logic.PaisLogic;
-import co.com.siscomputo.usuario.logic.PermisosLogic;
-import co.com.siscomputo.usuario.logic.ProcesosLogic;
-import co.com.siscomputo.usuario.logic.RolesLogic;
-import co.com.siscomputo.usuario.logic.SedeEmpresaLogic;
-import co.com.siscomputo.usuario.logic.SedeLogic;
-import co.com.siscomputo.usuario.logic.SubProcesosLogic;
-import co.com.siscomputo.usuario.logic.TiposDocumentalesLogic;
-import co.com.siscomputo.usuario.logic.UsuarioLogic;
-import co.com.siscomputo.usuario.logic.UsuarioMacroprocesoLogic;
-import co.com.siscomputo.usuario.logic.UsuarioProcesoLogic;
-import co.com.siscomputo.usuario.logic.UsuarioRolLogic;
-import co.com.siscomputo.usuario.logic.UsuarioSubprocesoLogic;
+import co.com.siscomputo.administracion.logic.AreaLogic;
+import co.com.siscomputo.administracion.logic.CiudadLogic;
+import co.com.siscomputo.administracion.logic.DepartamentoLogic;
+import co.com.siscomputo.administracion.logic.EmpresaLogic;
+import co.com.siscomputo.administracion.logic.FestivosLogic;
+import co.com.siscomputo.administracion.logic.MacroProcesoLogic;
+import co.com.siscomputo.administracion.logic.MenuLogic;
+import co.com.siscomputo.administracion.logic.PaisLogic;
+import co.com.siscomputo.administracion.logic.PermisosLogic;
+import co.com.siscomputo.administracion.logic.ProcesosLogic;
+import co.com.siscomputo.administracion.logic.RolesLogic;
+import co.com.siscomputo.administracion.logic.SedeEmpresaLogic;
+import co.com.siscomputo.administracion.logic.SedeLogic;
+import co.com.siscomputo.administracion.logic.SubProcesosLogic;
+import co.com.siscomputo.administracion.logic.TiposDocumentalesLogic;
+import co.com.siscomputo.administracion.logic.UsuarioLogic;
+import co.com.siscomputo.administracion.logic.UsuarioMacroprocesoLogic;
+import co.com.siscomputo.administracion.logic.UsuarioProcesoLogic;
+import co.com.siscomputo.administracion.logic.UsuarioRolLogic;
+import co.com.siscomputo.administracion.logic.UsuarioSubprocesoLogic;
 import co.com.siscomputo.utilidades.Valida;
 import java.util.ArrayList;
 import javax.jws.WebService;
@@ -201,7 +201,24 @@ public class Usuario {
             return usuarioLogic.ingresarUsuario(usu);
         }
     }
-
+    /**
+     * Método que trae los usuarios de un grupo de usuarios
+     * @param idGrupo
+     * @return 
+     */
+    @WebMethod(operationName = "usuariosPorGrupo")
+    public ObjetoRetornaEntity usuariosPorGrupo(@WebParam(name = "idGrupo")Integer idGrupo){
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idGrupo, "idUsuario"))) {
+            ObjetoRetornaEntity ret = new ObjetoRetornaEntity();
+            ret.setTrazaRespuesta(valida.valida(idGrupo, "idUsuario"));
+            return ret;
+        } else {
+            UsuarioLogic usuarioLogic = new UsuarioLogic();
+            return usuarioLogic.listaUsuariosPorGrupo(idGrupo);
+        }
+    }
+    
     /**
      * Web service operation Método que carga una lista de permisos filtrados
      * por Usuario

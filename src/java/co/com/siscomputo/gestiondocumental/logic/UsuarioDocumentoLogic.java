@@ -1,6 +1,11 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package co.com.siscomputo.gestiondocumental.logic;
 
-import co.com.siscomputo.gestiondocumental.persistencia.GrupoDocumentoEntity;
+import co.com.siscomputo.gestiondocumental.persistencia.UsuarioDocumentoEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -15,7 +20,7 @@ import org.hibernate.criterion.Restrictions;
  *
  * @author LENOVO
  */
-public class GrupoDocumentoLogic {
+public class UsuarioDocumentoLogic {
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -41,49 +46,44 @@ public class GrupoDocumentoLogic {
     }
 
     /**
-     * Método que inserta un Grupos por Documento nuevo
+     * Método que inserta un Relación Usuario Docuemento nuevo
      *
-     * @param objetoGrupoDocumento
+     * @param objetoUsuarioDocumento
      * @return
      */
-    public GrupoDocumentoEntity insertarGrupoDocumento(GrupoDocumentoEntity objetoGrupoDocumento) {
+    public UsuarioDocumentoEntity insertarUsuarioDocumento(UsuarioDocumentoEntity objetoUsuarioDocumento) {
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                objetoGrupoDocumento.setNumeroRespuesta(3);
-                objetoGrupoDocumento.setTrazaRespuesta("Error de Conexión " + validaConexion);
+                objetoUsuarioDocumento.setNumeroRespuesta(3);
+                objetoUsuarioDocumento.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                objetoGrupoDocumento.setIdGrupoDocumento(maxMetodo());
-                if (objetoGrupoDocumento.getFecha() == null) {
-                    System.out.println("NULO");
-                } else {
-                    System.out.println("FECHA: " + objetoGrupoDocumento.getFecha().toString());
-                }
-                sesion.save(objetoGrupoDocumento);
+                objetoUsuarioDocumento.setIdUsuarioDocumento(maxMetodo());
+                sesion.save(objetoUsuarioDocumento);
                 tx.commit();
 
-                objetoGrupoDocumento.setTrazaRespuesta("Inserción de MetodoRecuperación exitoso");
-                objetoGrupoDocumento.setNumeroRespuesta(18);
-                 
+                objetoUsuarioDocumento.setTrazaRespuesta("Inserción de MetodoRecuperación exitoso");
+                objetoUsuarioDocumento.setNumeroRespuesta(18);
+
             }
         } catch (Exception e) {
             e.printStackTrace();
-            objetoGrupoDocumento = new GrupoDocumentoEntity();
-            objetoGrupoDocumento.setNumeroRespuesta(0);
-            objetoGrupoDocumento.setTrazaRespuesta(e.getMessage());
-        }finally{
+            objetoUsuarioDocumento = new UsuarioDocumentoEntity();
+            objetoUsuarioDocumento.setNumeroRespuesta(0);
+            objetoUsuarioDocumento.setTrazaRespuesta(e.getMessage());
+        } finally {
             try {
                 sesion.close();  
-                
+
             } catch (HibernateException hibernateException) {
                 hibernateException.printStackTrace();
             }
         }
-        return objetoGrupoDocumento;
+        return objetoUsuarioDocumento;
     }
 
     /**
-     * Método que trae el siguiente ID de la tabla GDO_TGRDO
+     * Método que trae el siguiente ID de la tabla GDO_TUSDO
      *
      * @return
      */
@@ -94,7 +94,7 @@ public class GrupoDocumentoLogic {
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
             } else {
-                Query query = sesion.createQuery("SELECT MAX(idGrupoDocumento) FROM GrupoDocumentoEntity");
+                Query query = sesion.createQuery("SELECT MAX(idUsuarioDocumento) FROM UsuarioDocumentoEntity");
                 ret = (int) query.uniqueResult();
                 ret++;
             }
@@ -105,30 +105,30 @@ public class GrupoDocumentoLogic {
     }
 
     /**
-     * Método que actualiza un Grupos por Documento
+     * Método que actualiza un Relación Usuario Docuemento
      *
-     * @param objetoGrupoDocumento
+     * @param objetoUsuarioDocumento
      * @return
      */
-    public GrupoDocumentoEntity actualizarGrupoDocumento(GrupoDocumentoEntity objetoGrupoDocumento) {
+    public UsuarioDocumentoEntity actualizarUsuarioDocumento(UsuarioDocumentoEntity objetoUsuarioDocumento) {
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                objetoGrupoDocumento.setNumeroRespuesta(3);
-                objetoGrupoDocumento.setTrazaRespuesta("Error de Conexión " + validaConexion);
+                objetoUsuarioDocumento.setNumeroRespuesta(3);
+                objetoUsuarioDocumento.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
                 System.out.println("JJ");
-                sesion.update(objetoGrupoDocumento);
+                sesion.update(objetoUsuarioDocumento);
                 tx.commit();
-                 
-                objetoGrupoDocumento.setTrazaRespuesta("Actualización de MetodoRecuperación exitoso");
-                objetoGrupoDocumento.setNumeroRespuesta(19);
+
+                objetoUsuarioDocumento.setTrazaRespuesta("Actualización de MetodoRecuperación exitoso");
+                objetoUsuarioDocumento.setNumeroRespuesta(19);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            objetoGrupoDocumento = new GrupoDocumentoEntity();
-            objetoGrupoDocumento.setNumeroRespuesta(0);
-            objetoGrupoDocumento.setTrazaRespuesta(e.getMessage());
+            objetoUsuarioDocumento = new UsuarioDocumentoEntity();
+            objetoUsuarioDocumento.setNumeroRespuesta(0);
+            objetoUsuarioDocumento.setTrazaRespuesta(e.getMessage());
         }finally{
             try {
                 sesion.close();  
@@ -137,13 +137,13 @@ public class GrupoDocumentoLogic {
                 hibernateException.printStackTrace();
             }
         }
-        return objetoGrupoDocumento;
+        return objetoUsuarioDocumento;
     }
 
     /**
-     * Método Método para consultar la lista de Grupos por Documento
+     * Método Método para consultar la lista de Relación Usuario Docuemento
      */
-    public ObjetoRetornaEntity listaGrupoDocumento() {
+    public ObjetoRetornaEntity listaUsuarioDocumento() {
         ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
         try {
             String validaConexion = initOperation();
@@ -151,12 +151,12 @@ public class GrupoDocumentoLogic {
                 retorna.setNumeroRespuesta(3);
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                Criteria criteria = sesion.createCriteria(GrupoDocumentoEntity.class);
-                criteria.add(Restrictions.eq("estadoGrupoDocumento", "E"));
+                Criteria criteria = sesion.createCriteria(UsuarioDocumentoEntity.class);
+                criteria.add(Restrictions.eq("estadoUsuarioDocumento", "E"));
                 retorna.setRetorna((ArrayList<Object>) criteria.list());
-                retorna.setTrazaRespuesta("Consulta tabla GrupoDocumento exitosa");
+                retorna.setTrazaRespuesta("Consulta tabla UsuarioDocumento exitosa");
                 retorna.setNumeroRespuesta(22);
-                 
+
             }
         } catch (Exception e) {
             e.printStackTrace();

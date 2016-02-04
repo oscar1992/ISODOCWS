@@ -1,6 +1,7 @@
-package co.com.siscomputo.gestiondocumental.logic;
 
-import co.com.siscomputo.gestiondocumental.persistencia.DocumentoProcesoEntity;
+package co.com.siscomputo.administracion.logic;
+
+import co.com.siscomputo.administracion.persistencia.MetodoProteccionEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -13,8 +14,7 @@ import org.hibernate.HibernateException;
  *
  * @author LENOVO
  */
-public class DocumentoProcesoLogic {
-
+public class MetodoProteccionLogic {
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
 
@@ -37,33 +37,31 @@ public class DocumentoProcesoLogic {
         }
         return retorno;
     }
-
-    /**
-     * Método que inserta un Usuarios Asignados Sobre el Documento nuevo
-     *
-     * @param objetoDocumentoProceso
-     * @return
-     */
-    public DocumentoProcesoEntity insertarDocumentoProceso(DocumentoProcesoEntity objetoDocumentoProceso) {
+    
+     /**
+     * Método que inserta un Métodos de Protección nuevo
+     * @param objetoMetodoProteccion
+     * @return 
+     */    public MetodoProteccionEntity insertarMetodoProteccion(MetodoProteccionEntity objetoMetodoProteccion){
         try {
             String validaConexion = initOperation();
-            if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                objetoDocumentoProceso.setNumeroRespuesta(3);
-                objetoDocumentoProceso.setTrazaRespuesta("Error de Conexión " + validaConexion);
+            if (!"Ok".equalsIgnoreCase(validaConexion)) {                
+                objetoMetodoProteccion.setNumeroRespuesta(3);
+                objetoMetodoProteccion.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                objetoDocumentoProceso.setIdDocumentoProceso(maxMetodo());
-                sesion.save(objetoDocumentoProceso);
+                objetoMetodoProteccion.setIdMetodoProteccion(maxMetodo());
+                sesion.save(objetoMetodoProteccion);
                 tx.commit();
 
-                objetoDocumentoProceso.setTrazaRespuesta("Inserción de MetodoRecuperación exitoso");
-                objetoDocumentoProceso.setNumeroRespuesta(18);
-                 
+                objetoMetodoProteccion.setTrazaRespuesta("Inserción de MetodoRecuperación exitoso");
+                objetoMetodoProteccion.setNumeroRespuesta(18);
+                
             }
         } catch (Exception e) {
             e.printStackTrace();
-            objetoDocumentoProceso = new DocumentoProcesoEntity();
-            objetoDocumentoProceso.setNumeroRespuesta(0);
-            objetoDocumentoProceso.setTrazaRespuesta(e.getMessage());
+            objetoMetodoProteccion = new MetodoProteccionEntity();
+            objetoMetodoProteccion.setNumeroRespuesta(0);
+            objetoMetodoProteccion.setTrazaRespuesta(e.getMessage());
         }finally{
             try {
                 sesion.close();  
@@ -72,22 +70,20 @@ public class DocumentoProcesoLogic {
                 hibernateException.printStackTrace();
             }
         }
-        return objetoDocumentoProceso;
+        return objetoMetodoProteccion;
     }
 
-    /**
-     * Método que trae el siguiente ID de la tabla GDO_TDOPR
-     *
-     * @return
-     */
-    private int maxMetodo() {
+     /**
+     * Método que trae el siguiente ID de la tabla ADM_PROT
+     * @return 
+     */    private int maxMetodo() {
         int ret = -1;
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
             } else {
-                Query query = sesion.createQuery("SELECT MAX(idDocumentoProceso) FROM DocumentoProcesoEntity");
+                Query query = sesion.createQuery("SELECT MAX(idMetodoProteccion) FROM MetodoProteccionEntity");
                 ret = (int) query.uniqueResult();
                 ret++;
             }
@@ -96,32 +92,30 @@ public class DocumentoProcesoLogic {
         }
         return ret;
     }
-
-    /**
-     * Método que actualiza un Usuarios Asignados Sobre el Documento
-     *
-     * @param objetoDocumentoProceso
-     * @return
-     */
-    public DocumentoProcesoEntity actualizarDocumentoProceso(DocumentoProcesoEntity objetoDocumentoProceso) {
+    
+     /**
+     * Método que actualiza un Métodos de Protección
+     * @param objetoMetodoProteccion
+     * @return 
+     */ public MetodoProteccionEntity actualizarMetodoProteccion(MetodoProteccionEntity objetoMetodoProteccion){
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                objetoDocumentoProceso.setNumeroRespuesta(3);
-                objetoDocumentoProceso.setTrazaRespuesta("Error de Conexión " + validaConexion);
-            } else {
+                objetoMetodoProteccion.setNumeroRespuesta(3);
+                objetoMetodoProteccion.setTrazaRespuesta("Error de Conexión " + validaConexion);
+            } else {                
                 System.out.println("JJ");
-                sesion.update(objetoDocumentoProceso);
+                sesion.update(objetoMetodoProteccion);
                 tx.commit();
-                 
-                objetoDocumentoProceso.setTrazaRespuesta("Actualización de MetodoRecuperación exitoso");
-                objetoDocumentoProceso.setNumeroRespuesta(19);
+                
+                objetoMetodoProteccion.setTrazaRespuesta("Actualización de MetodoRecuperación exitoso");
+                objetoMetodoProteccion.setNumeroRespuesta(19);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            objetoDocumentoProceso = new DocumentoProcesoEntity();
-            objetoDocumentoProceso.setNumeroRespuesta(0);
-            objetoDocumentoProceso.setTrazaRespuesta(e.getMessage());
+            objetoMetodoProteccion = new MetodoProteccionEntity();
+            objetoMetodoProteccion.setNumeroRespuesta(0);
+            objetoMetodoProteccion.setTrazaRespuesta(e.getMessage());
         }finally{
             try {
                 sesion.close();  
@@ -130,30 +124,28 @@ public class DocumentoProcesoLogic {
                 hibernateException.printStackTrace();
             }
         }
-        return objetoDocumentoProceso;
+        return objetoMetodoProteccion;
     }
-
-    /**
-     * Método Método para consultar la lista de Usuarios Asignados Sobre el
-     * Documento
-     */
-    public ObjetoRetornaEntity listaDocumentoProceso() {
-        ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
+     /**
+     * Método que permite actualizar un Métodos de Protección
+     * @return 
+     */public ObjetoRetornaEntity listaMetodoProteccion(){
+        ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
                 retorna.setNumeroRespuesta(3);
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                Query query = sesion.createQuery("FROM DocumentoProcesoEntity d ");
+                Query query=sesion.createQuery("FROM MetodoProteccionEntity d WHERE d.estadoMetodoProteccion<>'E'");
                 retorna.setRetorna((ArrayList<Object>) query.list());
-                retorna.setTrazaRespuesta("Consulta tabla DocumentoProceso exitosa");
+                retorna.setTrazaRespuesta("Consulta tabla MetodoProteccion exitosa");
                 retorna.setNumeroRespuesta(22);
-                 
+                
             }
         } catch (Exception e) {
             e.printStackTrace();
-            retorna = new ObjetoRetornaEntity();
+            retorna=new ObjetoRetornaEntity();
             retorna.setNumeroRespuesta(0);
             retorna.setTrazaRespuesta(e.getMessage());
         }finally{
@@ -164,6 +156,6 @@ public class DocumentoProcesoLogic {
                 hibernateException.printStackTrace();
             }
         }
-        return retorna;
+        return retorna ;
     }
 }

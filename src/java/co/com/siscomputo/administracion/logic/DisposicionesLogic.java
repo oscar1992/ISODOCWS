@@ -1,19 +1,25 @@
-package co.com.siscomputo.gestiondocumental.logic;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package co.com.siscomputo.administracion.logic;
 
-import co.com.siscomputo.gestiondocumental.persistencia.DocumentoProcesoEntity;
+import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
+import co.com.siscomputo.administracion.persistencia.AreaEntity;
+import co.com.siscomputo.administracion.persistencia.DisposicionesEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
+import java.util.ArrayList;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
-import java.util.ArrayList;
-import org.hibernate.HibernateException;
 
 /**
  *
  * @author LENOVO
  */
-public class DocumentoProcesoLogic {
+public class DisposicionesLogic {
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -37,33 +43,31 @@ public class DocumentoProcesoLogic {
         }
         return retorno;
     }
-
     /**
-     * Método que inserta un Usuarios Asignados Sobre el Documento nuevo
-     *
-     * @param objetoDocumentoProceso
-     * @return
+     * Método que permite insertar una disposicion nueva
+     * @param disposicion
+     * @return 
      */
-    public DocumentoProcesoEntity insertarDocumentoProceso(DocumentoProcesoEntity objetoDocumentoProceso) {
+    public DisposicionesEntity ingresarDisposición(DisposicionesEntity disposicion) {
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                objetoDocumentoProceso.setNumeroRespuesta(3);
-                objetoDocumentoProceso.setTrazaRespuesta("Error de Conexión " + validaConexion);
+                disposicion.setNumeroRespuesta(3);
+                disposicion.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                objetoDocumentoProceso.setIdDocumentoProceso(maxMetodo());
-                sesion.save(objetoDocumentoProceso);
+                disposicion.setIdDisposirciones(maxDisposicion());
+                sesion.save(disposicion);
                 tx.commit();
 
-                objetoDocumentoProceso.setTrazaRespuesta("Inserción de MetodoRecuperación exitoso");
-                objetoDocumentoProceso.setNumeroRespuesta(18);
-                 
+                disposicion.setTrazaRespuesta("Inserción de Disposicion exitoso");
+                disposicion.setNumeroRespuesta(18);
+                
             }
         } catch (Exception e) {
             e.printStackTrace();
-            objetoDocumentoProceso = new DocumentoProcesoEntity();
-            objetoDocumentoProceso.setNumeroRespuesta(0);
-            objetoDocumentoProceso.setTrazaRespuesta(e.getMessage());
+            disposicion = new DisposicionesEntity();
+            disposicion.setNumeroRespuesta(0);
+            disposicion.setTrazaRespuesta(e.getMessage());
         }finally{
             try {
                 sesion.close();  
@@ -72,22 +76,20 @@ public class DocumentoProcesoLogic {
                 hibernateException.printStackTrace();
             }
         }
-        return objetoDocumentoProceso;
+        return disposicion;
     }
-
     /**
-     * Método que trae el siguiente ID de la tabla GDO_TDOPR
-     *
-     * @return
+     * Método que trae el siguiente ID de la tabla Disposiciones
+     * @return 
      */
-    private int maxMetodo() {
+    private int maxDisposicion() {
         int ret = -1;
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
             } else {
-                Query query = sesion.createQuery("SELECT MAX(idDocumentoProceso) FROM DocumentoProcesoEntity");
+                Query query = sesion.createQuery("SELECT MAX(idDisposirciones) FROM DisposicionesEntity");
                 ret = (int) query.uniqueResult();
                 ret++;
             }
@@ -96,32 +98,30 @@ public class DocumentoProcesoLogic {
         }
         return ret;
     }
-
     /**
-     * Método que actualiza un Usuarios Asignados Sobre el Documento
-     *
-     * @param objetoDocumentoProceso
-     * @return
+     * Método que permite actualizar una disposiciónn
+     * @param disposicion
+     * @return 
      */
-    public DocumentoProcesoEntity actualizarDocumentoProceso(DocumentoProcesoEntity objetoDocumentoProceso) {
+    public DisposicionesEntity actualizarDisposicion(DisposicionesEntity disposicion){
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                objetoDocumentoProceso.setNumeroRespuesta(3);
-                objetoDocumentoProceso.setTrazaRespuesta("Error de Conexión " + validaConexion);
-            } else {
+                disposicion.setNumeroRespuesta(3);
+                disposicion.setTrazaRespuesta("Error de Conexión " + validaConexion);
+            } else {                
                 System.out.println("JJ");
-                sesion.update(objetoDocumentoProceso);
+                sesion.update(disposicion);
                 tx.commit();
-                 
-                objetoDocumentoProceso.setTrazaRespuesta("Actualización de MetodoRecuperación exitoso");
-                objetoDocumentoProceso.setNumeroRespuesta(19);
+                
+                disposicion.setTrazaRespuesta("Actualización de Disposicion exitoso");
+                disposicion.setNumeroRespuesta(19);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            objetoDocumentoProceso = new DocumentoProcesoEntity();
-            objetoDocumentoProceso.setNumeroRespuesta(0);
-            objetoDocumentoProceso.setTrazaRespuesta(e.getMessage());
+            disposicion = new DisposicionesEntity();
+            disposicion.setNumeroRespuesta(0);
+            disposicion.setTrazaRespuesta(e.getMessage());
         }finally{
             try {
                 sesion.close();  
@@ -130,30 +130,29 @@ public class DocumentoProcesoLogic {
                 hibernateException.printStackTrace();
             }
         }
-        return objetoDocumentoProceso;
+        return disposicion;
     }
-
     /**
-     * Método Método para consultar la lista de Usuarios Asignados Sobre el
-     * Documento
+     * Método que trae una lista de Disposiciones
+     * @return 
      */
-    public ObjetoRetornaEntity listaDocumentoProceso() {
-        ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
+    public ObjetoRetornaEntity listaDisposicion(){
+        ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
                 retorna.setNumeroRespuesta(3);
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                Query query = sesion.createQuery("FROM DocumentoProcesoEntity d ");
+                Query query=sesion.createQuery("FROM DisposicionesEntity d WHERE d.estadoDisposiciones<>'E'");
                 retorna.setRetorna((ArrayList<Object>) query.list());
-                retorna.setTrazaRespuesta("Consulta tabla DocumentoProceso exitosa");
+                retorna.setTrazaRespuesta("Consulta tabla Disposiciones exitosa");
                 retorna.setNumeroRespuesta(22);
-                 
+                
             }
         } catch (Exception e) {
             e.printStackTrace();
-            retorna = new ObjetoRetornaEntity();
+            retorna=new ObjetoRetornaEntity();
             retorna.setNumeroRespuesta(0);
             retorna.setTrazaRespuesta(e.getMessage());
         }finally{
@@ -164,6 +163,7 @@ public class DocumentoProcesoLogic {
                 hibernateException.printStackTrace();
             }
         }
-        return retorna;
+        return retorna ;
     }
 }
+

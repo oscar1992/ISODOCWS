@@ -1,12 +1,11 @@
-package co.com.siscomputo.gestiondocumental.logic;
+package co.com.siscomputo.administracion.logic;
 
-import co.com.siscomputo.gestiondocumental.persistencia.DocumentoEntity;
+import co.com.siscomputo.administracion.persistencia.NivelEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
-import co.com.siscomputo.administracion.persistencia.AccionEntity;
 import java.util.ArrayList;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -16,7 +15,7 @@ import org.hibernate.criterion.Restrictions;
  *
  * @author LENOVO
  */
-public class DocumentoLogic {
+public class NivelLogic {
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -42,55 +41,55 @@ public class DocumentoLogic {
     }
 
     /**
-     * Método que inserta un Documento nuevo
+     * Método que inserta un Nivel de Proceso nuevo
      *
-     * @param objetoDocumento
+     * @param objetoNivel
      * @return
      */
-    public DocumentoEntity insertarDocumento(DocumentoEntity objetoDocumento) {
+    public NivelEntity insertarNivel(NivelEntity objetoNivel) {
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                objetoDocumento.setNumeroRespuesta(3);
-                objetoDocumento.setTrazaRespuesta("Error de Conexión " + validaConexion);
+                objetoNivel.setNumeroRespuesta(3);
+                objetoNivel.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                objetoDocumento.setIdDocumento(maxDocumento());
-                sesion.save(objetoDocumento);
+                objetoNivel.setIdNivel(maxMetodo());
+                sesion.save(objetoNivel);
                 tx.commit();
 
-                objetoDocumento.setTrazaRespuesta("Inserción de MetodoRecuperación exitoso");
-                objetoDocumento.setNumeroRespuesta(18);
-
+                objetoNivel.setTrazaRespuesta("Inserción de MetodoRecuperación exitoso");
+                objetoNivel.setNumeroRespuesta(18);
+                
             }
         } catch (Exception e) {
             e.printStackTrace();
-            objetoDocumento = new DocumentoEntity();
-            objetoDocumento.setNumeroRespuesta(0);
-            objetoDocumento.setTrazaRespuesta(e.getMessage());
-        } finally {
+            objetoNivel = new NivelEntity();
+            objetoNivel.setNumeroRespuesta(0);
+            objetoNivel.setTrazaRespuesta(e.getMessage());
+        }finally{
             try {
                 sesion.close();  
-
+                
             } catch (HibernateException hibernateException) {
                 hibernateException.printStackTrace();
             }
         }
-        return objetoDocumento;
+        return objetoNivel;
     }
 
     /**
-     * Método que trae el siguiente ID de la tabla GDO_TDOCU
+     * Método que trae el siguiente ID de la tabla ADM_TNIVE
      *
      * @return
      */
-    private int maxDocumento() {
+    private int maxMetodo() {
         int ret = -1;
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
             } else {
-                Query query = sesion.createQuery("SELECT MAX(idDocumento) FROM DocumentoEntity");
+                Query query = sesion.createQuery("SELECT MAX(idNivel) FROM NivelEntity");
                 ret = (int) query.uniqueResult();
                 ret++;
             }
@@ -101,30 +100,30 @@ public class DocumentoLogic {
     }
 
     /**
-     * Método que actualiza un Documento
+     * Método que actualiza un Nivel de Proceso
      *
-     * @param objetoDocumento
+     * @param objetoNivel
      * @return
      */
-    public DocumentoEntity actualizarDocumento(DocumentoEntity objetoDocumento) {
+    public NivelEntity actualizarNivel(NivelEntity objetoNivel) {
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                objetoDocumento.setNumeroRespuesta(3);
-                objetoDocumento.setTrazaRespuesta("Error de Conexión " + validaConexion);
+                objetoNivel.setNumeroRespuesta(3);
+                objetoNivel.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
                 System.out.println("JJ");
-                sesion.update(objetoDocumento);
+                sesion.update(objetoNivel);
                 tx.commit();
-
-                objetoDocumento.setTrazaRespuesta("Actualización de MetodoRecuperación exitoso");
-                objetoDocumento.setNumeroRespuesta(19);
+                
+                objetoNivel.setTrazaRespuesta("Actualización de MetodoRecuperación exitoso");
+                objetoNivel.setNumeroRespuesta(19);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            objetoDocumento = new DocumentoEntity();
-            objetoDocumento.setNumeroRespuesta(0);
-            objetoDocumento.setTrazaRespuesta(e.getMessage());
+            objetoNivel = new NivelEntity();
+            objetoNivel.setNumeroRespuesta(0);
+            objetoNivel.setTrazaRespuesta(e.getMessage());
         }finally{
             try {
                 sesion.close();  
@@ -133,15 +132,13 @@ public class DocumentoLogic {
                 hibernateException.printStackTrace();
             }
         }
-        return objetoDocumento;
+        return objetoNivel;
     }
 
     /**
-     * Método Método para consultar la lista de Documento
-     *
-     * @return
+     * Método Método para consultar la lista de Nivel de Proceso
      */
-    public ObjetoRetornaEntity listaDocumento() {
+    public ObjetoRetornaEntity listaNivel() {
         ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
         try {
             String validaConexion = initOperation();
@@ -149,89 +146,90 @@ public class DocumentoLogic {
                 retorna.setNumeroRespuesta(3);
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                Query query = sesion.createQuery("FROM DocumentoEntity d WHERE d.estadoDocumento<>'E'");
-                retorna.setRetorna((ArrayList<Object>) query.list());
-                retorna.setTrazaRespuesta("Consulta tabla Documento exitosa");
-                retorna.setNumeroRespuesta(22);
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            retorna = new ObjetoRetornaEntity();
-            retorna.setNumeroRespuesta(0);
-            retorna.setTrazaRespuesta(e.getMessage());
-        }finally{
-            try {
-                sesion.close();  
-                
-            } catch (HibernateException hibernateException) {
-                hibernateException.printStackTrace();
-            }
-        }
-        return retorna;
-    }
-
-    /**
-     * Método que retorna una lista de relaciones Usuarios-MacroProcesos
-     *
-     * @return
-     */
-    public ObjetoRetornaEntity listaUsuariosPorDocumento(int idDocumento) {
-        ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
-        try {
-            String validaConexion = initOperation();
-            if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                retorna.setNumeroRespuesta(3);
-                retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
-            } else {
-                Query query = query = sesion.createQuery("SELECT ump FROM UsuarioMacroprocesoEntity ump, UsuarioEntity u, AccionEntity a WHERE ump.idUsuario=u AND ump.idAccion=a AND a.idAccion=:idAccion");
-
-                query.setParameter("idAccion", idDocumento);
-                retorna.setRetorna((ArrayList<Object>) query.list());
-                retorna.setTrazaRespuesta("Consulta tabla usuario-Macroproceso exitosa");
-                retorna.setNumeroRespuesta(21);
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            retorna = new ObjetoRetornaEntity();
-            retorna.setNumeroRespuesta(0);
-            retorna.setTrazaRespuesta(e.getMessage());
-        }finally{
-            try {
-                sesion.close();  
-                
-            } catch (HibernateException hibernateException) {
-                hibernateException.printStackTrace();
-            }
-        }
-        return retorna;
-    }
-
-    /**
-     * Método que trae una lista de documetnos por Acción
-     *
-     * @param idAccion
-     * @return
-     */
-    public ObjetoRetornaEntity DocumentosPorAccion(AccionEntity idAccion) {
-        ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
-        try {
-            String validaConexion = initOperation();
-            if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                retorna.setNumeroRespuesta(3);
-                retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
-            } else {
-                Criteria criteria = sesion.createCriteria(DocumentoEntity.class);
-                criteria.add(Restrictions.eq("accionDocumento", idAccion));
+                Criteria criteria = sesion.createCriteria(NivelEntity.class);
+                criteria.add(Restrictions.ne("estadoNivel", "E"));
                 retorna.setRetorna((ArrayList<Object>) criteria.list());
-                retorna.setTrazaRespuesta("Consulta tabla Documentos exitosa");
-                retorna.setNumeroRespuesta(21);
-
+                retorna.setTrazaRespuesta("Consulta tabla Nivel exitosa");
+                retorna.setNumeroRespuesta(22);
+                
             }
         } catch (Exception e) {
             e.printStackTrace();
             retorna = new ObjetoRetornaEntity();
+            retorna.setNumeroRespuesta(0);
+            retorna.setTrazaRespuesta(e.getMessage());
+        }finally{
+            try {
+                sesion.close();  
+                
+            } catch (HibernateException hibernateException) {
+                hibernateException.printStackTrace();
+            }
+        }
+        return retorna;
+    }
+    /**
+     * Método que trae un nivel por su ID
+     * @param idNivel
+     * @return 
+     */
+    public NivelEntity nivelPorId(int idNivel){
+        NivelEntity retorna = new NivelEntity();
+        try {
+            String validaConexion = initOperation();
+            if (!"Ok".equalsIgnoreCase(validaConexion)) {
+                retorna.setNumeroRespuesta(3);
+                retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
+            } else {
+                Criteria criteria = sesion.createCriteria(NivelEntity.class);
+                criteria.add(Restrictions.eq("idNivel", idNivel));
+                retorna.setRetorna((ArrayList<Object>) criteria.list());
+                retorna.setTrazaRespuesta("Consulta tabla Nivel exitosa");
+                retorna.setNumeroRespuesta(22);
+                
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            retorna = new NivelEntity();
+            retorna.setNumeroRespuesta(0);
+            retorna.setTrazaRespuesta(e.getMessage());
+        }finally{
+            try {
+                sesion.close();  
+                
+            } catch (HibernateException hibernateException) {
+                hibernateException.printStackTrace();
+            }
+        }
+        return retorna;
+    }
+    /**
+     * Método que permite traer el nivel anterior al que se recibe de parametro por orden de Secuencia
+     * @param idNivel
+     * @return 
+     */
+    public NivelEntity anteriorNivel(int idNivel){
+        NivelEntity retorna = new NivelEntity();
+        try {
+            String validaConexion = initOperation();
+            if (!"Ok".equalsIgnoreCase(validaConexion)) {
+                retorna.setNumeroRespuesta(3);
+                retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
+            } else {
+                Criteria criteria = sesion.createCriteria(NivelEntity.class);
+                criteria.add(Restrictions.eq("idNivel", idNivel));
+                NivelEntity nivelAux=(NivelEntity) criteria.uniqueResult();
+                int secu=nivelAux.getSecuenciaNivel()-1;
+                Criteria criteria1=sesion.createCriteria(NivelEntity.class);
+                criteria1.add(Restrictions.eq("secuenciaNivel", secu));
+                retorna=(NivelEntity)  criteria1.uniqueResult();
+                retorna.setTrazaRespuesta("Consulta tabla Nivel exitosa");
+                retorna.setNumeroRespuesta(22);
+                
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            retorna = new NivelEntity();
             retorna.setNumeroRespuesta(0);
             retorna.setTrazaRespuesta(e.getMessage());
         }finally{

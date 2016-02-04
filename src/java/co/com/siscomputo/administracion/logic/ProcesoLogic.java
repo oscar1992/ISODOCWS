@@ -1,6 +1,6 @@
-package co.com.siscomputo.gestiondocumental.logic;
+package co.com.siscomputo.administracion.logic;
 
-import co.com.siscomputo.gestiondocumental.persistencia.GrupoDocumentoEntity;
+import co.com.siscomputo.administracion.persistencia.ProcesoEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -15,7 +15,7 @@ import org.hibernate.criterion.Restrictions;
  *
  * @author LENOVO
  */
-public class GrupoDocumentoLogic {
+public class ProcesoLogic {
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -41,36 +41,33 @@ public class GrupoDocumentoLogic {
     }
 
     /**
-     * Método que inserta un Grupos por Documento nuevo
+     * Método que inserta un Procesos nuevo
      *
-     * @param objetoGrupoDocumento
+     * @param objetoProceso
      * @return
      */
-    public GrupoDocumentoEntity insertarGrupoDocumento(GrupoDocumentoEntity objetoGrupoDocumento) {
+    public ProcesoEntity insertarProceso(ProcesoEntity objetoProceso) {
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                objetoGrupoDocumento.setNumeroRespuesta(3);
-                objetoGrupoDocumento.setTrazaRespuesta("Error de Conexión " + validaConexion);
+                objetoProceso.setNumeroRespuesta(3);
+                objetoProceso.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                objetoGrupoDocumento.setIdGrupoDocumento(maxMetodo());
-                if (objetoGrupoDocumento.getFecha() == null) {
-                    System.out.println("NULO");
-                } else {
-                    System.out.println("FECHA: " + objetoGrupoDocumento.getFecha().toString());
-                }
-                sesion.save(objetoGrupoDocumento);
+                objetoProceso.setIdProceso(maxMetodo());
+           
+                
+                sesion.save(objetoProceso);
                 tx.commit();
 
-                objetoGrupoDocumento.setTrazaRespuesta("Inserción de MetodoRecuperación exitoso");
-                objetoGrupoDocumento.setNumeroRespuesta(18);
+                objetoProceso.setTrazaRespuesta("Inserción de MetodoRecuperación exitoso");
+                objetoProceso.setNumeroRespuesta(18);
                  
             }
         } catch (Exception e) {
             e.printStackTrace();
-            objetoGrupoDocumento = new GrupoDocumentoEntity();
-            objetoGrupoDocumento.setNumeroRespuesta(0);
-            objetoGrupoDocumento.setTrazaRespuesta(e.getMessage());
+            objetoProceso = new ProcesoEntity();
+            objetoProceso.setNumeroRespuesta(0);
+            objetoProceso.setTrazaRespuesta(e.getMessage());
         }finally{
             try {
                 sesion.close();  
@@ -79,11 +76,11 @@ public class GrupoDocumentoLogic {
                 hibernateException.printStackTrace();
             }
         }
-        return objetoGrupoDocumento;
+        return objetoProceso;
     }
 
     /**
-     * Método que trae el siguiente ID de la tabla GDO_TGRDO
+     * Método que trae el siguiente ID de la tabla ADM_TPROC2
      *
      * @return
      */
@@ -94,7 +91,7 @@ public class GrupoDocumentoLogic {
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
             } else {
-                Query query = sesion.createQuery("SELECT MAX(idGrupoDocumento) FROM GrupoDocumentoEntity");
+                Query query = sesion.createQuery("SELECT MAX(idProceso) FROM ProcesoEntity");
                 ret = (int) query.uniqueResult();
                 ret++;
             }
@@ -105,30 +102,30 @@ public class GrupoDocumentoLogic {
     }
 
     /**
-     * Método que actualiza un Grupos por Documento
+     * Método que actualiza un Procesos
      *
-     * @param objetoGrupoDocumento
+     * @param objetoProceso
      * @return
      */
-    public GrupoDocumentoEntity actualizarGrupoDocumento(GrupoDocumentoEntity objetoGrupoDocumento) {
+    public ProcesoEntity actualizarProceso(ProcesoEntity objetoProceso) {
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                objetoGrupoDocumento.setNumeroRespuesta(3);
-                objetoGrupoDocumento.setTrazaRespuesta("Error de Conexión " + validaConexion);
+                objetoProceso.setNumeroRespuesta(3);
+                objetoProceso.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
                 System.out.println("JJ");
-                sesion.update(objetoGrupoDocumento);
+                sesion.update(objetoProceso);
                 tx.commit();
                  
-                objetoGrupoDocumento.setTrazaRespuesta("Actualización de MetodoRecuperación exitoso");
-                objetoGrupoDocumento.setNumeroRespuesta(19);
+                objetoProceso.setTrazaRespuesta("Actualización de MetodoRecuperación exitoso");
+                objetoProceso.setNumeroRespuesta(19);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            objetoGrupoDocumento = new GrupoDocumentoEntity();
-            objetoGrupoDocumento.setNumeroRespuesta(0);
-            objetoGrupoDocumento.setTrazaRespuesta(e.getMessage());
+            objetoProceso = new ProcesoEntity();
+            objetoProceso.setNumeroRespuesta(0);
+            objetoProceso.setTrazaRespuesta(e.getMessage());
         }finally{
             try {
                 sesion.close();  
@@ -137,13 +134,15 @@ public class GrupoDocumentoLogic {
                 hibernateException.printStackTrace();
             }
         }
-        return objetoGrupoDocumento;
+        return objetoProceso;
     }
 
     /**
-     * Método Método para consultar la lista de Grupos por Documento
+     * Método Método para consultar la lista de Procesos
+     *
+     * @return
      */
-    public ObjetoRetornaEntity listaGrupoDocumento() {
+    public ObjetoRetornaEntity listaProceso() {
         ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
         try {
             String validaConexion = initOperation();
@@ -151,10 +150,9 @@ public class GrupoDocumentoLogic {
                 retorna.setNumeroRespuesta(3);
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                Criteria criteria = sesion.createCriteria(GrupoDocumentoEntity.class);
-                criteria.add(Restrictions.eq("estadoGrupoDocumento", "E"));
-                retorna.setRetorna((ArrayList<Object>) criteria.list());
-                retorna.setTrazaRespuesta("Consulta tabla GrupoDocumento exitosa");
+                Query query = sesion.createQuery("FROM ProcesoEntity d WHERE d.estadoProceso<>'E'");
+                retorna.setRetorna((ArrayList<Object>) query.list());
+                retorna.setTrazaRespuesta("Consulta tabla Proceso exitosa");
                 retorna.setNumeroRespuesta(22);
                  
             }
@@ -172,5 +170,41 @@ public class GrupoDocumentoLogic {
             }
         }
         return retorna;
+    }
+/**
+ * Método que retorna un proceso po su ID
+ * @param idProceso
+ * @return 
+ */
+    public ProcesoEntity procesoPorId(int idProceso) {
+        ProcesoEntity pe = new ProcesoEntity();
+        try {
+            String validaConexion = initOperation();
+            if (!"Ok".equalsIgnoreCase(validaConexion)) {
+                pe.setNumeroRespuesta(3);
+                pe.setTrazaRespuesta("Error de Conexión " + validaConexion);
+            } else {
+                Criteria criteria = sesion.createCriteria(ProcesoEntity.class);
+                criteria.add(Restrictions.eq("idProceso", idProceso));                
+                pe= (ProcesoEntity) criteria.uniqueResult();
+                System.out.println("PE: "+pe.getNombreProceso());
+                pe.setTrazaRespuesta("Consulta tabla Proceso exitosa");
+                pe.setNumeroRespuesta(22);
+                 
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            pe = new ProcesoEntity();
+            pe.setNumeroRespuesta(0);
+            pe.setTrazaRespuesta(e.getMessage());
+        }finally{
+            try {
+                sesion.close();  
+                
+            } catch (HibernateException hibernateException) {
+                hibernateException.printStackTrace();
+            }
+        }
+        return pe;
     }
 }

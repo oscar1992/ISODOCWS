@@ -44,9 +44,12 @@
     <mapping class="co.com.siscomputo.administracion.persistencia.ProcesoEntity"/>
     <mapping class="co.com.siscomputo.administracion.persistencia.GrupoProcesoEntity"/>
     <mapping class="co.com.siscomputo.administracion.persistencia.NivelEntity"/>
+    <mapping class="co.com.siscomputo.administracion.persistencia.RutasEntity"/>
+    <mapping class="co.com.siscomputo.administracion.persistencia.ExtensionesEntity"/>
     <mapping class="co.com.siscomputo.gestiondocumental.persistencia.DocumentoEntity"/>
     <mapping class="co.com.siscomputo.gestiondocumental.persistencia.DocumentoProcesoEntity"/>
     <mapping class="co.com.siscomputo.gestiondocumental.persistencia.GrupoDocumentoEntity"/>
     <mapping class="co.com.siscomputo.gestiondocumental.persistencia.DocumentoRolEntity"/>
+    <mapping class="co.com.siscomputo.gestiondocumental.persistencia.UsuarioDocumentoEntity"/>
   </session-factory>
 </hibernate-configuration>

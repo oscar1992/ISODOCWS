@@ -23,21 +23,25 @@ import co.com.siscomputo.administracion.persistencia.TiposAccesoEntity;
 import co.com.siscomputo.administracion.persistencia.UsuarioGrupoUsuarioEntity;
 import co.com.siscomputo.gestiondocumental.logic.GrupoDocumentoLogic;
 import co.com.siscomputo.gestiondocumental.persistencia.GrupoDocumentoEntity;
-import co.com.siscomputo.usuario.logic.AccionLogic;
-import co.com.siscomputo.usuario.logic.DisposicionesLogic;
-import co.com.siscomputo.usuario.logic.ElaboradorLogic;
-import co.com.siscomputo.usuario.logic.GrupoProcesoLogic;
-import co.com.siscomputo.usuario.logic.GrupoUsuariosLogic;
-import co.com.siscomputo.usuario.logic.MetodoProteccionLogic;
-import co.com.siscomputo.usuario.logic.MetodoRecuperacionLogic;
-import co.com.siscomputo.usuario.logic.ModificadorLogic;
-import co.com.siscomputo.usuario.logic.NivelLogic;
-import co.com.siscomputo.usuario.logic.PlantillaLogic;
-import co.com.siscomputo.usuario.logic.ProcesoLogic;
-import co.com.siscomputo.usuario.logic.TipoAlmacenamientoLogic;
-import co.com.siscomputo.usuario.logic.TipoControlDistribucionLogic;
-import co.com.siscomputo.usuario.logic.TiposAccesoLogic;
-import co.com.siscomputo.usuario.logic.UsuarioGrupoUsuarioLogic;
+import co.com.siscomputo.administracion.logic.AccionLogic;
+import co.com.siscomputo.administracion.logic.DisposicionesLogic;
+import co.com.siscomputo.administracion.logic.ElaboradorLogic;
+import co.com.siscomputo.administracion.logic.ExtensionesLogic;
+import co.com.siscomputo.administracion.logic.GrupoProcesoLogic;
+import co.com.siscomputo.administracion.logic.GrupoUsuariosLogic;
+import co.com.siscomputo.administracion.logic.MetodoProteccionLogic;
+import co.com.siscomputo.administracion.logic.MetodoRecuperacionLogic;
+import co.com.siscomputo.administracion.logic.ModificadorLogic;
+import co.com.siscomputo.administracion.logic.NivelLogic;
+import co.com.siscomputo.administracion.logic.PlantillaLogic;
+import co.com.siscomputo.administracion.logic.ProcesoLogic;
+import co.com.siscomputo.administracion.logic.RutasLogic;
+import co.com.siscomputo.administracion.logic.TipoAlmacenamientoLogic;
+import co.com.siscomputo.administracion.logic.TipoControlDistribucionLogic;
+import co.com.siscomputo.administracion.logic.TiposAccesoLogic;
+import co.com.siscomputo.administracion.logic.UsuarioGrupoUsuarioLogic;
+import co.com.siscomputo.administracion.persistencia.ExtensionesEntity;
+import co.com.siscomputo.administracion.persistencia.RutasEntity;
 import co.com.siscomputo.utilidades.Valida;
 import java.util.ArrayList;
 import javax.jws.WebService;
@@ -598,10 +602,12 @@ public class Administacion {
         AccionLogic accionLogic = new AccionLogic();
         return accionLogic.listaAccion();
     }
+
     /**
      * Método que consulta una acción por ID
+     *
      * @param idAccion
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "accionPorId")
     public AccionEntity accionPorId(@WebParam(name = "idAccion") int idAccion) {
@@ -615,11 +621,12 @@ public class Administacion {
             return metodoRecuperacionLogic.AccionPorId(idAccion);
         }
     }
+
     /**
      * Método que consulta una acción por ID
-     * 
+     *
      * @param idUsuario
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "accionesPorUsuario")
     public ObjetoRetornaEntity accionesPorUsuario(@WebParam(name = "idUsuario") int idUsuario) {
@@ -633,11 +640,13 @@ public class Administacion {
             return metodoRecuperacionLogic.accionesPorUsuario(idUsuario);
         }
     }
+
     /**
      * Método que consulta una acción por ID
+     *
      * @param idUsuario
      * @
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "accionPorUsuario")
     public ObjetoRetornaEntity accionPorUsuario(@WebParam(name = "idUsuario") int idUsuario) {
@@ -651,7 +660,7 @@ public class Administacion {
             return metodoRecuperacionLogic.listaAccionPorUsuario(idUsuario);
         }
     }
-    
+
     /**
      * Método que permite insertar un Grupo de Usuarios nuevo
      *
@@ -692,6 +701,7 @@ public class Administacion {
 
     /**
      * Método que trae un grupo de usuarios por ID
+     *
      * @return
      */
     @WebMethod(operationName = "grupoUsuariosPorId")
@@ -706,15 +716,17 @@ public class Administacion {
             return metodoRecuperacionLogic.GrupoPorId(idGrupo);
         }
     }
+
     /**
      * Método que trae un grupo de usuarios por ID
+     *
      * @return
      */
     @WebMethod(operationName = "grupoUsuariosPorUsuario")
     public ObjetoRetornaEntity grupoUsuariosPorUsuario(@WebParam(name = "idUsuario") int idUsuario) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(idUsuario, "idUsuario"))) {
-           ObjetoRetornaEntity ret = new ObjetoRetornaEntity();
+            ObjetoRetornaEntity ret = new ObjetoRetornaEntity();
             ret.setTrazaRespuesta(valida.valida(idUsuario, "idUsuario"));
             return ret;
         } else {
@@ -1031,8 +1043,10 @@ public class Administacion {
             return metodoRecuperacionLogic.actualizarNivel(objeto);
         }
     }
+
     /**
-     * Método que permite traer un nivel por ID     * @param idNivel
+     * Método que permite traer un nivel por ID * @param idNivel
+     *
      * @param idNivel
      * @return
      */
@@ -1048,8 +1062,11 @@ public class Administacion {
             return metodoRecuperacionLogic.nivelPorId(idNivel);
         }
     }
+
     /**
-     * Método que permite traer el nivel anterior al que se recibe de parametro por orden de Secuencia
+     * Método que permite traer el nivel anterior al que se recibe de parametro
+     * por orden de Secuencia
+     *
      * @param idNivel
      * @return
      */
@@ -1128,6 +1145,111 @@ public class Administacion {
 
     }
 
-    
+    /**
+     * Método que permite ingresar una ruta nueva
+     *
+     * @param rutas
+     * @return
+     */
+    @WebMethod(operationName = "insertarRutas")
+    public RutasEntity insertarRutas(@WebParam(name = "rutas") RutasEntity rutas) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(rutas.getTipoRutas(), "Ruta"))) {
+            RutasEntity ret = new RutasEntity();
+            ret.setTrazaRespuesta(valida.valida(rutas.getTipoRutas(), "Ruta"));
+            return ret;
+        } else {
+            RutasLogic rutasLogic = new RutasLogic();
+            return rutasLogic.ingresarRuta(rutas);
+        }
+    }
 
+    /**
+     * Método que permite actualizar una ruta     *
+     * @param rutas
+     * @return
+     */
+    @WebMethod(operationName = "actulizarRutas")
+    public RutasEntity actulizarRutas(@WebParam(name = "rutas") RutasEntity rutas) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(rutas.getTipoRutas(), "Ruta"))) {
+            RutasEntity ret = new RutasEntity();
+            ret.setTrazaRespuesta(valida.valida(rutas.getTipoRutas(), "Ruta"));
+            return ret;
+        } else {
+            RutasLogic rutasLogic = new RutasLogic();
+            return rutasLogic.acualizarRutas(rutas);
+        }
+    }
+    /**
+     * Métodl que trae una lista de rutas
+     * @return 
+     */
+    @WebMethod(operationName = "listaRutas")
+    public ObjetoRetornaEntity listaRutas() {
+        RutasLogic rutasLogic = new RutasLogic();
+        return rutasLogic.listaRutas();
+    }
+    /**
+     * Método que permite obtener una ruta por Tipo
+     * @param tipo
+     * @return 
+     */
+    @WebMethod(operationName = "rutaPorTipo")
+    public RutasEntity rutaPorTipo(@WebParam(name = "rutas") String tipo) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(tipo, "Ruta"))) {
+            RutasEntity ret = new RutasEntity();
+            ret.setTrazaRespuesta(valida.valida(tipo, "Ruta"));
+            return ret;
+        } else {
+            RutasLogic rutasLogic = new RutasLogic();
+            return rutasLogic.rutaPorTipo(tipo);
+        }
+    }
+    
+    /**
+     * Método que permite insertar una Extension de Archivo nuevo
+     * @param objeto
+     * @return 
+     */
+    @WebMethod(operationName = "insertarExtensiones")
+    public ExtensionesEntity insertarExtensiones(@WebParam(name = "objeto") ExtensionesEntity objeto){
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getTipoExtensiones(), "Sede"))) {
+            ExtensionesEntity ret = new ExtensionesEntity();
+            ret.setTrazaRespuesta(valida.valida(objeto.getTipoExtensiones(), "Sede"));
+            return ret;
+        } else {
+        ExtensionesLogic extensionesLogic=new ExtensionesLogic();
+        return extensionesLogic.insertarExtensiones(objeto);
+        }
+}
+     /**
+     * Método que permite actualizar una Extension de Archivo
+     * @param objeto
+     * @return 
+     */
+    @WebMethod(operationName = "actualizarExtensiones")
+    public ExtensionesEntity actualizarExtensiones(@WebParam(name = "objeto")ExtensionesEntity objeto){
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getTipoExtensiones(), "Sede"))) {
+            ExtensionesEntity ret = new ExtensionesEntity();
+            ret.setTrazaRespuesta(valida.valida(objeto.getTipoExtensiones(), "Sede"));
+            return ret;
+        } else {
+            ExtensionesLogic metodoRecuperacionLogic=new ExtensionesLogic();
+            return metodoRecuperacionLogic.actualizarExtensiones(objeto);
+        }
+    }
+    /**
+     * Método que trae una lista de Extensiones de Archivo
+     * @return 
+     */
+    @WebMethod(operationName = "listaExtensiones")
+    public ObjetoRetornaEntity listaExtensiones(){
+        ExtensionesLogic extensionesLogic=new ExtensionesLogic();
+        return extensionesLogic.listaExtensiones();
+     }
+    
 }
