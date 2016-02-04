@@ -18,6 +18,11 @@
         <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>Proveedores</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Usuario</servlet-name>
         <url-pattern>/Usuario</url-pattern>
@@ -29,6 +34,10 @@
     <servlet-mapping>
         <servlet-name>GestionDocumental</servlet-name>
         <url-pattern>/GestionDocumental</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Proveedores</servlet-name>
+        <url-pattern>/Proveedores</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
