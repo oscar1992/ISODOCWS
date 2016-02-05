@@ -23,12 +23,7 @@
     <mapping class="co.com.siscomputo.administracion.persistencia.EmpresaEntity"/>
     <mapping class="co.com.siscomputo.administracion.persistencia.SedeEmpresaEntity"/>
     <mapping class="co.com.siscomputo.administracion.persistencia.FestivosEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.MacroprocesosEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.ProcesosEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.SubprocesoEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.UsuarioMacroprocesoEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.UsuarioProcesoEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.UsuarioSubprocesoEntity"/>
+    
     <mapping class="co.com.siscomputo.administracion.persistencia.TiposDocumentalesEntity"/>
     <mapping class="co.com.siscomputo.administracion.persistencia.DisposicionesEntity"/>
     <mapping class="co.com.siscomputo.administracion.persistencia.MetodoRecuperacionEntity"/>
@@ -52,5 +47,9 @@
     <mapping class="co.com.siscomputo.gestiondocumental.persistencia.DocumentoRolEntity"/>
     <mapping class="co.com.siscomputo.gestiondocumental.persistencia.UsuarioDocumentoEntity"/>
     <mapping class="co.com.siscomputo.proveedores.persistencia.LineaEntity"/>
+    <mapping class="co.com.siscomputo.proveedores.persistencia.TipoDocumentoEntity"/>
+    <mapping class="co.com.siscomputo.proveedores.persistencia.EstadoProveedorEntity"/>
+    <mapping class="co.com.siscomputo.proveedores.persistencia.TipoProveedorEntity"/>
+    <mapping class="co.com.siscomputo.proveedores.persistencia.TipoTributarioEntity"/>
   </session-factory>
 </hibernate-configuration>
