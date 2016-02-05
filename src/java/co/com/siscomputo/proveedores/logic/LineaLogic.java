@@ -132,7 +132,7 @@ public class LineaLogic {
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
                 Criteria criteria = sesion.createCriteria(LineaEntity.class);
-                criteria.add(Restrictions.eq("estadoLinea", "E"));
+                criteria.add(Restrictions.ne("estadoLinea", "E"));
                 retorna.setRetorna((ArrayList<Object>) criteria.list());
                 retorna.setTrazaRespuesta("Consulta tabla Linea exitosa");
                 retorna.setNumeroRespuesta(22);

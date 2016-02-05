@@ -3,11 +3,10 @@ package co.com.siscomputo.gestiondocumental.persistencia;
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.administracion.persistencia.AccionEntity;
 import co.com.siscomputo.administracion.persistencia.EmpresaEntity;
-import co.com.siscomputo.administracion.persistencia.MacroprocesosEntity;
+
 import co.com.siscomputo.administracion.persistencia.PlantillaEntity;
 import co.com.siscomputo.administracion.persistencia.ProcesoEntity;
-import co.com.siscomputo.administracion.persistencia.ProcesosEntity;
-import co.com.siscomputo.administracion.persistencia.SubprocesoEntity;
+
 import co.com.siscomputo.administracion.persistencia.TiposDocumentalesEntity;
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -41,15 +40,6 @@ public class DocumentoEntity extends ObjetoRetornaEntity implements Serializable
     private String versionDocumento;
     @Column(name = "DOCU_ESTA")
     private String estadoDocumento;
-    @JoinColumn(name="DOCU_MACR")
-    @ManyToOne
-    private MacroprocesosEntity macroProcesoDocumento;
-    @JoinColumn(name="DOCU_PROC")
-    @ManyToOne
-    private ProcesosEntity procesoProcesoDocumento;
-    @JoinColumn(name="DOCU_SUBP")
-    @ManyToOne
-    private SubprocesoEntity subProcesoProcesoDocumento;
     @JoinColumn(name = "DOCU_ACCI")
     @ManyToOne
     private AccionEntity accionDocumento;
@@ -107,30 +97,6 @@ public class DocumentoEntity extends ObjetoRetornaEntity implements Serializable
 
     public void setEstadoDocumento(String estadoDocumento) {
         this.estadoDocumento = estadoDocumento;
-    }
-
-    public MacroprocesosEntity getMacroProcesoDocumento() {
-        return macroProcesoDocumento;
-    }
-
-    public void setMacroProcesoDocumento(MacroprocesosEntity macroProcesoDocumento) {
-        this.macroProcesoDocumento = macroProcesoDocumento;
-    }
-
-    public ProcesosEntity getProcesoProcesoDocumento() {
-        return procesoProcesoDocumento;
-    }
-
-    public void setProcesoProcesoDocumento(ProcesosEntity procesoProcesoDocumento) {
-        this.procesoProcesoDocumento = procesoProcesoDocumento;
-    }
-
-    public SubprocesoEntity getSubProcesoProcesoDocumento() {
-        return subProcesoProcesoDocumento;
-    }
-
-    public void setSubProcesoProcesoDocumento(SubprocesoEntity subProcesoProcesoDocumento) {
-        this.subProcesoProcesoDocumento = subProcesoProcesoDocumento;
     }
 
     public AccionEntity getAccionDocumento() {
