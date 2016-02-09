@@ -6,14 +6,11 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
-import co.com.siscomputo.administracion.persistencia.GrupoUsuariosEntity;
 import co.com.siscomputo.administracion.persistencia.UsuarioGrupoUsuarioEntity;
 import co.com.siscomputo.gestiondocumental.persistencia.GrupoDocumentoEntity;
 import java.util.ArrayList;
-import java.util.Arrays;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
@@ -156,8 +153,7 @@ public class AccionLogic {
                 Query query = sesion.createQuery("FROM AccionEntity d WHERE d.estadoAccion<>'E'");
                 retorna.setRetorna((ArrayList<Object>) query.list());
                 retorna.setTrazaRespuesta("Consulta tabla Accion exitosa");
-                retorna.setNumeroRespuesta(22);
-                
+                retorna.setNumeroRespuesta(22);                
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -215,8 +211,7 @@ public class AccionLogic {
                  }*/
                 Criteria criteria = sesion.createCriteria(UsuarioGrupoUsuarioEntity.class)
                         .add(Restrictions.eq("usuario.idUsuario", idUsuario))
-                        .setProjection(Projections.groupProperty("grupoUsuario"));
-                
+                        .setProjection(Projections.groupProperty("grupoUsuario"));                
                 Criteria criteria1 = sesion.createCriteria(GrupoDocumentoEntity.class);
                 criteria1.createAlias("accionGrupoDocumento", "agd").add(Restrictions.eq("agd.estadoAccion", "A"));//ALIAS!!!!!!!
                 criteria1.add(Property.forName("grupousuariosGrupoDocumento").in(criteria.list()));                
@@ -296,16 +291,13 @@ public class AccionLogic {
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
                 retorna.setNumeroRespuesta(3);
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
-            } else {
-                Criteria criteria = sesion.createCriteria(AccionEntity.class)
-                
-                ;
-                
-
-                retorna.setRetorna((ArrayList<Object>) criteria.list());
+            } else {      
+                Query query=sesion.createQuery("select distinct(a) from AccionEntity a, GrupoUsuariosEntity gue, GrupoProcesoEntity gpe, UsuarioGrupoUsuarioEntity ugue Where a=gpe.accionGrupoProceso AND gue=gpe.grupoUsuarioProceso AND ugue.usuario.idUsuario=:idU AND ugue.grupoUsuario=gue AND a.estadoAccion<>'E'");
+                query.setParameter("idU", idUsuario);
+                retorna.setRetorna((ArrayList<Object>) query.list());
+                System.out.println("TAMA: "+query.list().size());
                 retorna.setNumeroRespuesta(22);
-                retorna.setTrazaRespuesta("Consulta Accion por ID exitosa");
-                
+                retorna.setTrazaRespuesta("Consulta Accion por ID exitosa");                
             }
         } catch (Exception e) {
             e.printStackTrace();

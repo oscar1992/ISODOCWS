@@ -49,6 +49,10 @@ public class DocumentoEntity extends ObjetoRetornaEntity implements Serializable
     @JoinColumn(name = "DOCU_PROC2")
     @OneToOne
     private ProcesoEntity procesoDocumento;
+    @Column(name = "DOCU_FCRE")
+    private String fechaDocumento;
+    @Column(name = "DOCU_RUTA")
+    private String rutaDocumento;
     
     public int getIdDocumento() {
         return idDocumento;
@@ -121,6 +125,22 @@ public class DocumentoEntity extends ObjetoRetornaEntity implements Serializable
 
     public void setProcesoDocumento(ProcesoEntity procesoDocumento) {
         this.procesoDocumento = procesoDocumento;
+    }
+
+    public String getFechaDocumento() {
+        return fechaDocumento;
+    }
+
+    public void setFechaDocumento(String fechaDocumento) {
+        this.fechaDocumento = fechaDocumento;
+    }
+
+    public String getRutaDocumento() {
+        return rutaDocumento;
+    }
+
+    public void setRutaDocumento(String rutaDocumento) {
+        this.rutaDocumento = rutaDocumento;
     }
     
     

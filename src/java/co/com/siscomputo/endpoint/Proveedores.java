@@ -6,11 +6,13 @@
 package co.com.siscomputo.endpoint;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
+import co.com.siscomputo.proveedores.logic.CuentasProveedoresLogic;
 import co.com.siscomputo.proveedores.logic.EstadoProveedorLogic;
 import co.com.siscomputo.proveedores.logic.LineaLogic;
 import co.com.siscomputo.proveedores.logic.TipoDocumentoLogic;
 import co.com.siscomputo.proveedores.logic.TipoProveedorLogic;
 import co.com.siscomputo.proveedores.logic.TipoTributarioLogic;
+import co.com.siscomputo.proveedores.persistencia.CuentasProveedoresEntity;
 import co.com.siscomputo.proveedores.persistencia.EstadoProveedorEntity;
 import co.com.siscomputo.proveedores.persistencia.LineaEntity;
 import co.com.siscomputo.proveedores.persistencia.TipoDocumentoEntity;
@@ -215,6 +217,7 @@ public class Proveedores {
 
     /**
      * Método que trae una lista de Tipo de Proveedor
+     *
      * @return
      */
     @WebMethod(operationName = "listaTipoProveedor")
@@ -222,49 +225,103 @@ public class Proveedores {
         TipoProveedorLogic tipoProveedorLogic = new TipoProveedorLogic();
         return tipoProveedorLogic.listaTipoProveedor();
     }
-    
+
     /**
      * Método que permite insertar un Tipo Tributario nuevo
+     *
      * @param objeto
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "insertarTipoTributario")
-    public TipoTributarioEntity insertarTipoTributario(@WebParam(name = "objeto") TipoTributarioEntity objeto){
+    public TipoTributarioEntity insertarTipoTributario(@WebParam(name = "objeto") TipoTributarioEntity objeto) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getNombreTipoTributario(), "Sede"))) {
             TipoTributarioEntity ret = new TipoTributarioEntity();
             ret.setTrazaRespuesta(valida.valida(objeto.getNombreTipoTributario(), "Sede"));
             return ret;
         } else {
-        TipoTributarioLogic tipoTributarioLogic=new TipoTributarioLogic();
-        return tipoTributarioLogic.insertarTipoTributario(objeto);
+            TipoTributarioLogic tipoTributarioLogic = new TipoTributarioLogic();
+            return tipoTributarioLogic.insertarTipoTributario(objeto);
         }
-}
-     /**
+    }
+
+    /**
      * Método que permite actualizar un Tipo Tributario
+     *
      * @param objeto
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "actualizarTipoTributario")
-    public TipoTributarioEntity actualizarTipoTributario(@WebParam(name = "objeto")TipoTributarioEntity objeto){
+    public TipoTributarioEntity actualizarTipoTributario(@WebParam(name = "objeto") TipoTributarioEntity objeto) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getNombreTipoTributario(), "Sede"))) {
             TipoTributarioEntity ret = new TipoTributarioEntity();
             ret.setTrazaRespuesta(valida.valida(objeto.getNombreTipoTributario(), "Sede"));
             return ret;
         } else {
-            TipoTributarioLogic metodoRecuperacionLogic=new TipoTributarioLogic();
+            TipoTributarioLogic metodoRecuperacionLogic = new TipoTributarioLogic();
             return metodoRecuperacionLogic.actualizarTipoTributario(objeto);
         }
     }
+
     /**
      * Método que trae una lista de Tipo Tributario
-     * @return 
+     *
+     * @return
      */
     @WebMethod(operationName = "listaTipoTributario")
-    public ObjetoRetornaEntity listaTipoTributario(){
-        TipoTributarioLogic tipoTributarioLogic=new TipoTributarioLogic();
+    public ObjetoRetornaEntity listaTipoTributario() {
+        TipoTributarioLogic tipoTributarioLogic = new TipoTributarioLogic();
         return tipoTributarioLogic.listaTipoTributario();
-     }
-    
+    }
+
+    /**
+     * Método que permite insertar un Tipo de Cuenta de Proveedor nuevo
+     *
+     * @param objeto
+     * @return
+     */
+    @WebMethod(operationName = "insertarCuentasProveedores")
+    public CuentasProveedoresEntity insertarCuentasProveedores(@WebParam(name = "objeto") CuentasProveedoresEntity objeto) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getNombreCuentasProveedores(), "Sede"))) {
+            CuentasProveedoresEntity ret = new CuentasProveedoresEntity();
+            ret.setTrazaRespuesta(valida.valida(objeto.getNombreCuentasProveedores(), "Sede"));
+            return ret;
+        } else {
+            CuentasProveedoresLogic cuentasProveedoresLogic = new CuentasProveedoresLogic();
+            return cuentasProveedoresLogic.insertarCuentasProveedores(objeto);
+        }
+    }
+
+    /**
+     * Método que permite actualizar un Tipo de Cuenta de Proveedor
+     *
+     * @param objeto
+     * @return
+     */
+    @WebMethod(operationName = "actualizarCuentasProveedores")
+    public CuentasProveedoresEntity actualizarCuentasProveedores(@WebParam(name = "objeto") CuentasProveedoresEntity objeto) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getNombreCuentasProveedores(), "Sede"))) {
+            CuentasProveedoresEntity ret = new CuentasProveedoresEntity();
+            ret.setTrazaRespuesta(valida.valida(objeto.getNombreCuentasProveedores(), "Sede"));
+            return ret;
+        } else {
+            CuentasProveedoresLogic metodoRecuperacionLogic = new CuentasProveedoresLogic();
+            return metodoRecuperacionLogic.actualizarCuentasProveedores(objeto);
+        }
+    }
+
+    /**
+     * Método que trae una lista de Tipo de Cuenta de Proveedor
+     *
+     * @return
+     */
+    @WebMethod(operationName = "listaCuentasProveedores")
+    public ObjetoRetornaEntity listaCuentasProveedores() {
+        CuentasProveedoresLogic cuentasProveedoresLogic = new CuentasProveedoresLogic();
+        return cuentasProveedoresLogic.listaCuentasProveedores();
+    }
+
 }

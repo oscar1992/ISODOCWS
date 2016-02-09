@@ -11,6 +11,7 @@ import co.com.siscomputo.gestiondocumental.persistencia.DocumentoEntity;
 import co.com.siscomputo.gestiondocumental.logic.DocumentoLogic;
 import co.com.siscomputo.gestiondocumental.logic.DocumentoProcesoLogic;
 import co.com.siscomputo.gestiondocumental.logic.DocumentoRolLogic;
+import co.com.siscomputo.gestiondocumental.logic.FiltroLogic;
 import co.com.siscomputo.gestiondocumental.logic.UsuarioDocumentoLogic;
 import co.com.siscomputo.gestiondocumental.persistencia.DocumentoProcesoEntity;
 import co.com.siscomputo.gestiondocumental.persistencia.DocumentoRolEntity;
@@ -219,4 +220,17 @@ public class GestionDocumental {
         return usuarioDocumentoLogic.listaUsuarioDocumento();
      
     }
+    
+    /**
+     * Método que trae una lista de documentos filatrdos por varios cirterios
+     * @param idTipoDocumental
+     * @param idPlantilla
+     * @return 
+     */
+    @WebMethod(operationName = "documetosFiltrados")
+    public ObjetoRetornaEntity documentosFiltrados(@WebParam(name = "idTipoDoc")Integer idTipoDocumental, @WebParam(name = "idPlantilla")Integer idPlantilla, @WebParam(name = "idAccion")Integer idAccion){
+        FiltroLogic filtroLogic=new FiltroLogic();
+        return filtroLogic.documentosFiltrado(idTipoDocumental, idPlantilla, idAccion);
+    }
+    
 }

@@ -575,7 +575,6 @@ public class Administacion {
 
     /**
      * Método que permite actualizar un Acción
-     *
      * @param objeto
      * @return
      */
@@ -624,7 +623,6 @@ public class Administacion {
 
     /**
      * Método que consulta una acción por ID
-     *
      * @param idUsuario
      * @return
      */
@@ -633,9 +631,9 @@ public class Administacion {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(idUsuario, "Acción"))) {
             ObjetoRetornaEntity ret = new ObjetoRetornaEntity();
-            ret.setTrazaRespuesta(valida.valida(idUsuario, "Acción"));
-            return ret;
-        } else {
+            ret.setTrazaRespuesta(valida.valida(idUsuario, "Acción"));            
+            return ret;            
+        } else {            
             AccionLogic metodoRecuperacionLogic = new AccionLogic();
             return metodoRecuperacionLogic.accionesPorUsuario(idUsuario);
         }
@@ -643,9 +641,7 @@ public class Administacion {
 
     /**
      * Método que consulta una acción por ID
-     *
      * @param idUsuario
-     * @
      * @return
      */
     @WebMethod(operationName = "accionPorUsuario")
