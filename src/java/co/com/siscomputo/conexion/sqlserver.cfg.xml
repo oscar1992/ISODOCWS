@@ -52,5 +52,6 @@
     <mapping class="co.com.siscomputo.gestiondocumental.persistencia.DocumentoRolEntity"/>
     <mapping class="co.com.siscomputo.gestiondocumental.persistencia.UsuarioDocumentoEntity"/>
     <mapping class="co.com.siscomputo.proveedores.persistencia.LineaEntity"/>
+    <mapping class="co.com.siscomputo.proveedores.persistencia.TipoCuentaEntity"/>
   </session-factory>
 </hibernate-configuration>

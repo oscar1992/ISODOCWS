@@ -6,7 +6,9 @@
 package co.com.siscomputo.endpoint;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
+import co.com.siscomputo.proveedores.persistencia.TipoCuentaEntity;
 import co.com.siscomputo.proveedores.logic.LineaLogic;
+import co.com.siscomputo.proveedores.logic.TipoCuentaLogic;
 import co.com.siscomputo.proveedores.persistencia.LineaEntity;
 import co.com.siscomputo.utilidades.Valida;
 import javax.jws.WebMethod;
@@ -69,4 +71,54 @@ public class Proveedores {
         return lineaLogic.listaLinea();
     }
 
+    /**
+     * Metodo web que permite ingresar un tipo de cuenta
+     *
+     * @param tipoCuenta
+     * @return
+     */
+    @WebMethod(operationName = "insertarTipoCuenta")
+    public TipoCuentaEntity insertaTipoCuenta(@WebParam(name = "tipoCuenta") TipoCuentaEntity tipoCuenta) {
+        Valida valida = new Valida();
+        TipoCuentaEntity Cuenta = new TipoCuentaEntity();
+        if ("OK".equalsIgnoreCase(valida.valida(tipoCuenta.getEstadoCuenta(), "estado"))) {
+            TipoCuentaLogic logica = new TipoCuentaLogic();
+            logica.insertarTipoCuenta(tipoCuenta);
+        } else {
+            tipoCuenta.setTrazaRespuesta(valida.valida(tipoCuenta.getIdTipoCuenta(), "estado"));
+            tipoCuenta.setNumeroRespuesta(0);
+            return Cuenta;
+        }
+        return Cuenta;
+    }
+
+    /**
+     * Metodo para actualizar el tipo de cuenta de un proveedor
+     *
+     * @param tipoCuenta
+     * @return
+     */
+    @WebMethod(operationName = "actualizarTipoCuenta")
+    public ObjetoRetornaEntity actualizarTipoCuenta(@WebParam(name = "tipoCuenta") TipoCuentaEntity tipoCuenta) {
+        Valida valida = new Valida();
+        if ("OK".equalsIgnoreCase(valida.valida(tipoCuenta.getIdTipoCuenta(), "IdTipoCuenta"))) {
+            TipoCuentaLogic logica = new TipoCuentaLogic();
+            return logica.actualizarTipoCuenta(tipoCuenta);
+        } else {
+            TipoCuentaEntity cuenta = new TipoCuentaEntity();
+            cuenta.setTrazaRespuesta(valida.valida(tipoCuenta.getIdTipoCuenta(), "IdTipoCuenta"));
+            return cuenta;
+        }
+    }
+
+    /**
+     * Metodo para traer todos los tipos de documento
+     *
+     * @return
+     */
+    @WebMethod(operationName = "listaTipoCuenta")
+    public ObjetoRetornaEntity listaTipoCuenta() {
+        TipoCuentaLogic tipoCuentaLogic = new TipoCuentaLogic();
+        return tipoCuentaLogic.listaTipoCuenta();
+    }
 }
