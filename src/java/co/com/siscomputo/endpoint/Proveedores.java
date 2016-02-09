@@ -6,9 +6,11 @@
 package co.com.siscomputo.endpoint;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
+import co.com.siscomputo.proveedores.logic.FormasPagoLogic;
 import co.com.siscomputo.proveedores.persistencia.TipoCuentaEntity;
 import co.com.siscomputo.proveedores.logic.LineaLogic;
 import co.com.siscomputo.proveedores.logic.TipoCuentaLogic;
+import co.com.siscomputo.proveedores.persistencia.FormasPagoEntity;
 import co.com.siscomputo.proveedores.persistencia.LineaEntity;
 import co.com.siscomputo.utilidades.Valida;
 import javax.jws.WebMethod;
@@ -80,16 +82,15 @@ public class Proveedores {
     @WebMethod(operationName = "insertarTipoCuenta")
     public TipoCuentaEntity insertaTipoCuenta(@WebParam(name = "tipoCuenta") TipoCuentaEntity tipoCuenta) {
         Valida valida = new Valida();
-        TipoCuentaEntity Cuenta = new TipoCuentaEntity();
         if ("OK".equalsIgnoreCase(valida.valida(tipoCuenta.getEstadoCuenta(), "estado"))) {
             TipoCuentaLogic logica = new TipoCuentaLogic();
             logica.insertarTipoCuenta(tipoCuenta);
         } else {
             tipoCuenta.setTrazaRespuesta(valida.valida(tipoCuenta.getIdTipoCuenta(), "estado"));
             tipoCuenta.setNumeroRespuesta(0);
-            return Cuenta;
+            return tipoCuenta;
         }
-        return Cuenta;
+        return tipoCuenta;
     }
 
     /**
@@ -105,14 +106,13 @@ public class Proveedores {
             TipoCuentaLogic logica = new TipoCuentaLogic();
             return logica.actualizarTipoCuenta(tipoCuenta);
         } else {
-            TipoCuentaEntity cuenta = new TipoCuentaEntity();
-            cuenta.setTrazaRespuesta(valida.valida(tipoCuenta.getIdTipoCuenta(), "IdTipoCuenta"));
-            return cuenta;
+            tipoCuenta.setTrazaRespuesta(valida.valida(tipoCuenta.getIdTipoCuenta(), "IdTipoCuenta"));
+            return tipoCuenta;
         }
     }
 
     /**
-     * Metodo para traer todos los tipos de documento
+     * Metodo para traer todos los tipos de cuenta
      *
      * @return
      */
@@ -121,4 +121,54 @@ public class Proveedores {
         TipoCuentaLogic tipoCuentaLogic = new TipoCuentaLogic();
         return tipoCuentaLogic.listaTipoCuenta();
     }
+
+    /**
+     * Metodo para insertar un metodo de pago
+     *
+     * @param formaPago
+     * @return
+     */
+    @WebMethod(operationName = "insertarFormaPago")
+    public FormasPagoEntity insertarFormaPago(@WebParam(name = "formaPago") FormasPagoEntity formaPago) {
+        Valida validac = new Valida();
+        if ("OK".equalsIgnoreCase(validac.valida(formaPago.getEstadoFormaPago(), "estado"))) {
+            FormasPagoLogic pagoLogic = new FormasPagoLogic();
+            pagoLogic.insertarFormasPago(formaPago);
+        } else {
+            formaPago.setNumeroRespuesta(0);
+            formaPago.setTrazaRespuesta(validac.valida(formaPago.getEstadoFormaPago(), "estado"));
+            return formaPago;
+        }
+        return formaPago;
+    }
+
+    /**
+     * Metodo para actualizar un metodo de pago
+     *
+     * @param formaPago
+     * @return
+     */
+    @WebMethod(operationName = "actualizarFormaPago")
+    public FormasPagoEntity actualizarFormaPago(@WebParam(name = "formaPago") FormasPagoEntity formaPago) {
+        Valida valida = new Valida();
+        if ("OK".equalsIgnoreCase(valida.valida(formaPago.getIdFormasPagos(), "IdFormaPago"))) {
+            FormasPagoLogic pagoLogic = new FormasPagoLogic();
+            return pagoLogic.actualizarFormasPago(formaPago);
+        } else {
+            formaPago.setTrazaRespuesta(valida.valida(formaPago.getIdFormasPagos(), "IdFormaPago"));
+            return formaPago;
+        }
+    }
+    
+    
+    /**
+     * Metodo para traer todos las formas de pago
+     * @return 
+     */
+    @WebMethod(operationName = "listaFormaPago")
+    public ObjetoRetornaEntity listaFormaPago() {
+        FormasPagoLogic pagoLogic = new FormasPagoLogic();
+        return pagoLogic.listaFormaPago();
+    }
+
 }
