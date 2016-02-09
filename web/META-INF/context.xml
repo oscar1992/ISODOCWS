@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context antiJARLocking="true" path="/ISODOCWS">
-<ResourceLink
-    global="variable"
-    name="variable"
-    type="java.lang.String"/>
+  <ResourceLink global="variable" name="variable" type="java.lang.String"/>
 </Context>
