@@ -228,9 +228,9 @@ public class GestionDocumental {
      * @return 
      */
     @WebMethod(operationName = "documetosFiltrados")
-    public ObjetoRetornaEntity documentosFiltrados(@WebParam(name = "idTipoDoc")Integer idTipoDocumental, @WebParam(name = "idPlantilla")Integer idPlantilla, @WebParam(name = "idAccion")Integer idAccion){
+    public ObjetoRetornaEntity documentosFiltrados(@WebParam(name = "idTipoDoc")Integer idTipoDocumental, @WebParam(name = "idPlantilla")Integer idPlantilla, @WebParam(name = "idAccion")Integer idAccion, @WebParam(name = "fecha1")String fecha1, @WebParam(name = "fecha2")String fecha2){
         FiltroLogic filtroLogic=new FiltroLogic();
-        return filtroLogic.documentosFiltrado(idTipoDocumental, idPlantilla, idAccion);
+        return filtroLogic.documentosFiltrado(idTipoDocumental, idPlantilla, idAccion, fecha1, fecha2);
     }
     
 }

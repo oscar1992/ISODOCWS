@@ -156,7 +156,7 @@ public class RutasLogic {
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
             } else {
-                Query query = sesion.createQuery("SELECT MAX(id_rol) FROM RutasEntity");
+                Query query = sesion.createQuery("SELECT MAX(idRutas) FROM RutasEntity");
                 ret = (int) query.uniqueResult();
                 ret++;
             }
