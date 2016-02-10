@@ -43,7 +43,7 @@ public class FiltroLogic {
         return retorno;
     }
     
-    public ObjetoRetornaEntity documentosFiltrado(Integer idTipoDocumental, Integer idPlantilla, Integer idAccion){
+    public ObjetoRetornaEntity documentosFiltrado(Integer idTipoDocumental, Integer idPlantilla, Integer idAccion, String fecha1, String fecha2){
         ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
         try {
             String validaConexion = initOperation();
@@ -54,6 +54,8 @@ public class FiltroLogic {
                 System.out.println("F1: "+idTipoDocumental);
                 System.out.println("F2: "+idPlantilla);
                 System.out.println("F3: "+idAccion);
+                System.out.println("F4: "+fecha1);
+                System.out.println("F5: "+fecha2);
                 Criteria criteria=sesion.createCriteria(DocumentoEntity.class);
                 if (idTipoDocumental==0) {
                     System.out.println("TipoDocumental Nulo");
@@ -70,6 +72,13 @@ public class FiltroLogic {
                     System.out.println("accion nula");
                 }else{
                     criteria.add(Restrictions.eq("accionDocumento.idAccion", idAccion));
+                }
+                
+                if(fecha1==null){
+                    System.out.println("Fecha1 Nula");
+                }
+                if(fecha2==null){
+                    System.out.println("Fecha2 Nula");
                 }
                 retorna.setRetorna((ArrayList<Object>) criteria.list());
                 retorna.setTrazaRespuesta("Carga exitosa de documentos filtrados");

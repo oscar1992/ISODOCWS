@@ -102,7 +102,7 @@ public class UsuarioLogic {
             objetoLogin.setTrazaRespuesta(e.getMessage());
         }finally{
             try {
-                //sesion.close();  
+                
                 sesion.close();
             } catch (HibernateException hibernateException) {
                 hibernateException.printStackTrace();

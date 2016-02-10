@@ -6,6 +6,10 @@
 package co.com.siscomputo.endpoint;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
 import co.com.siscomputo.proveedores.logic.CuentasProveedoresLogic;
 import co.com.siscomputo.proveedores.logic.EstadoProveedorLogic;
 import co.com.siscomputo.proveedores.logic.TipoDocumentoLogic;
@@ -13,12 +17,20 @@ import co.com.siscomputo.proveedores.logic.TipoProveedorLogic;
 import co.com.siscomputo.proveedores.logic.TipoTributarioLogic;
 import co.com.siscomputo.proveedores.persistencia.CuentasProveedoresEntity;
 import co.com.siscomputo.proveedores.persistencia.EstadoProveedorEntity;
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
 import co.com.siscomputo.proveedores.logic.FormasPagoLogic;
 import co.com.siscomputo.proveedores.persistencia.TipoCuentaEntity;
 import co.com.siscomputo.proveedores.logic.LineaLogic;
 import co.com.siscomputo.proveedores.logic.ProveedoresLogic;
 import co.com.siscomputo.proveedores.logic.TipoCuentaLogic;
 import co.com.siscomputo.proveedores.persistencia.FormasPagoEntity;
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
 import co.com.siscomputo.proveedores.persistencia.LineaEntity;
 import co.com.siscomputo.proveedores.persistencia.ProveedoresEntity;
 import co.com.siscomputo.proveedores.persistencia.TipoDocumentoEntity;
@@ -122,7 +134,11 @@ public class Proveedores {
             return metodoRecuperacionLogic.actualizarTipoDocumento(objeto);
         }
     }
+<<<<<<< HEAD
     /*
+=======
+     /*
+>>>>>>> origin/master
      * Metodo web que permite ingresar un tipo de cuenta
      *
      * @param tipoCuenta
@@ -160,10 +176,18 @@ public class Proveedores {
         } else {
             tipoCuenta.setTrazaRespuesta(valida.valida(tipoCuenta.getIdTipoCuenta(), "IdTipoCuenta"));
             return tipoCuenta;
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
         }
     }
 
     /**
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
      * Método que trae una lista de Tipo de Documento
      *
      * @return
@@ -377,7 +401,12 @@ public class Proveedores {
         CuentasProveedoresLogic cuentasProveedoresLogic = new CuentasProveedoresLogic();
         return cuentasProveedoresLogic.listaCuentasProveedores();
     }
+<<<<<<< HEAD
     /*
+=======
+    
+    /**
+>>>>>>> origin/master
      * Metodo para traer todos los tipos de cuenta
      *
      * @
@@ -437,6 +466,10 @@ public class Proveedores {
     public ObjetoRetornaEntity listaFormaPago() {
         FormasPagoLogic pagoLogic = new FormasPagoLogic();
         return pagoLogic.listaFormaPago();
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     }
 
     /**
