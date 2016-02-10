@@ -78,6 +78,8 @@ public class TipoCuentaLogic {
                 ObjtipoCuenta.setIdTipoCuenta(maxDocumento());
                 sesion.save(ObjtipoCuenta);
                 tx.commit();
+                ObjtipoCuenta.setNumeroRespuesta(23);
+                ObjtipoCuenta.setTrazaRespuesta("Tipo de cuenta insertada correctamente");
             } else {
                 ObjtipoCuenta.setNumeroRespuesta(3);
                 ObjtipoCuenta.setTrazaRespuesta("Error de Conexión " + validaConex);
@@ -111,6 +113,8 @@ public class TipoCuentaLogic {
             if ("OK".equalsIgnoreCase(conex)) {
                 sesion.update(ObjtipoCuenta);
                 tx.commit();
+                ObjtipoCuenta.setNumeroRespuesta(0);
+                ObjtipoCuenta.setTrazaRespuesta("TipoCuentaActualizado correctamente");
             } else {
                 ObjtipoCuenta.setTrazaRespuesta("Error de Conexión" + conex);
                 ObjtipoCuenta.setNumeroRespuesta(0);
@@ -141,7 +145,7 @@ public class TipoCuentaLogic {
             if ("OK".equalsIgnoreCase(conexion)) {
                 Query sentencia = sesion.createQuery("FROM TipoCuentaEntity t WHERE t.estadoCuenta<>'E'");
                 retorno.setRetorna((ArrayList<Object>) sentencia.list());
-                retorno.setTrazaRespuesta("Consulta tabla Documento exitosa");
+                retorno.setTrazaRespuesta("Consulta tabla TipoCuenta exitosa");
                 retorno.setNumeroRespuesta(1);
             } else {
                 retorno.setNumeroRespuesta(0);

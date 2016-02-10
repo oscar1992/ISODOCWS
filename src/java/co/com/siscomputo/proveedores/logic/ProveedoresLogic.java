@@ -7,7 +7,7 @@ package co.com.siscomputo.proveedores.logic;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
-import co.com.siscomputo.proveedores.persistencia.FormasPagoEntity;
+import co.com.siscomputo.proveedores.persistencia.ProveedoresEntity;
 import java.util.ArrayList;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -17,11 +17,16 @@ import org.hibernate.Transaction;
  *
  * @author Felipe
  */
-public class FormasPagoLogic {
+public class ProveedoresLogic {
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
 
+    /**
+     * Metodo para establecer una conexion con la base de datos
+     *
+     * @return
+     */
     private String initOperation() {
         String respuesta;
         try {
@@ -50,7 +55,7 @@ public class FormasPagoLogic {
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
             } else {
-                Query query = sesion.createQuery("SELECT MAX(idFormasPagos) FROM FormasPagoEntity");
+                Query query = sesion.createQuery("SELECT MAX(idProveedor) FROM ProveedoresEntity ");
                 ret = (int) query.uniqueResult();
                 ret++;
             }
@@ -61,89 +66,99 @@ public class FormasPagoLogic {
     }
 
     /**
-     * Metodo para insertar una forma de pago
+     * Metodo para insertar un proveedor
      *
-     * @param objFormaPago
+     * @param objProveedor
      * @return
      */
-    public FormasPagoEntity insertarFormasPago(FormasPagoEntity objFormaPago) {
-        try {
-            String validacionCon = initOperation();
-            if ("OK".equalsIgnoreCase(validacionCon)) {
-                objFormaPago.setIdFormasPagos(maxDocumento());
-                sesion.save(objFormaPago);
-                tx.commit();
-                objFormaPago.setNumeroRespuesta(23);
-                objFormaPago.setTrazaRespuesta("Forma de pago ingresada correctamente");
-            } else {
-                objFormaPago.setNumeroRespuesta(0);
-                objFormaPago.setTrazaRespuesta("Error de conexión" + validacionCon);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            objFormaPago = new FormasPagoEntity();
-            objFormaPago.setNumeroRespuesta(0);
-            objFormaPago.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return objFormaPago;
-    }
-
-    /**
-     * Metodo para actualizar una forma de pago
-     *
-     * @param objFormaPago
-     * @return
-     */
-    public FormasPagoEntity actualizarFormasPago(FormasPagoEntity objFormaPago) {
+    public ProveedoresEntity InsertarProveedor(ProveedoresEntity objProveedor) {
         try {
             String conexion = initOperation();
             if ("OK".equalsIgnoreCase(conexion)) {
-                sesion.update(objFormaPago);
+                objProveedor.setIdProveedor(maxDocumento());
+                sesion.save(objProveedor);
                 tx.commit();
-                objFormaPago.setNumeroRespuesta(23);
-                objFormaPago.setTrazaRespuesta("Forma de pago actualizada correctamente");
+                objProveedor.setNumeroRespuesta(23);
+                objProveedor.setTrazaRespuesta("Insercion exitosa");
+
             } else {
-                objFormaPago.setTrazaRespuesta("Error de conexion" + conexion);
-                objFormaPago.setNumeroRespuesta(0);
+                objProveedor.setNumeroRespuesta(3);
+                objProveedor.setTrazaRespuesta("Error de Conexión " + conexion);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
+            objProveedor.setNumeroRespuesta(0);
+            objProveedor.setTrazaRespuesta(e.getMessage());
         } finally {
             try {
                 sesion.close();
             } catch (Exception e) {
                 e.printStackTrace();
+                objProveedor.setNumeroRespuesta(0);
+                objProveedor.setTrazaRespuesta(e.getMessage());
             }
 
         }
-        return objFormaPago;
+        return objProveedor;
     }
 
     /**
-     * Metodo para traer todas las formas de pago
+     * Metodo para actualziar un proveedor
+     *
+     * @param objProveedor
+     * @return
+     */
+    public ProveedoresEntity actualizarProveedores(ProveedoresEntity objProveedor) {
+        try {
+            String conexion = initOperation();
+            if ("OK".equalsIgnoreCase(conexion)) {
+                sesion.update(objProveedor);
+                tx.commit();
+                objProveedor.setNumeroRespuesta(23);
+                objProveedor.setTrazaRespuesta("Insercion exitosa");
+            } else {
+                objProveedor.setNumeroRespuesta(3);
+                objProveedor.setTrazaRespuesta("Error de Conexión " + conexion);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            objProveedor.setNumeroRespuesta(0);
+            objProveedor.setTrazaRespuesta(e.getMessage());
+        } finally {
+            try {
+                sesion.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                objProveedor.setNumeroRespuesta(0);
+                objProveedor.setTrazaRespuesta(e.getMessage());
+            }
+
+        }
+        return objProveedor;
+    }
+
+    /**
+     * Metodo para mostrar todos los proveedores
      *
      * @return
      */
-    public ObjetoRetornaEntity listaFormaPago() {
+    public ObjetoRetornaEntity listaProveedores() {
         ObjetoRetornaEntity retorno = new ObjetoRetornaEntity();
+
         try {
             String conexion = initOperation();
             if ("OK".equalsIgnoreCase(conexion)) {
-                Query sentencia = sesion.createQuery("FROM FormasPagoEntity f WHERE f.idFormasPagos<>'E'");
+                Query sentencia = sesion.createQuery("FROM ProveedoresEntity p WHERE p.estadoProveedor<>'E'");
                 retorno.setRetorna((ArrayList<Object>) sentencia.list());
-                retorno.setTrazaRespuesta("Consulta tabla FormasPagoEntity exitosa");
+                retorno.setTrazaRespuesta("Consulta tabla Proveedores exitosa");
                 retorno.setNumeroRespuesta(1);
             } else {
                 retorno.setNumeroRespuesta(0);
                 retorno.setTrazaRespuesta("Error de conexion" + conexion);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             retorno = new ObjetoRetornaEntity();
             retorno.setNumeroRespuesta(0);
             retorno.setTrazaRespuesta(e.getMessage());
@@ -151,12 +166,9 @@ public class FormasPagoLogic {
             try {
                 sesion.close();
             } catch (Exception e) {
-                retorno = new ObjetoRetornaEntity();
-                retorno.setNumeroRespuesta(0);
-                retorno.setTrazaRespuesta(e.getMessage());
+                e.printStackTrace();
             }
         }
-        return retorno;
+        return  retorno;
     }
-
 }
