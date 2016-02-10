@@ -53,10 +53,6 @@
     <mapping class="co.com.siscomputo.proveedores.persistencia.TipoTributarioEntity"/>
     <mapping class="co.com.siscomputo.proveedores.persistencia.TipoCuentaEntity"/>
     <mapping class="co.com.siscomputo.proveedores.persistencia.FormasPagoEntity"/>
-<<<<<<< HEAD
     <mapping class="co.com.siscomputo.proveedores.persistencia.ProveedoresEntity"/>
-=======
-
->>>>>>> origin/master
   </session-factory>
 </hibernate-configuration>

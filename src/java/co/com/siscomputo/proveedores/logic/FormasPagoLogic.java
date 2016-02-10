@@ -73,14 +73,10 @@ public class FormasPagoLogic {
                 objFormaPago.setIdFormasPagos(maxDocumento());
                 sesion.save(objFormaPago);
                 tx.commit();
-<<<<<<< HEAD
-                objFormaPago.setNumeroRespuesta(23);
                 objFormaPago.setTrazaRespuesta("Forma de pago ingresada correctamente");
-=======
+
                 objFormaPago.setNumeroRespuesta(99);
                 objFormaPago.setTrazaRespuesta("Inserción Formas Pago exitoso");
-            
->>>>>>> origin/master
             } else {
                 objFormaPago.setNumeroRespuesta(3);
                 objFormaPago.setTrazaRespuesta("Error de conexión" + validacionCon);
