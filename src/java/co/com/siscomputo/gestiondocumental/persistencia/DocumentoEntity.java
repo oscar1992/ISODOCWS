@@ -3,10 +3,8 @@ package co.com.siscomputo.gestiondocumental.persistencia;
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.administracion.persistencia.AccionEntity;
 import co.com.siscomputo.administracion.persistencia.EmpresaEntity;
-
 import co.com.siscomputo.administracion.persistencia.PlantillaEntity;
 import co.com.siscomputo.administracion.persistencia.ProcesoEntity;
-
 import co.com.siscomputo.administracion.persistencia.TiposDocumentalesEntity;
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -134,6 +132,7 @@ public class DocumentoEntity extends ObjetoRetornaEntity implements Serializable
     public void setFechaDocumento(String fechaDocumento) {
         this.fechaDocumento = fechaDocumento;
     }
+
 
     public String getRutaDocumento() {
         return rutaDocumento;

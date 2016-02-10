@@ -4,16 +4,16 @@
     <session-factory>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://192.168.1.201:5432/ISODOCPP</property>
-        <property name="hibernate.connection.username">ISODOC</property>
-        <property name="hibernate.connection.password">ISODOC</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://192.168.1.10:5432/ISODOC</property>
+        <property name="hibernate.connection.username">postgres</property>
+        <property name="hibernate.connection.password">system</property>
 
-        <property name="connection_pool_size">0</property>
+        <property name="connection_pool_size">1</property>
         <property name="hibernate.c3p0.min_size">1</property>
         <property name="hibernate.c3p0.max_size">1</property>
         <property name="hibernate.c3p0.timeout">300</property>
         <property name="hibernate.c3p0.max_statements">50</property>
-        <property name="hibernate.c3p0.idle_test_period">300</property>
+        <property name="hibernate.c3p0.idle_test_period">3000</property>
         
         <property name="show_sql">true</property>    
     
@@ -31,12 +31,7 @@
         <mapping class="co.com.siscomputo.administracion.persistencia.EmpresaEntity"/>
         <mapping class="co.com.siscomputo.administracion.persistencia.SedeEmpresaEntity"/>
         <mapping class="co.com.siscomputo.administracion.persistencia.FestivosEntity"/>
-        <mapping class="co.com.siscomputo.administracion.persistencia.MacroprocesosEntity"/>
-        <mapping class="co.com.siscomputo.administracion.persistencia.ProcesosEntity"/>
-        <mapping class="co.com.siscomputo.administracion.persistencia.SubprocesoEntity"/>
-        <mapping class="co.com.siscomputo.administracion.persistencia.UsuarioMacroprocesoEntity"/>
-        <mapping class="co.com.siscomputo.administracion.persistencia.UsuarioProcesoEntity"/>
-        <mapping class="co.com.siscomputo.administracion.persistencia.UsuarioSubprocesoEntity"/>
+    
         <mapping class="co.com.siscomputo.administracion.persistencia.TiposDocumentalesEntity"/>
         <mapping class="co.com.siscomputo.administracion.persistencia.DisposicionesEntity"/>
         <mapping class="co.com.siscomputo.administracion.persistencia.MetodoRecuperacionEntity"/>
@@ -52,9 +47,20 @@
         <mapping class="co.com.siscomputo.administracion.persistencia.ProcesoEntity"/>
         <mapping class="co.com.siscomputo.administracion.persistencia.GrupoProcesoEntity"/>
         <mapping class="co.com.siscomputo.administracion.persistencia.NivelEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.RutasEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.ExtensionesEntity"/>
         <mapping class="co.com.siscomputo.gestiondocumental.persistencia.DocumentoEntity"/>
         <mapping class="co.com.siscomputo.gestiondocumental.persistencia.DocumentoProcesoEntity"/>
         <mapping class="co.com.siscomputo.gestiondocumental.persistencia.GrupoDocumentoEntity"/>
         <mapping class="co.com.siscomputo.gestiondocumental.persistencia.DocumentoRolEntity"/>
+        <mapping class="co.com.siscomputo.gestiondocumental.persistencia.UsuarioDocumentoEntity"/>
+        <mapping class="co.com.siscomputo.proveedores.persistencia.LineaEntity"/>
+        <mapping class="co.com.siscomputo.proveedores.persistencia.TipoDocumentoEntity"/>
+        <mapping class="co.com.siscomputo.proveedores.persistencia.EstadoProveedorEntity"/>
+        <mapping class="co.com.siscomputo.proveedores.persistencia.TipoProveedorEntity"/>
+        <mapping class="co.com.siscomputo.proveedores.persistencia.TipoTributarioEntity"/>
+        <mapping class="co.com.siscomputo.proveedores.persistencia.TipoCuentaEntity"/>
+        <mapping class="co.com.siscomputo.proveedores.persistencia.FormasPagoEntity"/>
+        <mapping class="co.com.siscomputo.proveedores.persistencia.ProveedoresEntity"/>
     </session-factory>
 </hibernate-configuration>

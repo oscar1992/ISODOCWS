@@ -125,6 +125,7 @@ public class UsuarioLogic {
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
                 
             } else {
+                System.out.println("IDUSUARIO: "+idUsuario);
                 Query query = sesion.createQuery("SELECT distinct m FROM UsuarioEntity u, UsuarioRolEntity ure, RolesEntity r,  RolPermisoEntity rpe, PermisosEntity p,  ModuloEntity m "
                         + "WHERE  u=ure.usuario AND ure.rol=r AND r=rpe.id_rol AND rpe.id_permiso=p AND p.id_modulo=m AND u.idUsuario=:idu ORDER BY m.orden");
                 query.setParameter("idu", idUsuario);

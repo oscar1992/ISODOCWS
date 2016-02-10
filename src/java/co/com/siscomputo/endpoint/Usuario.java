@@ -81,8 +81,6 @@ public class Usuario {
 
     /**
      * Web service operation Método de la lista de módulos filtrados por Usuario
-     *
-     * @param id_usuario
      * @return
      */
     @WebMethod(operationName = "listaModulos")

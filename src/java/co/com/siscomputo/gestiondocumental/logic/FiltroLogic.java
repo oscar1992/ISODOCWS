@@ -76,9 +76,13 @@ public class FiltroLogic {
                 
                 if(fecha1==null){
                     System.out.println("Fecha1 Nula");
+                }else{
+                    criteria.add(Restrictions.between("fechaDocumento", fecha1, fecha2));
                 }
                 if(fecha2==null){
                     System.out.println("Fecha2 Nula");
+                }else{
+                    
                 }
                 retorna.setRetorna((ArrayList<Object>) criteria.list());
                 retorna.setTrazaRespuesta("Carga exitosa de documentos filtrados");

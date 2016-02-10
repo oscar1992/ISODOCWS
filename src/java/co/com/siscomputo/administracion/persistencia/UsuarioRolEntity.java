@@ -22,7 +22,7 @@ import javax.persistence.Table;
 @Table(name = "ADM_TUSRO")
 public class UsuarioRolEntity extends ObjetoTraza implements Serializable {
     @Id
-    @Column(name = "USRO_URSO")
+    @Column(name = "USRO_USRO")
     private int id_usuario_rol;
     @JoinColumn(name = "USRO_USUA")
     @ManyToOne
