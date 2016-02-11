@@ -122,48 +122,7 @@ public class Proveedores {
             return metodoRecuperacionLogic.actualizarTipoDocumento(objeto);
         }
     }
-    /*
-     /*
-     * Metodo web que permite ingresar un tipo de cuenta
-     *
-     * @param tipoCuenta
-     * @return
-     */
 
-    @WebMethod(operationName = "insertarTipoCuenta")
-    public TipoCuentaEntity insertaTipoCuenta(@WebParam(name = "tipoCuenta") TipoCuentaEntity tipoCuenta
-    ) {
-        Valida valida = new Valida();
-        if ("OK".equalsIgnoreCase(valida.valida(tipoCuenta.getEstadoCuenta(), "estado"))) {
-            TipoCuentaLogic logica = new TipoCuentaLogic();
-            logica.insertarTipoCuenta(tipoCuenta);
-        } else {
-            tipoCuenta.setTrazaRespuesta(valida.valida(tipoCuenta.getIdTipoCuenta(), "estado"));
-            tipoCuenta.setNumeroRespuesta(0);
-            return tipoCuenta;
-        }
-        return tipoCuenta;
-    }
-
-    /**
-     * Metodo para actualizar el tipo de cuenta de un proveedor
-     *
-     * @param tipoCuenta
-     * @return
-     */
-    @WebMethod(operationName = "actualizarTipoCuenta")
-    public ObjetoRetornaEntity actualizarTipoCuenta(@WebParam(name = "tipoCuenta") TipoCuentaEntity tipoCuenta
-    ) {
-        Valida valida = new Valida();
-        if ("OK".equalsIgnoreCase(valida.valida(tipoCuenta.getIdTipoCuenta(), "IdTipoCuenta"))) {
-            TipoCuentaLogic logica = new TipoCuentaLogic();
-            return logica.actualizarTipoCuenta(tipoCuenta);
-        } else {
-            tipoCuenta.setTrazaRespuesta(valida.valida(tipoCuenta.getIdTipoCuenta(), "IdTipoCuenta"));
-            return tipoCuenta;
-
-        }
-    }
 
     /*
      * Método que trae una lista de Tipo de Documento
@@ -380,19 +339,7 @@ public class Proveedores {
         return cuentasProveedoresLogic.listaCuentasProveedores();
     }
    
-    /*
-    /**
-     * Metodo para traer todos los tipos de cuenta
-     *
-     * @return   
-    */
 
-    @WebMethod(operationName = "listaTipoCuenta")
-
-    public ObjetoRetornaEntity listaTipoCuenta() {
-        TipoCuentaLogic tipoCuentaLogic = new TipoCuentaLogic();
-        return tipoCuentaLogic.listaTipoCuenta();
-    }
 
     /**
      * Metodo para insertar un metodo de pago
@@ -503,4 +450,51 @@ public class Proveedores {
         ProveedoresLogic logica = new ProveedoresLogic();
         return logica.listaProveedores();
     }
+    
+    /**
+     * Método que permite insertar un Tipo de Cuenta nuevo
+     * @param objeto
+     * @return 
+     */
+    @WebMethod(operationName = "insertarTipoCuenta")
+    public TipoCuentaEntity insertarTipoCuenta(@WebParam(name = "objeto") TipoCuentaEntity objeto){
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getTipoTipoCuenta(), "Sede"))) {
+            TipoCuentaEntity ret = new TipoCuentaEntity();
+            ret.setTrazaRespuesta(valida.valida(objeto.getTipoTipoCuenta(), "Sede"));
+            return ret;
+        } else {
+        TipoCuentaLogic tipoCuentaLogic=new TipoCuentaLogic();
+        return tipoCuentaLogic.insertarTipoCuenta(objeto);
+        }
 }
+     /**
+     * Método que permite actualizar un Tipo de Cuenta
+     * @param objeto
+     * @return 
+     */
+    @WebMethod(operationName = "actualizarTipoCuenta")
+    public TipoCuentaEntity actualizarTipoCuenta(@WebParam(name = "objeto")TipoCuentaEntity objeto){
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getTipoTipoCuenta(), "Sede"))) {
+            TipoCuentaEntity ret = new TipoCuentaEntity();
+            ret.setTrazaRespuesta(valida.valida(objeto.getTipoTipoCuenta(), "Sede"));
+            return ret;
+        } else {
+            TipoCuentaLogic metodoRecuperacionLogic=new TipoCuentaLogic();
+            return metodoRecuperacionLogic.actualizarTipoCuenta(objeto);
+        }
+    }
+    /**
+     * Método que trae una lista de Tipo de Cuenta
+     * @return 
+     */
+    @WebMethod(operationName = "listaTipoCuenta")
+    public ObjetoRetornaEntity listaTipoCuenta(){
+        TipoCuentaLogic tipoCuentaLogic=new TipoCuentaLogic();
+        return tipoCuentaLogic.listaTipoCuenta();
+     }
+    
+}
+
+

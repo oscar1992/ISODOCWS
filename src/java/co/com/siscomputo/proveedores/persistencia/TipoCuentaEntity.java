@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package co.com.siscomputo.proveedores.persistencia;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
@@ -14,7 +9,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Felipe
+ * @author LENOVO
  */
 @Entity
 @Table(name = "PRO_TCUEN")
@@ -23,12 +18,10 @@ public class TipoCuentaEntity extends ObjetoRetornaEntity implements Serializabl
     @Id
     @Column(name = "CUEN_CUEN")
     private int idTipoCuenta;
-    
     @Column(name = "CUEN_TIPO")
-    private String tipoCuenta;
-    
+    private String tipoTipoCuenta;
     @Column(name = "CUEN_ESTA")
-    private String estadoCuenta;
+    private String estadoTipoCuenta;
 
     public int getIdTipoCuenta() {
         return idTipoCuenta;
@@ -38,22 +31,20 @@ public class TipoCuentaEntity extends ObjetoRetornaEntity implements Serializabl
         this.idTipoCuenta = idTipoCuenta;
     }
 
-    public String getTipoCuenta() {
-        return tipoCuenta;
+    public String getTipoTipoCuenta() {
+        return tipoTipoCuenta;
     }
 
-    public void setTipoCuenta(String tipoCuenta) {
-        this.tipoCuenta = tipoCuenta;
+    public void setTipoTipoCuenta(String tipoTipoCuenta) {
+        this.tipoTipoCuenta = tipoTipoCuenta;
     }
 
-    public String getEstadoCuenta() {
-        return estadoCuenta;
+    public String getEstadoTipoCuenta() {
+        return estadoTipoCuenta;
     }
 
-    public void setEstadoCuenta(String estadoCuenta) {
-        this.estadoCuenta = estadoCuenta;
+    public void setEstadoTipoCuenta(String estadoTipoCuenta) {
+        this.estadoTipoCuenta = estadoTipoCuenta;
     }
-    
-    
 
 }

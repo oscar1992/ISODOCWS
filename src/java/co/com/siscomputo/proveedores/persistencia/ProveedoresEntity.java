@@ -7,6 +7,7 @@ package co.com.siscomputo.proveedores.persistencia;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.administracion.persistencia.EmpresaEntity;
+import co.com.siscomputo.administracion.persistencia.UsuarioEntity;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,10 +31,10 @@ public class ProveedoresEntity extends ObjetoRetornaEntity implements Serializab
     @Column(name = "PROV_NOMB")
     private String nombreProveedor;
 
-    @Column(name = "PROV_FECHA")
+    @Column(name = "PROV_FECH")
     private String fechaCreacion;
 
-    @JoinColumn(name = "PROV_ESTA")
+    @JoinColumn(name = "PROV_TESTA")
     @ManyToOne
     private EstadoProveedorEntity estadoProveedor;
 
@@ -65,8 +66,9 @@ public class ProveedoresEntity extends ObjetoRetornaEntity implements Serializab
     @ManyToOne
     private EmpresaEntity empresaProveedor;
 
-    @Column(name = "PROV_USUA")
-    private Integer usuarioResponsable;
+    @JoinColumn(name = "PROV_USUA")
+    @ManyToOne
+    private UsuarioEntity usuarioResponsable;
 
     @Column(name = "PROV_DOCU")
     private String urlDocumento;
@@ -82,25 +84,28 @@ public class ProveedoresEntity extends ObjetoRetornaEntity implements Serializab
 
     @Column(name = "PROV_CEMA")
     private String emailContacto;
-    
+
     @JoinColumn(name = "PROV_TIPO")
     @ManyToOne
     private TipoProveedorEntity idTipoProveedor;
-        
-    @Column(name="PROV_DESC")
+
+    @Column(name = "PROV_DESC")
     private String actividadEconomicaProveedor;
-    
-    @JoinColumn(name="PROV_TRIB")
+
+    @JoinColumn(name = "PROV_TRIB")
     @ManyToOne
     private TipoTributarioEntity idTipoTributario;
-    
-    @JoinColumn(name="PROV_CUEN")
+
+    @JoinColumn(name = "PROV_CUEN")
     @ManyToOne
     private TipoCuentaEntity idTipocuenta;
-    
-    @JoinColumn(name="PROV_FORM")
+
+    @JoinColumn(name = "PROV_FORM")
     @ManyToOne
     private FormasPagoEntity idFormaPago;
+
+    @Column(name = "PROV_ESTA")
+    private String estadoProveedores;
 
     public Integer getIdProveedor() {
         return idProveedor;
@@ -206,11 +211,11 @@ public class ProveedoresEntity extends ObjetoRetornaEntity implements Serializab
         this.empresaProveedor = empresaProveedor;
     }
 
-    public Integer getUsuarioResponsable() {
+    public UsuarioEntity getUsuarioResponsable() {
         return usuarioResponsable;
     }
 
-    public void setUsuarioResponsable(Integer usuarioResponsable) {
+    public void setUsuarioResponsable(UsuarioEntity usuarioResponsable) {
         this.usuarioResponsable = usuarioResponsable;
     }
 
@@ -293,7 +298,14 @@ public class ProveedoresEntity extends ObjetoRetornaEntity implements Serializab
     public void setIdFormaPago(FormasPagoEntity idFormaPago) {
         this.idFormaPago = idFormaPago;
     }
-    
+
+    public String getEstadoProveedores() {
+        return estadoProveedores;
+    }
+
+    public void setEstadoProveedores(String estadoProveedores) {
+        this.estadoProveedores = estadoProveedores;
+    }
     
     
 }

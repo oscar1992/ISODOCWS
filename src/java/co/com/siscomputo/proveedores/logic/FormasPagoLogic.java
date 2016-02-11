@@ -137,7 +137,7 @@ public class FormasPagoLogic {
         try {
             String conexion = initOperation();
             if ("OK".equalsIgnoreCase(conexion)) {
-                Query sentencia = sesion.createQuery("FROM FormasPagoEntity f WHERE f.idFormasPagos<>'E'");
+                Query sentencia = sesion.createQuery("FROM FormasPagoEntity f WHERE f.estadoFormaPago<>'E'");
                 retorno.setRetorna((ArrayList<Object>) sentencia.list());
                 retorno.setTrazaRespuesta("Consulta tabla FormasPagoEntity exitosa");
                 retorno.setNumeroRespuesta(1);

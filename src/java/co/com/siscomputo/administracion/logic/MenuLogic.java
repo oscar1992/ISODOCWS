@@ -20,7 +20,7 @@ import org.hibernate.Transaction;
  *
  * @author LENOVO
  */
-public class MenuLogic {
+public class MenuLogic implements AutoCloseable {
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
 
@@ -42,6 +42,9 @@ public class MenuLogic {
             retorno = "Ok";
         } catch (Error e) {
             retorno = "Error Conexión Hibernate " + e;
+        } catch (Exception e) {
+            e.printStackTrace();
+            retorno = e.getMessage();
         }
         return retorno;
     }
@@ -55,20 +58,22 @@ public class MenuLogic {
     public ArrayList<MenuModuloEntity> datosMenu(int idUsuario) {
         ArrayList<ModuloEntity> listaModulos = new ArrayList<>();
         ArrayList<MenuModuloEntity> listaMenuModulo = null;
-        //System.out.println("IDDD: " + idUsuario);
-        try {
-            UsuarioLogic usuarioLogic = new UsuarioLogic();
+        System.out.println("IDDD: " + idUsuario);
+        try (UsuarioLogic usuarioLogic = new UsuarioLogic();) {
             ArrayList<Object> listaObjetoModulo = usuarioLogic.modulos(idUsuario).getRetorna();
             for (Object item : listaObjetoModulo) {
                 ModuloEntity modu = (ModuloEntity) item;
                 listaModulos.add(modu);
             }
-
+            System.out.println("tama: " + listaModulos.size());
             if (listaModulos != null) {
-                String validaConexion = initOperation();
-                if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
+                String validaConexion = initOperation();
+                System.out.println("valida: " + validaConexion);
+                if (!"Ok".equalsIgnoreCase(validaConexion)) {
+                    System.out.println("errrrrr");
                 } else {
+                    System.out.println("Tama: " + listaModulos.size());
                     for (ModuloEntity item : listaModulos) {
                         if (listaMenuModulo == null) {
                             listaMenuModulo = new ArrayList<>();
@@ -76,10 +81,11 @@ public class MenuLogic {
                         }
                         MenuModuloEntity mmeAuxiliar = mapeoModuloaMenu(item);
                         Query query = sesion.createQuery("SELECT p FROM PermisosEntity p, ModuloEntity m WHERE p.id_modulo=m AND m.id_modulo=:idM AND p.asociadoNivel=1");
+
                         query.setParameter("idM", item.getId_modulo());
                         ArrayList<PermisosEntity> listaPermisos = (ArrayList<PermisosEntity>) query.list();
                         ArrayList<MenuPermisosEntity> permPrimNivel = listaMenuPermisos(listaPermisos);
-                        
+
                         if (permPrimNivel != null) {
                             for (MenuPermisosEntity item2 : permPrimNivel) {
                                 //System.out.println("idm: " + item.getId_modulo());
@@ -97,17 +103,17 @@ public class MenuLogic {
                                         query3.setParameter("idM2", item.getId_modulo());
                                         query3.setParameter("aM", item3.getId_permiso());
                                         query3.setParameter("idUsuario", idUsuario);
-                                        //System.out.println("Modulo: "+item2.getId_permiso());
+                                        System.out.println("Modulo: " + item2.getId_permiso());
                                         //System.out.println("ASOCI: "+item3.getId_permiso());
                                         //System.out.println("usuario: "+idUsuario);
-                                        ArrayList<PermisosEntity> sublista2=(ArrayList<PermisosEntity>) query3.list();
-                                        for(PermisosEntity per:sublista2){
+                                        ArrayList<PermisosEntity> sublista2 = (ArrayList<PermisosEntity>) query3.list();
+                                        for (PermisosEntity per : sublista2) {
                                             //System.out.println("PP: "+per.getNombre_permiso()+" - -"+per.getAsociadoMenu());
-                                        }                                        
-                                        ArrayList<MenuPermisosEntity> permTerNivel=listaMenuPermisos(sublista2);
+                                        }
+                                        ArrayList<MenuPermisosEntity> permTerNivel = listaMenuPermisos(sublista2);
                                         item3.setSubNivel(permTerNivel);
                                     }
-                                    
+
                                 }
                                 item2.setSubNivel(permSegNivel);
                             }
@@ -117,8 +123,9 @@ public class MenuLogic {
                         listaMenuModulo.add(mmeAuxiliar);
                     }
                 }
-                
 
+            } else {
+                System.out.println("NULO!!");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -183,5 +190,21 @@ public class MenuLogic {
             e.printStackTrace();
         }
         return rta;
+    }
+
+    @Override
+    public void close() throws Exception {
+        try {
+            if (tx != null) {
+                tx.commit();
+            }
+            if (sesion != null) {
+                sesion.close();
+                sesion = null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

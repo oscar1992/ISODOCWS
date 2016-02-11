@@ -143,7 +143,7 @@ public class TipoCuentaLogic {
         try {
             String conexion = initOperation();
             if ("OK".equalsIgnoreCase(conexion)) {
-                Query sentencia = sesion.createQuery("FROM TipoCuentaEntity t WHERE t.estadoCuenta<>'E'");
+                Query sentencia = sesion.createQuery("FROM TipoCuentaEntity t WHERE t.estadoTipoCuenta<>'E'");
                 retorno.setRetorna((ArrayList<Object>) sentencia.list());
                 retorno.setTrazaRespuesta("Consulta tabla TipoCuenta exitosa");
                 retorno.setNumeroRespuesta(1);

@@ -81,6 +81,7 @@ public class Usuario {
 
     /**
      * Web service operation Método de la lista de módulos filtrados por Usuario
+     *
      * @return
      */
     @WebMethod(operationName = "listaModulos")
@@ -133,13 +134,14 @@ public class Usuario {
         }
 
     }
+
     /**
      * Web service operation Método de carga de lista de usuarios
      *
      * @return
      */
     @WebMethod(operationName = "listaUsuariosPorAccion")
-    public ObjetoRetornaEntity listaUsuariosPorAccion(@WebParam(name = "idAccion")int idAccion){
+    public ObjetoRetornaEntity listaUsuariosPorAccion(@WebParam(name = "idAccion") int idAccion) {
         UsuarioLogic usuarioLogic = new UsuarioLogic();
         try {
             return usuarioLogic.listaUsuariosPorAccion(idAccion);
@@ -187,13 +189,15 @@ public class Usuario {
             return usuarioLogic.ingresarUsuario(usu);
         }
     }
+
     /**
      * Método que trae los usuarios de un grupo de usuarios
+     *
      * @param idGrupo
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "usuariosPorGrupo")
-    public ObjetoRetornaEntity usuariosPorGrupo(@WebParam(name = "idGrupo")Integer idGrupo){
+    public ObjetoRetornaEntity usuariosPorGrupo(@WebParam(name = "idGrupo") Integer idGrupo) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(idGrupo, "idUsuario"))) {
             ObjetoRetornaEntity ret = new ObjetoRetornaEntity();
@@ -204,7 +208,7 @@ public class Usuario {
             return usuarioLogic.listaUsuariosPorGrupo(idGrupo);
         }
     }
-    
+
     /**
      * Web service operation Método que carga una lista de permisos filtrados
      * por Usuario
@@ -233,13 +237,18 @@ public class Usuario {
      */
     @WebMethod(operationName = "menuDatosporUsuario")
     public ArrayList<MenuModuloEntity> menuDatosporUsuario(@WebParam(name = "idUsuario") int idUsuario) {
-        Valida valida = new Valida();
-        if (!"Ok".equalsIgnoreCase(valida.valida(idUsuario, "idUsuario"))) {
+        try (MenuLogic menuLogic = new MenuLogic()){
+            Valida valida = new Valida();
+            if (!"Ok".equalsIgnoreCase(valida.valida(idUsuario, "idUsuario"))) {
+                return null;
+            } else {               
+                return menuLogic.datosMenu(idUsuario);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
-        } else {
-            MenuLogic menuLogic = new MenuLogic();
-            return menuLogic.datosMenu(idUsuario);
         }
+
     }
 
     /**
@@ -309,8 +318,10 @@ public class Usuario {
             return rolesLogic.actualizarRol(rol);
         }
     }
+
     /**
-     * Metodo que busca un rol por su ID     
+     * Metodo que busca un rol por su ID
+     *
      * @param idRol
      * @return
      */
@@ -980,6 +991,7 @@ public class Usuario {
         return tiposDocumentalesLogic.listaTipoDcouemntal();
 
     }
+
     /**
      * Método que permite isngresar un tipo documental nuevo
      *

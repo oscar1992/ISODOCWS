@@ -25,8 +25,7 @@ import org.hibernate.criterion.Restrictions;
  *
  * @author LENOVO
  */
-
-public class UsuarioLogic {
+public class UsuarioLogic implements AutoCloseable {
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
 
@@ -48,6 +47,9 @@ public class UsuarioLogic {
             retorno = "Ok";
         } catch (Error e) {
             retorno = "Error Conexión Hibernate " + e;
+        } catch (Exception e) {
+            e.printStackTrace();
+            retorno = e.getMessage();
         }
         return retorno;
     }
@@ -85,14 +87,14 @@ public class UsuarioLogic {
                     objetoLogin.setNumeroRespuesta(1);
                     objetoLogin.setTrazaRespuesta("Bienvenido");
                     objetoLogin.setIdUsuario(usuarioObjeto.getIdUsuario());
-                    if(usuarioObjeto.getUltimoIngreso()==null){
+                    if (usuarioObjeto.getUltimoIngreso() == null) {
                         objetoLogin.setTrazaRespuesta("InicioNuevo");
-                    }else{
+                    } else {
                         fechaUltimoIngreso(usuarioObjeto);
                     }
-                    
+
                 }
-             
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -100,9 +102,9 @@ public class UsuarioLogic {
             objetoLogin.setAcceso(false);
             objetoLogin.setNumeroRespuesta(3);
             objetoLogin.setTrazaRespuesta(e.getMessage());
-        }finally{
+        } finally {
             try {
-                
+
                 sesion.close();
             } catch (HibernateException hibernateException) {
                 hibernateException.printStackTrace();
@@ -118,14 +120,14 @@ public class UsuarioLogic {
      * @return Lista de módulos
      */
     public ObjetoRetornaEntity modulos(int idUsuario) {
-        
-        ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
+
+        ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                
+
             } else {
-                System.out.println("IDUSUARIO: "+idUsuario);
+                System.out.println("IDUSUARIO: " + idUsuario);
                 Query query = sesion.createQuery("SELECT distinct m FROM UsuarioEntity u, UsuarioRolEntity ure, RolesEntity r,  RolPermisoEntity rpe, PermisosEntity p,  ModuloEntity m "
                         + "WHERE  u=ure.usuario AND ure.rol=r AND r=rpe.id_rol AND rpe.id_permiso=p AND p.id_modulo=m AND u.idUsuario=:idu ORDER BY m.orden");
                 query.setParameter("idu", idUsuario);
@@ -133,7 +135,7 @@ public class UsuarioLogic {
                 retorna.setRetorna((ArrayList<Object>) query.list());
                 retorna.setNumeroRespuesta(8);
                 retorna.setTrazaRespuesta("Lista de Modulos Cargada Correctamente");
-                
+
             }
 
         } catch (Exception e) {
@@ -149,8 +151,8 @@ public class UsuarioLogic {
      * @return Lista de Permisos
      */
     public ObjetoRetornaEntity permisos(int idUsuario) {
-        
-        ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
+
+        ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
@@ -160,15 +162,15 @@ public class UsuarioLogic {
                         + "WHERE  u=ure.usuario AND ure.rol=r AND r=rpe.id_rol AND rpe.id_permiso=p AND p.id_modulo=m AND u.idUsuario=:idu ");
                 query.setParameter("idu", idUsuario);
                 //listaModulos = (ArrayList<PermisosEntity>) query.list();
-                retorna.setRetorna((ArrayList<Object>)query.list());                
+                retorna.setRetorna((ArrayList<Object>) query.list());
                 retorna.setNumeroRespuesta(9);
                 retorna.setTrazaRespuesta("Carga lista de Permisos Correcta");
-                
+
             }
 
         } catch (Exception e) {
             //System.out.println("ERROR LITSA PERMISOS: " + e.getMessage());
-        }finally{
+        } finally {
             try {
                 //sesion.close();  
                 sesion.close();
@@ -190,21 +192,20 @@ public class UsuarioLogic {
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                usuario.setTrazaRespuesta("Error Conexión: "+validaConexion);
+                usuario.setTrazaRespuesta("Error Conexión: " + validaConexion);
                 usuario.setNumeroRespuesta(3);
             } else {
                 Query query = sesion.createQuery("FROM UsuarioEntity u WHERE u.idUsuario=:idu");
                 query.setParameter("idu", id);
                 usuario = (UsuarioEntity) query.uniqueResult();
-                
+
                 usuario.setTrazaRespuesta("Obtención de usuario correcto");
                 usuario.setNumeroRespuesta(4);
             }
 
         } catch (Exception e) {
             //System.out.println("ERRROR: " + e);
-        }
-        finally{
+        } finally {
             try {
                 //sesion.close();  
                 sesion.close();
@@ -222,27 +223,25 @@ public class UsuarioLogic {
      */
     public ObjetoRetornaEntity listaUsuarios() throws NamingException {
 
-
-        
-        ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
+        ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
         try {
-            
+
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
                 //System.out.println("ERROR DE CONEXIÓN");
             } else {
                 Query query = sesion.createQuery("FROM UsuarioEntity u WHERE u.estado<>'E'");
-                
+
                 retorna.setRetorna((ArrayList<Object>) query.list());
                 retorna.setNumeroRespuesta(7);
                 retorna.setTrazaRespuesta("Lista de Usuarios Cargada Correctamente");
-                
+
             }
         } catch (Exception e) {
             //System.out.println("Error Lista Usuarios: " + e.getMessage());
             e.printStackTrace();
-            retorna.setTrazaRespuesta("Error: "+e);
-        }finally{
+            retorna.setTrazaRespuesta("Error: " + e);
+        } finally {
             try {
                 //sesion.close();  
                 sesion.close();
@@ -250,8 +249,7 @@ public class UsuarioLogic {
                 hibernateException.printStackTrace();
             }
         }
-        
-        
+
         return retorna;
     }
 
@@ -267,7 +265,7 @@ public class UsuarioLogic {
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                usu.setTrazaRespuesta("Error Conexión: "+validaConexion );
+                usu.setTrazaRespuesta("Error Conexión: " + validaConexion);
                 usu.setNumeroRespuesta(3);
             } else {
                 usu.setTrazaRespuesta("Actualización Correcta");
@@ -277,12 +275,12 @@ public class UsuarioLogic {
                 usu.setIdCreador(0);
                 fechaUltimoIngreso(usu);
                 sesion.update(usu);
-               
+
             }
         } catch (Exception e) {
             usu = null;
             e.printStackTrace();
-        }finally{
+        } finally {
             try {
                 //sesion.close();  
                 sesion.close();
@@ -304,7 +302,7 @@ public class UsuarioLogic {
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                usu.setTrazaRespuesta("Error Conexión: "+validaConexion );
+                usu.setTrazaRespuesta("Error Conexión: " + validaConexion);
                 usu.setNumeroRespuesta(3);
             } else {
                 usu.setTrazaRespuesta("Inserción Correcta");
@@ -312,7 +310,7 @@ public class UsuarioLogic {
                 usu.setIdUsuario(maxUsuario());
                 sesion.save(usu);
                 tx.commit();
-                
+
             }
 
         } catch (Exception e) {
@@ -320,7 +318,7 @@ public class UsuarioLogic {
             usu = (UsuarioEntity) new UsuarioEntity();
             usu.setNumeroRespuesta(0);
             usu.setTrazaRespuesta(e.getMessage());
-        }finally{
+        } finally {
             try {
                 //sesion.close();  
                 sesion.close();
@@ -366,7 +364,7 @@ public class UsuarioLogic {
             usu.setUltimoIngreso(fecha);
             sesion.update(usu);
             tx.commit();
-            
+
         } catch (Exception e) {
             //System.out.println("Error ingresando fecha: " + e);
         }
@@ -379,50 +377,52 @@ public class UsuarioLogic {
      * @return Lista de PermisosEntity
      */
     public ObjetoRetornaEntity permisosFiltrados(int idUsuario) {
-        ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
-        
+        ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
+
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                
+
             } else {
                 Query query = sesion.createQuery("SELECT p FROM PermisosEntity p, RolPermisoEntity rpe, RolesEntity re WHERE re=rpe.id_rol AND rpe.id_permiso=p.id_permiso AND re.id_rol=:idu");
                 query.setParameter("idu", idUsuario);
                 retorna.setRetorna((ArrayList<Object>) query.list());
                 retorna.setNumeroRespuesta(10);
                 retorna.setTrazaRespuesta("Carga de permisos Fltrados");
-                
+
             }
         } catch (Exception e) {
             retorna.setNumeroRespuesta(3);
-            retorna.setTrazaRespuesta("ERROR: "+e);
+            retorna.setTrazaRespuesta("ERROR: " + e);
             e.printStackTrace();
         }
         return retorna;
     }
+
     /**
      * Método que trae un Usuario por su ID
+     *
      * @param idUsuario
-     * @return 
+     * @return
      */
-    public UsuarioEntity usuarioPorId(int idUsuario){
-        UsuarioEntity usuarioObjeto=new UsuarioEntity();
-        try{
+    public UsuarioEntity usuarioPorId(int idUsuario) {
+        UsuarioEntity usuarioObjeto = new UsuarioEntity();
+        try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                
+
             } else {
-                Query query=sesion.createQuery("FROM UsuarioEntity u WHERE u.idUsuario=:idu");
+                Query query = sesion.createQuery("FROM UsuarioEntity u WHERE u.idUsuario=:idu");
                 query.setParameter("idu", idUsuario);
-                usuarioObjeto=(UsuarioEntity) query.uniqueResult();
+                usuarioObjeto = (UsuarioEntity) query.uniqueResult();
                 usuarioObjeto.setTrazaRespuesta("Usuario Retornado con Éxito");
                 usuarioObjeto.setNumeroRespuesta(11);
-               
+
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             usuarioObjeto.setNumeroRespuesta(3);
-            usuarioObjeto.setTrazaRespuesta("ERROR: "+e);
-        }finally{
+            usuarioObjeto.setTrazaRespuesta("ERROR: " + e);
+        } finally {
             try {
                 //sesion.close();  
                 sesion.close();
@@ -432,29 +432,28 @@ public class UsuarioLogic {
         }
         return usuarioObjeto;
     }
-    
-    public ObjetoRetornaEntity listaUsuariosPorAccion(int idAccion){
-        ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
-        
+
+    public ObjetoRetornaEntity listaUsuariosPorAccion(int idAccion) {
+        ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
+
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                
+
             } else {
                 Query query = sesion.createQuery("SELECT DISTINCT  m.idUsuario  FROM UsuarioEntity u, AccionEntity a, UsuarioMacroprocesoEntity m WHERE m.idAccion=a AND a.idAccion=:idA");
                 query.setParameter("idA", idAccion);
-                
+
                 retorna.setRetorna((ArrayList<Object>) query.list());
                 retorna.setNumeroRespuesta(10);
                 retorna.setTrazaRespuesta("Carga de permisos Fltrados");
-                
+
             }
         } catch (Exception e) {
             retorna.setNumeroRespuesta(3);
-            retorna.setTrazaRespuesta("ERROR: "+e);
+            retorna.setTrazaRespuesta("ERROR: " + e);
             e.printStackTrace();
-        }
-        finally{
+        } finally {
             try {
                 //sesion.close();  
                 sesion.close();
@@ -464,32 +463,33 @@ public class UsuarioLogic {
         }
         return retorna;
     }
+
     /**
-     * 
+     *
      * @param idGrupo
-     * @return 
+     * @return
      */
-    public ObjetoRetornaEntity listaUsuariosPorGrupo(int idGrupo){
-        ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
+    public ObjetoRetornaEntity listaUsuariosPorGrupo(int idGrupo) {
+        ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
-                
+
             } else {
                 //System.out.println("id GRupo: "+idGrupo);
-                Criteria criteria=sesion.createCriteria(UsuarioGrupoUsuarioEntity.class)
+                Criteria criteria = sesion.createCriteria(UsuarioGrupoUsuarioEntity.class)
                         .add(Restrictions.eq("grupoUsuario.idGrupoUsuarios", idGrupo));
                 criteria.setProjection(Projections.groupProperty("usuario"));
                 retorna.setRetorna((ArrayList<Object>) criteria.list());
                 retorna.setNumeroRespuesta(100);
                 retorna.setTrazaRespuesta("Carga de usuario Por grupo");
-              
+
             }
         } catch (Exception e) {
             retorna.setNumeroRespuesta(3);
-            retorna.setTrazaRespuesta("ERROR: "+e);
+            retorna.setTrazaRespuesta("ERROR: " + e);
             e.printStackTrace();
-        }finally{
+        } finally {
             try {
                 //sesion.close();  
                 sesion.close();
@@ -498,5 +498,21 @@ public class UsuarioLogic {
             }
         }
         return retorna;
+    }
+
+    @Override
+    public void close() throws Exception {
+        try {
+            if (tx != null) {
+                tx.commit();
+            }
+            if (sesion != null) {
+                sesion.close();
+                sesion = null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
