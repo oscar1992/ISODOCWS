@@ -7,7 +7,7 @@ package co.com.siscomputo.proveedores.logic;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
-import co.com.siscomputo.proveedores.persistencia.ProveedoresEntity;
+import co.com.siscomputo.proveedores.persistencia.TipoMonedaEntity;
 import java.util.ArrayList;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -17,7 +17,7 @@ import org.hibernate.Transaction;
  *
  * @author Felipe
  */
-public class ProveedoresLogic {
+public class TipoMonedaLogic {
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -55,7 +55,7 @@ public class ProveedoresLogic {
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
             } else {
-                Query query = sesion.createQuery("SELECT MAX(idProveedor) FROM ProveedoresEntity ");
+                Query query = sesion.createQuery("SELECT MAX(idMoneda) FROM TipoMonedaEntity");
                 ret = (int) query.uniqueResult();
                 ret++;
             }
@@ -66,92 +66,84 @@ public class ProveedoresLogic {
     }
 
     /**
-     * Metodo para insertar un proveedor
+     * Metodo para insertar un tipo de moneda
      *
-     * @param objProveedor
+     * @param objMoneda
      * @return
      */
-    public ProveedoresEntity InsertarProveedor(ProveedoresEntity objProveedor) {
+    public TipoMonedaEntity InsertarTipoMoneda(TipoMonedaEntity objMoneda) {
         try {
             String conexion = initOperation();
             if ("OK".equalsIgnoreCase(conexion)) {
-                objProveedor.setIdProveedor(maxDocumento());
-                sesion.save(objProveedor);
+                objMoneda.setIdMoneda(maxDocumento());
+                sesion.save(objMoneda);
                 tx.commit();
-                objProveedor.setNumeroRespuesta(23);
-                objProveedor.setTrazaRespuesta("Insercion exitosa");
-
+                objMoneda.setNumeroRespuesta(23);
+                objMoneda.setTrazaRespuesta("Insercion exitosa");
             } else {
-                objProveedor.setNumeroRespuesta(3);
-                objProveedor.setTrazaRespuesta("Error de Conexión " + conexion);
+                objMoneda.setNumeroRespuesta(3);
+                objMoneda.setTrazaRespuesta("Error de conexion" + conexion);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
-            objProveedor.setNumeroRespuesta(0);
-            objProveedor.setTrazaRespuesta(e.getMessage());
+            objMoneda.setNumeroRespuesta(0);
+            objMoneda.setTrazaRespuesta(e.getMessage());
         } finally {
             try {
                 sesion.close();
             } catch (Exception e) {
                 e.printStackTrace();
-                objProveedor.setNumeroRespuesta(0);
-                objProveedor.setTrazaRespuesta(e.getMessage());
+                objMoneda.setNumeroRespuesta(0);
+                objMoneda.setTrazaRespuesta(e.getMessage());
             }
 
         }
-        return objProveedor;
+        return objMoneda;
     }
 
     /**
-     * Metodo para actualziar un proveedor
+     * Metodo para actualizar un tipo de moneda
      *
-     * @param objProveedor
+     * @param objMoneda
      * @return
      */
-    public ProveedoresEntity actualizarProveedores(ProveedoresEntity objProveedor) {
+    public TipoMonedaEntity actualizarTipoMoneda(TipoMonedaEntity objMoneda) {
         try {
             String conexion = initOperation();
-            if ("OK".equalsIgnoreCase(conexion)) {
-                sesion.update(objProveedor);
+            if (conexion.equalsIgnoreCase(conexion)) {
+                sesion.update(objMoneda);
                 tx.commit();
-                objProveedor.setNumeroRespuesta(23);
-                objProveedor.setTrazaRespuesta("Insercion exitosa");
+                objMoneda.setNumeroRespuesta(23);
+                objMoneda.setTrazaRespuesta("Insercion exitosa");
             } else {
-                objProveedor.setNumeroRespuesta(3);
-                objProveedor.setTrazaRespuesta("Error de Conexión " + conexion);
+                objMoneda.setNumeroRespuesta(0);
+                objMoneda.setTrazaRespuesta("Error de Conexion " + conexion);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            objProveedor.setNumeroRespuesta(0);
-            objProveedor.setTrazaRespuesta(e.getMessage());
+            objMoneda.setNumeroRespuesta(0);
+            objMoneda.setTrazaRespuesta(e.getMessage());
+
         } finally {
             try {
                 sesion.close();
             } catch (Exception e) {
                 e.printStackTrace();
-                objProveedor.setNumeroRespuesta(0);
-                objProveedor.setTrazaRespuesta(e.getMessage());
+                objMoneda.setNumeroRespuesta(0);
+                objMoneda.setTrazaRespuesta(e.getMessage());
             }
-            
         }
-        return objProveedor;
+        return objMoneda;
     }
 
-    /**
-     * Metodo para mostrar todos los proveedores
-     *
-     * @return
-     */
-    public ObjetoRetornaEntity listaProveedores() {
+    public ObjetoRetornaEntity listaTipoMoneda() {
         ObjetoRetornaEntity retorno = new ObjetoRetornaEntity();
-
         try {
             String conexion = initOperation();
             if ("OK".equalsIgnoreCase(conexion)) {
-                Query sentencia = sesion.createQuery("FROM ProveedoresEntity p WHERE p.estadoProveedor<>'E'");
+                Query sentencia = sesion.createQuery("FROM TipoMonedaEntity WHERE estadoMoneda<>'E'");
                 retorno.setRetorna((ArrayList<Object>) sentencia.list());
-                retorno.setTrazaRespuesta("Consulta tabla Proveedores exitosa");
+                retorno.setTrazaRespuesta("Consulta tabla lista de moneda exitosa");
                 retorno.setNumeroRespuesta(1);
             } else {
                 retorno.setNumeroRespuesta(0);
@@ -167,8 +159,11 @@ public class ProveedoresLogic {
                 sesion.close();
             } catch (Exception e) {
                 e.printStackTrace();
+                retorno.setNumeroRespuesta(0);
+                retorno.setTrazaRespuesta(e.getMessage());
             }
         }
-        return  retorno;
+        return retorno;
     }
+
 }

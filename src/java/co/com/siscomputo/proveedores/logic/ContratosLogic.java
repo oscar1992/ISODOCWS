@@ -7,7 +7,7 @@ package co.com.siscomputo.proveedores.logic;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
-import co.com.siscomputo.proveedores.persistencia.ProveedoresEntity;
+import co.com.siscomputo.proveedores.persistencia.ContratosEntity;
 import java.util.ArrayList;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -17,7 +17,7 @@ import org.hibernate.Transaction;
  *
  * @author Felipe
  */
-public class ProveedoresLogic {
+public class ContratosLogic {
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -55,7 +55,7 @@ public class ProveedoresLogic {
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
             } else {
-                Query query = sesion.createQuery("SELECT MAX(idProveedor) FROM ProveedoresEntity ");
+                Query query = sesion.createQuery("SELECT MAX(IdContrato) FROM ContratosEntity");
                 ret = (int) query.uniqueResult();
                 ret++;
             }
@@ -66,96 +66,92 @@ public class ProveedoresLogic {
     }
 
     /**
-     * Metodo para insertar un proveedor
+     * Metodo Insertar un contrato
      *
-     * @param objProveedor
+     * @param objContrato
      * @return
      */
-    public ProveedoresEntity InsertarProveedor(ProveedoresEntity objProveedor) {
+    public ContratosEntity insertarContrato(ContratosEntity objContrato) {
         try {
             String conexion = initOperation();
             if ("OK".equalsIgnoreCase(conexion)) {
-                objProveedor.setIdProveedor(maxDocumento());
-                sesion.save(objProveedor);
+                objContrato.setIdContrato(maxDocumento());
+                sesion.save(objContrato);
                 tx.commit();
-                objProveedor.setNumeroRespuesta(23);
-                objProveedor.setTrazaRespuesta("Insercion exitosa");
+                objContrato.setNumeroRespuesta(23);
+                objContrato.setTrazaRespuesta("Insercion correcta");
 
             } else {
-                objProveedor.setNumeroRespuesta(3);
-                objProveedor.setTrazaRespuesta("Error de Conexión " + conexion);
+                objContrato.setNumeroRespuesta(0);
+                objContrato.setTrazaRespuesta("Error de conexion " + conexion);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            objProveedor.setNumeroRespuesta(0);
-            objProveedor.setTrazaRespuesta(e.getMessage());
+            objContrato.setNumeroRespuesta(0);
+            objContrato.setTrazaRespuesta(e.getMessage());
         } finally {
             try {
                 sesion.close();
             } catch (Exception e) {
                 e.printStackTrace();
-                objProveedor.setNumeroRespuesta(0);
-                objProveedor.setTrazaRespuesta(e.getMessage());
+                objContrato.setNumeroRespuesta(0);
+                objContrato.setTrazaRespuesta(e.getMessage());
             }
 
         }
-        return objProveedor;
+        return objContrato;
     }
 
     /**
-     * Metodo para actualziar un proveedor
      *
-     * @param objProveedor
+     * @param ObjContratos
      * @return
      */
-    public ProveedoresEntity actualizarProveedores(ProveedoresEntity objProveedor) {
+    public ContratosEntity actualizarContrato(ContratosEntity ObjContratos) {
         try {
             String conexion = initOperation();
             if ("OK".equalsIgnoreCase(conexion)) {
-                sesion.update(objProveedor);
+                sesion.update(ObjContratos);
                 tx.commit();
-                objProveedor.setNumeroRespuesta(23);
-                objProveedor.setTrazaRespuesta("Insercion exitosa");
+                ObjContratos.setNumeroRespuesta(23);
+                ObjContratos.setTrazaRespuesta("Inserción exitosa");
+
             } else {
-                objProveedor.setNumeroRespuesta(3);
-                objProveedor.setTrazaRespuesta("Error de Conexión " + conexion);
+                ObjContratos.setNumeroRespuesta(0);
+                ObjContratos.setTrazaRespuesta("Error de conexion " + conexion);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            objProveedor.setNumeroRespuesta(0);
-            objProveedor.setTrazaRespuesta(e.getMessage());
+            ObjContratos.setNumeroRespuesta(0);
+            ObjContratos.setTrazaRespuesta(e.getMessage());
+
         } finally {
             try {
                 sesion.close();
             } catch (Exception e) {
                 e.printStackTrace();
-                objProveedor.setNumeroRespuesta(0);
-                objProveedor.setTrazaRespuesta(e.getMessage());
             }
-            
         }
-        return objProveedor;
+        return ObjContratos;
     }
 
     /**
-     * Metodo para mostrar todos los proveedores
-     *
+     *Metodo para traer todos los contratos     
      * @return
      */
-    public ObjetoRetornaEntity listaProveedores() {
+    public ObjetoRetornaEntity listaContratos() {
         ObjetoRetornaEntity retorno = new ObjetoRetornaEntity();
-
         try {
-            String conexion = initOperation();
-            if ("OK".equalsIgnoreCase(conexion)) {
-                Query sentencia = sesion.createQuery("FROM ProveedoresEntity p WHERE p.estadoProveedor<>'E'");
+            String Conexion = initOperation();
+            if ("OK".equalsIgnoreCase(Conexion)) {
+                Query sentencia = sesion.createQuery("From ContratosEntity WHERE estadoContrato<>'E'");
                 retorno.setRetorna((ArrayList<Object>) sentencia.list());
-                retorno.setTrazaRespuesta("Consulta tabla Proveedores exitosa");
+                retorno.setTrazaRespuesta("Consulta tabla  de contratos exitosa");
                 retorno.setNumeroRespuesta(1);
             } else {
                 retorno.setNumeroRespuesta(0);
-                retorno.setTrazaRespuesta("Error de conexion" + conexion);
+                retorno.setTrazaRespuesta("Error de conexion" + Conexion);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -167,8 +163,10 @@ public class ProveedoresLogic {
                 sesion.close();
             } catch (Exception e) {
                 e.printStackTrace();
+                retorno.setNumeroRespuesta(0);
+                retorno.setTrazaRespuesta(e.getMessage());
             }
         }
-        return  retorno;
+        return retorno;
     }
 }

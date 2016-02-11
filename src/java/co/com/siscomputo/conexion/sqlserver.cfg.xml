@@ -54,5 +54,7 @@
     <mapping class="co.com.siscomputo.proveedores.persistencia.TipoCuentaEntity"/>
     <mapping class="co.com.siscomputo.proveedores.persistencia.FormasPagoEntity"/>
     <mapping class="co.com.siscomputo.proveedores.persistencia.ProveedoresEntity"/>
+    <mapping class="co.com.siscomputo.proveedores.persistencia.TipoMonedaEntity"/>
+    <mapping class="co.com.siscomputo.proveedores.persistencia.ContratosEntity"/>
   </session-factory>
 </hibernate-configuration>
