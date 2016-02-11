@@ -342,19 +342,6 @@ public class Proveedores {
         CuentasProveedoresLogic cuentasProveedoresLogic = new CuentasProveedoresLogic();
         return cuentasProveedoresLogic.listaCuentasProveedores();
     }
-<<<<<<< HEAD
-   
-=======
-
-    /*
-     /**
-     * Metodo para traer todos los tipos de cuenta
-     *
-     * @return   
-     */
-    @WebMethod(operationName = "listaTipoCuenta")
->>>>>>> origin/master
-
 
     /**
      * Metodo para insertar un metodo de pago
@@ -465,7 +452,7 @@ public class Proveedores {
         ProveedoresLogic logica = new ProveedoresLogic();
         return logica.listaProveedores();
     }
-<<<<<<< HEAD
+
     
     /**
      * Método que permite insertar un Tipo de Cuenta nuevo
@@ -511,7 +498,7 @@ public class Proveedores {
         return tipoCuentaLogic.listaTipoCuenta();
      }
     
-=======
+
 
     /**
      * Metodo que sirve para insertar un tipo de moneda
@@ -626,7 +613,7 @@ public class Proveedores {
         ContratosLogic logica = new ContratosLogic();
         return logica.listaContratos();
     }
->>>>>>> origin/master
+
 }
 
 

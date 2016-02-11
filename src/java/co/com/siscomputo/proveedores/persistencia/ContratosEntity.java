@@ -40,17 +40,17 @@ public class ContratosEntity extends ObjetoRetornaEntity implements Serializable
     @ManyToOne
     private TipoProveedorEntity idTipoProveedorContrato;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CONT_FINI")
-    private java.sql.Date fechaInicialContrato;
+    private java.util.Date fechaInicialContrato;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CONT_FFIN")
-    private java.sql.Date fechafinalContrato;
+    private java.util.Date fechafinalContrato;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CONT_FEJE")
-    private java.sql.Date plazoEjecucion;
+    private java.util.Date plazoEjecucion;
 
     @JoinColumn(name = "CONT_USUA")
     @ManyToOne
@@ -117,29 +117,30 @@ public class ContratosEntity extends ObjetoRetornaEntity implements Serializable
         this.idTipoProveedorContrato = idTipoProveedorContrato;
     }
 
-    public Date getFechaInicialContrato() {
+    public java.util.Date getFechaInicialContrato() {
         return fechaInicialContrato;
     }
 
-    public void setFechaInicialContrato(Date fechaInicialContrato) {
+    public void setFechaInicialContrato(java.util.Date fechaInicialContrato) {
         this.fechaInicialContrato = fechaInicialContrato;
     }
 
-    public Date getFechafinalContrato() {
+    public java.util.Date getFechafinalContrato() {
         return fechafinalContrato;
     }
 
-    public void setFechafinalContrato(Date fechafinalContrato) {
+    public void setFechafinalContrato(java.util.Date fechafinalContrato) {
         this.fechafinalContrato = fechafinalContrato;
     }
 
-    public Date getPlazoEjecucion() {
+    public java.util.Date getPlazoEjecucion() {
         return plazoEjecucion;
     }
 
-    public void setPlazoEjecucion(Date plazoEjecucion) {
+    public void setPlazoEjecucion(java.util.Date plazoEjecucion) {
         this.plazoEjecucion = plazoEjecucion;
     }
+
 
     public UsuarioEntity getSupervisorContrato() {
         return supervisorContrato;
