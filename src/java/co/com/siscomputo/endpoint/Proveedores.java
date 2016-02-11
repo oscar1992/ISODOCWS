@@ -6,6 +6,7 @@
 package co.com.siscomputo.endpoint;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
+import co.com.siscomputo.proveedores.logic.ContratosLogic;
 import co.com.siscomputo.proveedores.logic.CuentasProveedoresLogic;
 import co.com.siscomputo.proveedores.logic.EstadoProveedorLogic;
 import co.com.siscomputo.proveedores.logic.TipoDocumentoLogic;
@@ -18,10 +19,13 @@ import co.com.siscomputo.proveedores.persistencia.TipoCuentaEntity;
 import co.com.siscomputo.proveedores.logic.LineaLogic;
 import co.com.siscomputo.proveedores.logic.ProveedoresLogic;
 import co.com.siscomputo.proveedores.logic.TipoCuentaLogic;
+import co.com.siscomputo.proveedores.logic.TipoMonedaLogic;
+import co.com.siscomputo.proveedores.persistencia.ContratosEntity;
 import co.com.siscomputo.proveedores.persistencia.FormasPagoEntity;
 import co.com.siscomputo.proveedores.persistencia.LineaEntity;
 import co.com.siscomputo.proveedores.persistencia.ProveedoresEntity;
 import co.com.siscomputo.proveedores.persistencia.TipoDocumentoEntity;
+import co.com.siscomputo.proveedores.persistencia.TipoMonedaEntity;
 import co.com.siscomputo.proveedores.persistencia.TipoProveedorEntity;
 import co.com.siscomputo.proveedores.persistencia.TipoTributarioEntity;
 import co.com.siscomputo.utilidades.Valida;
@@ -338,7 +342,18 @@ public class Proveedores {
         CuentasProveedoresLogic cuentasProveedoresLogic = new CuentasProveedoresLogic();
         return cuentasProveedoresLogic.listaCuentasProveedores();
     }
+<<<<<<< HEAD
    
+=======
+
+    /*
+     /**
+     * Metodo para traer todos los tipos de cuenta
+     *
+     * @return   
+     */
+    @WebMethod(operationName = "listaTipoCuenta")
+>>>>>>> origin/master
 
 
     /**
@@ -389,7 +404,7 @@ public class Proveedores {
     public ObjetoRetornaEntity listaFormaPago() {
         FormasPagoLogic pagoLogic = new FormasPagoLogic();
         return pagoLogic.listaFormaPago();
-        
+
     }
 
     /**
@@ -450,6 +465,7 @@ public class Proveedores {
         ProveedoresLogic logica = new ProveedoresLogic();
         return logica.listaProveedores();
     }
+<<<<<<< HEAD
     
     /**
      * Método que permite insertar un Tipo de Cuenta nuevo
@@ -495,6 +511,122 @@ public class Proveedores {
         return tipoCuentaLogic.listaTipoCuenta();
      }
     
+=======
+
+    /**
+     * Metodo que sirve para insertar un tipo de moneda
+     *
+     * @param objMoneda
+     * @return
+     */
+    @WebMethod(operationName = "insertarTipoMoneda")
+    public TipoMonedaEntity insertarTipoMoneda(@WebParam(name = "tipoMoneda") TipoMonedaEntity objMoneda) {
+        try {
+            Valida validac = new Valida();
+            if ("OK".equalsIgnoreCase(validac.valida(objMoneda.getEstadoMoneda(), "Estado"))) {
+                TipoMonedaLogic logica = new TipoMonedaLogic();
+                logica.InsertarTipoMoneda(objMoneda);
+            } else {
+                objMoneda.setNumeroRespuesta(0);
+                objMoneda.setTrazaRespuesta(validac.valida(objMoneda.getEstadoMoneda(), "Estado"));
+                return objMoneda;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return objMoneda;
+    }
+
+    /**
+     * Metodo para actualizar los tipos de moneda
+     *
+     * @param ObjMoneda
+     * @return
+     */
+    @WebMethod(operationName = "actualizarMoneda")
+    public TipoMonedaEntity actualizarTipoMoneda(@WebParam(name = "tipoMoneda") TipoMonedaEntity ObjMoneda) {
+        try {
+            Valida validac = new Valida();
+            if ("OK".equalsIgnoreCase(validac.valida(ObjMoneda.getIdMoneda(), "IdTipoMoneda"))) {
+                TipoMonedaLogic logica = new TipoMonedaLogic();
+                logica.actualizarTipoMoneda(ObjMoneda);
+            } else {
+                ObjMoneda.setNumeroRespuesta(0);
+                ObjMoneda.setTrazaRespuesta(validac.valida(ObjMoneda.getIdMoneda(), "IdTipoMoneda"));
+                return ObjMoneda;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ObjMoneda;
+    }
+
+    /**
+     * Metodo para traer todos los tipos de moneda
+     *
+     * @return
+     */
+    @WebMethod(operationName = "listaTipoMoneda")
+    public ObjetoRetornaEntity listaTipoMoneda() {
+        TipoMonedaLogic logica = new TipoMonedaLogic();
+        return logica.listaTipoMoneda();
+    }
+
+    /**
+     * Metodo para insertar un contrato
+     *
+     * @param objContratos
+     * @return
+     */
+    @WebMethod(operationName = "insertarContrato")
+    public ContratosEntity insertarContrato(@WebParam(name = "contrato") ContratosEntity objContratos) {
+        try {
+            Valida validac = new Valida();
+            if ("OK".equalsIgnoreCase(validac.valida(objContratos.getEstadoContrato(), "Estado"))) {
+                ContratosLogic logic = new ContratosLogic();
+                logic.insertarContrato(objContratos);
+                objContratos.setNumeroRespuesta(23);
+                objContratos.setTrazaRespuesta("Insercion correcta");
+            } else {
+                objContratos.setNumeroRespuesta(0);
+                objContratos.setTrazaRespuesta(validac.valida(objContratos.getEstadoContrato(), "Estado"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return objContratos;
+    }
+
+    @WebMethod(operationName = "actualizarContrato")
+    public ContratosEntity actualizarContratos(@WebParam(name = "contrato") ContratosEntity objContratos) {
+        try {
+            Valida validac = new Valida();
+            if ("OK".equalsIgnoreCase(validac.valida(objContratos.getIdContrato(), "IdEstado"))) {
+                ContratosLogic logic = new ContratosLogic();
+                logic.actualizarContrato(objContratos);
+                objContratos.setNumeroRespuesta(23);
+                objContratos.setTrazaRespuesta("Actualización correcta");
+            } else {
+                objContratos.setNumeroRespuesta(0);
+                objContratos.setTrazaRespuesta(validac.valida(objContratos.getIdContrato(), "IdEstado"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return objContratos;
+    }
+
+    /**
+     * Metodo para traer todos los contratos
+     *
+     * @return
+     */
+    @WebMethod(operationName = "listaContratos")
+    public ObjetoRetornaEntity listaContratos() {
+        ContratosLogic logica = new ContratosLogic();
+        return logica.listaContratos();
+    }
+>>>>>>> origin/master
 }
 
 
