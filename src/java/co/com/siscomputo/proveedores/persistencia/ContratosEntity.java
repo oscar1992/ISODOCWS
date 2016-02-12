@@ -10,7 +10,6 @@ import co.com.siscomputo.administracion.persistencia.AreaEntity;
 import co.com.siscomputo.administracion.persistencia.EmpresaEntity;
 import co.com.siscomputo.administracion.persistencia.UsuarioEntity;
 import java.io.Serializable;
-import java.sql.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;

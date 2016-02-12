@@ -17,12 +17,14 @@ import co.com.siscomputo.proveedores.persistencia.EstadoProveedorEntity;
 import co.com.siscomputo.proveedores.logic.FormasPagoLogic;
 import co.com.siscomputo.proveedores.persistencia.TipoCuentaEntity;
 import co.com.siscomputo.proveedores.logic.LineaLogic;
+import co.com.siscomputo.proveedores.logic.PolizaLogic;
 import co.com.siscomputo.proveedores.logic.ProveedoresLogic;
 import co.com.siscomputo.proveedores.logic.TipoCuentaLogic;
 import co.com.siscomputo.proveedores.logic.TipoMonedaLogic;
 import co.com.siscomputo.proveedores.persistencia.ContratosEntity;
 import co.com.siscomputo.proveedores.persistencia.FormasPagoEntity;
 import co.com.siscomputo.proveedores.persistencia.LineaEntity;
+import co.com.siscomputo.proveedores.persistencia.PolizasEntity;
 import co.com.siscomputo.proveedores.persistencia.ProveedoresEntity;
 import co.com.siscomputo.proveedores.persistencia.TipoDocumentoEntity;
 import co.com.siscomputo.proveedores.persistencia.TipoMonedaEntity;
@@ -453,52 +455,54 @@ public class Proveedores {
         return logica.listaProveedores();
     }
 
-    
     /**
      * Método que permite insertar un Tipo de Cuenta nuevo
+     *
      * @param objeto
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "insertarTipoCuenta")
-    public TipoCuentaEntity insertarTipoCuenta(@WebParam(name = "objeto") TipoCuentaEntity objeto){
+    public TipoCuentaEntity insertarTipoCuenta(@WebParam(name = "objeto") TipoCuentaEntity objeto) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getTipoTipoCuenta(), "Sede"))) {
             TipoCuentaEntity ret = new TipoCuentaEntity();
             ret.setTrazaRespuesta(valida.valida(objeto.getTipoTipoCuenta(), "Sede"));
             return ret;
         } else {
-        TipoCuentaLogic tipoCuentaLogic=new TipoCuentaLogic();
-        return tipoCuentaLogic.insertarTipoCuenta(objeto);
+            TipoCuentaLogic tipoCuentaLogic = new TipoCuentaLogic();
+            return tipoCuentaLogic.insertarTipoCuenta(objeto);
         }
-}
-     /**
+    }
+
+    /**
      * Método que permite actualizar un Tipo de Cuenta
+     *
      * @param objeto
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "actualizarTipoCuenta")
-    public TipoCuentaEntity actualizarTipoCuenta(@WebParam(name = "objeto")TipoCuentaEntity objeto){
+    public TipoCuentaEntity actualizarTipoCuenta(@WebParam(name = "objeto") TipoCuentaEntity objeto) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getTipoTipoCuenta(), "Sede"))) {
             TipoCuentaEntity ret = new TipoCuentaEntity();
             ret.setTrazaRespuesta(valida.valida(objeto.getTipoTipoCuenta(), "Sede"));
             return ret;
         } else {
-            TipoCuentaLogic metodoRecuperacionLogic=new TipoCuentaLogic();
+            TipoCuentaLogic metodoRecuperacionLogic = new TipoCuentaLogic();
             return metodoRecuperacionLogic.actualizarTipoCuenta(objeto);
         }
     }
+
     /**
      * Método que trae una lista de Tipo de Cuenta
-     * @return 
+     *
+     * @return
      */
     @WebMethod(operationName = "listaTipoCuenta")
-    public ObjetoRetornaEntity listaTipoCuenta(){
-        TipoCuentaLogic tipoCuentaLogic=new TipoCuentaLogic();
+    public ObjetoRetornaEntity listaTipoCuenta() {
+        TipoCuentaLogic tipoCuentaLogic = new TipoCuentaLogic();
         return tipoCuentaLogic.listaTipoCuenta();
-     }
-    
-
+    }
 
     /**
      * Metodo que sirve para insertar un tipo de moneda
@@ -584,6 +588,12 @@ public class Proveedores {
         return objContratos;
     }
 
+    /**
+     * Metodo para actualizar contrato
+     *
+     * @param objContratos
+     * @return
+     */
     @WebMethod(operationName = "actualizarContrato")
     public ContratosEntity actualizarContratos(@WebParam(name = "contrato") ContratosEntity objContratos) {
         try {
@@ -614,6 +624,58 @@ public class Proveedores {
         return logica.listaContratos();
     }
 
+    /**
+     * Metodo para insertar una poliza
+     *
+     * @param objPolizas
+     * @return
+     */
+    @WebMethod(operationName = "insertarPoliza")
+    public PolizasEntity insertarPoliza(@WebParam(name = "PolizaEntity") PolizasEntity objPolizas) {
+        try {
+            Valida valida = new Valida();
+            if ("OK".equalsIgnoreCase(valida.valida(objPolizas.getIdPoliza(), "idPoliza"))) {
+                PolizaLogic poliza = new PolizaLogic();
+                poliza.actualizarPoliza(objPolizas);
+            } else {
+                objPolizas.setNumeroRespuesta(0);
+                objPolizas.setTrazaRespuesta(valida.valida(objPolizas.getIdPoliza(), "idPoliza"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return objPolizas;
+    }
+
+    /**
+     *Metodo para actualizar una poliza
+     * @param objPolizas
+     * @return
+     */
+    @WebMethod(operationName = "actualizarPoliza")
+    public PolizasEntity actualizarPoliza(@WebParam(name = "PolizaEntity") PolizasEntity objPolizas) {
+        try {
+            Valida valida = new Valida();
+            if ("OK".equalsIgnoreCase(valida.valida(objPolizas.getIdPoliza(), "idPoliza"))) {
+                PolizaLogic logica = new PolizaLogic();
+                logica.actualizarPoliza(objPolizas);
+            } else {
+                objPolizas.setNumeroRespuesta(0);
+                objPolizas.setTrazaRespuesta(valida.valida(objPolizas.getIdPoliza(), "idPoliza"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return objPolizas;
+    }
+    
+    /**
+     * Metodo para polizar
+     * @return 
+     */
+    @WebMethod(operationName = "listaPoliza")
+    public ObjetoRetornaEntity listaPolizas(){
+        PolizaLogic poliza = new PolizaLogic();
+         return poliza.listaPolizas();
+    }
 }
-
-
