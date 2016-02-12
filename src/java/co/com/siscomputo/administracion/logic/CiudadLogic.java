@@ -162,5 +162,38 @@ public class CiudadLogic {
         }
         return retorna;
     }
+    /**
+     * Método que trae una lista de ciudades por País
+     * @param idPais
+     * @return 
+     */
+    public ObjetoRetornaEntity ciudadesPorPais(int idPais){
+        ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
+        try {
+            String validaConexion = initOperation();
+            if (!"Ok".equalsIgnoreCase(validaConexion)) {
+                retorna.setNumeroRespuesta(3);
+                retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
+            } else {
+                Query query=sesion.createQuery("FROM CiudadEntity C, DepartamentoEntity D, PaisEntity P WHERE C.estadoCiudad<>'E' AND D.idDepartamento=C.ciudadDepartamento.idDepartamento AND  P.idPais=D.idPais.idPais AND P.idPais=:idP");
+                query.setParameter("idP", idPais);
+                retorna.setRetorna((ArrayList<Object>) query.list());
+                retorna.setTrazaRespuesta("Consulta tabla Ciudades exitosa");
+                retorna.setNumeroRespuesta(28);                
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            retorna=new ObjetoRetornaEntity();
+            retorna.setNumeroRespuesta(0);
+            retorna.setTrazaRespuesta(e.getMessage());
+        }finally{
+            try {
+                sesion.close();                  
+            } catch (HibernateException hibernateException) {
+                hibernateException.printStackTrace();
+            }
+        }
+        return retorna;
+    }
 }
 

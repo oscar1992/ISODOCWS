@@ -578,7 +578,26 @@ public class Usuario {
         CiudadLogic ciudadLogic = new CiudadLogic();
         return ciudadLogic.listaCiudad();
     }
-
+    
+    /**
+     * Método que trae una lista de ciudades por países
+     * @param idPais
+     * @return 
+     */
+    @WebMethod(operationName = "ciudadesPorPais")
+    public ObjetoRetornaEntity ciudadesPorPais(@WebParam(name = "idPais") Integer idPais) {
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(idPais, "Pais"))) {
+            ObjetoRetornaEntity ret = new ObjetoRetornaEntity();
+            ret.setTrazaRespuesta(valida.valida(idPais, "Pais"));
+            return ret;
+        } else {
+            CiudadLogic ciudadLogic = new CiudadLogic();
+            return ciudadLogic.ciudadesPorPais(idPais);
+        }
+    }
+    
+    
     /**
      * Método que permite insertar una sede nueva
      *
