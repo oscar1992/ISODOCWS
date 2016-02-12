@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -29,6 +30,7 @@ public class PolizasEntity extends ObjetoRetornaEntity implements Serializable {
     private String numeroPoliza;
 
     @JoinColumn(name = "POLI_CONT")
+    @ManyToOne
     private ContratosEntity  idContratoPoliza;
 
     public Integer getIdPoliza() {

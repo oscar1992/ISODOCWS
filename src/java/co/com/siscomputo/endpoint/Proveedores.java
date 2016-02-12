@@ -6,6 +6,8 @@
 package co.com.siscomputo.endpoint;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
+import co.com.siscomputo.administracion.persistencia.AccionEntity;
+import co.com.siscomputo.proveedores.logic.CertificadoLogic;
 import co.com.siscomputo.proveedores.logic.ContratosLogic;
 import co.com.siscomputo.proveedores.logic.CuentasProveedoresLogic;
 import co.com.siscomputo.proveedores.logic.EstadoProveedorLogic;
@@ -21,6 +23,7 @@ import co.com.siscomputo.proveedores.logic.PolizaLogic;
 import co.com.siscomputo.proveedores.logic.ProveedoresLogic;
 import co.com.siscomputo.proveedores.logic.TipoCuentaLogic;
 import co.com.siscomputo.proveedores.logic.TipoMonedaLogic;
+import co.com.siscomputo.proveedores.persistencia.CertificadoCalidadEntity;
 import co.com.siscomputo.proveedores.persistencia.ContratosEntity;
 import co.com.siscomputo.proveedores.persistencia.FormasPagoEntity;
 import co.com.siscomputo.proveedores.persistencia.LineaEntity;
@@ -648,7 +651,8 @@ public class Proveedores {
     }
 
     /**
-     *Metodo para actualizar una poliza
+     * Metodo para actualizar una poliza
+     *
      * @param objPolizas
      * @return
      */
@@ -668,14 +672,82 @@ public class Proveedores {
         }
         return objPolizas;
     }
-    
+
     /**
-     * Metodo para polizar
-     * @return 
+     * Metodo para traer todas las polizas
+     *
+     * @return
      */
     @WebMethod(operationName = "listaPoliza")
-    public ObjetoRetornaEntity listaPolizas(){
+    public ObjetoRetornaEntity listaPolizas() {
         PolizaLogic poliza = new PolizaLogic();
-         return poliza.listaPolizas();
+        return poliza.listaPolizas();
+    }
+
+    /**
+     * Metodo para insertar un certificado de calidad
+     *
+     * @param ObjCertificado
+     * @return
+     */
+    @WebMethod(operationName = "insertarCertificado")
+    public CertificadoCalidadEntity insertarCertificado(@WebParam(name = "CertificadoEntity") CertificadoCalidadEntity ObjCertificado) {
+        try {
+            Valida valida = new Valida();
+            String res = valida.valida(ObjCertificado.getTipoCertificado(), "tipo");
+            if ("OK".equalsIgnoreCase(res)) {
+                CertificadoLogic logica = new CertificadoLogic();
+                logica.insertarCertificadoCalidad(ObjCertificado);
+            } else {
+                ObjCertificado.setNumeroRespuesta(0);
+                ObjCertificado.setTrazaRespuesta(res);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ObjCertificado;
+    }
+
+    /**
+     * Metodo para actualizar un certificado
+     *
+     * @param ObjCertificado
+     * @return
+     */
+    @WebMethod(operationName = "actualizarCertificado")
+    public CertificadoCalidadEntity actualizarCertificado(@WebParam(name = "CertificadoEntity") CertificadoCalidadEntity ObjCertificado) {
+        try {
+            Valida valida = new Valida();
+            String res = valida.valida(ObjCertificado.getIdCertificado(), "idCertificado");
+            if ("OK".equalsIgnoreCase(res)) {
+                CertificadoLogic logica = new CertificadoLogic();
+                logica.actualizarCertificados(ObjCertificado);
+            } else {
+                ObjCertificado.setNumeroRespuesta(0);
+                ObjCertificado.setTrazaRespuesta(res);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            ObjCertificado.setNumeroRespuesta(0);
+            ObjCertificado.setTrazaRespuesta(e.getMessage());
+        }
+        return ObjCertificado;
+    }
+
+    /**
+     *Metodo para listar los certificados
+     * @return
+     */
+    public ObjetoRetornaEntity listaCertificado() {
+        ObjetoRetornaEntity obj = new ObjetoRetornaEntity();
+        try {
+            CertificadoLogic logica = new CertificadoLogic();
+            obj = logica.listaCertificados();
+        } catch (Exception e) {
+            e.printStackTrace();
+            obj.setNumeroRespuesta(0);
+            obj.setTrazaRespuesta(e.getMessage());
+        }
+        return obj;
     }
 }
