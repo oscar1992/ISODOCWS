@@ -150,7 +150,7 @@ public class CertificadoLogic {
         try {
             String conexion = initOperation();
             if ("OK".equalsIgnoreCase(conexion)) {
-                Query sentencia = sesion.createQuery(conexion);
+                Query sentencia = sesion.createQuery("From CertificadoCalidadEntity where estadoCertificado<>'E'");
                 retorno.setRetorna((ArrayList<Object>) sentencia.list());
                 retorno.setTrazaRespuesta("Consulta tabla certificado exitosa");
                 retorno.setNumeroRespuesta(1);

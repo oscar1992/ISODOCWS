@@ -33,6 +33,18 @@ public class PolizasEntity extends ObjetoRetornaEntity implements Serializable {
     @ManyToOne
     private ContratosEntity  idContratoPoliza;
 
+    @Column(name = "POLI_ESTADO")
+    private String estadopoliza;
+
+    public String getEstado() {
+        return estadopoliza;
+    }
+
+    public void setEstado(String estado) {
+        this.estadopoliza = estado;
+    }
+    
+    
     public Integer getIdPoliza() {
         return idPoliza;
     }

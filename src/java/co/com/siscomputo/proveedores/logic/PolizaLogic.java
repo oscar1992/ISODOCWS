@@ -140,7 +140,7 @@ public class PolizaLogic {
         try {
             String conexion = initOperation();
             if ("OK".equalsIgnoreCase(conexion)) {
-                Query sentencia = sesion.createQuery("FROM PolizasEntity p WHERE p.idPoliza");
+                Query sentencia = sesion.createQuery("FROM PolizasEntity p WHERE p.estadopoliza<>'E'");
                 retorno.setRetorna((ArrayList<Object>) sentencia.list());
                 retorno.setTrazaRespuesta("Consulta tabla Poliza exitosa");
                 retorno.setNumeroRespuesta(1);

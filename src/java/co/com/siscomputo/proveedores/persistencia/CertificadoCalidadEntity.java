@@ -40,6 +40,19 @@ public class CertificadoCalidadEntity extends ObjetoRetornaEntity implements Ser
     @ManyToOne
     private ProveedoresEntity idProveedor;
 
+    @Column(name = "CERT_ESTADO")
+    private String estadoCertificado;
+
+    public String getEstadoCertificado() {
+        return estadoCertificado;
+    }
+
+    public void setEstadoCertificado(String estadoCertificado) {
+        this.estadoCertificado = estadoCertificado;
+    }
+    
+    
+    
     public Integer getIdCertificado() {
         return idCertificado;
     }
