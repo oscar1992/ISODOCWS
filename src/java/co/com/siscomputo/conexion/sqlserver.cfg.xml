@@ -64,5 +64,6 @@
     <mapping class="co.com.siscomputo.proveedores.persistencia.PolizasEntity"/>
     <mapping class="co.com.siscomputo.proveedores.persistencia.CertificadoCalidadEntity"/>
     <mapping class="co.com.siscomputo.proveedores.persistencia.AnexoContratoEntity"/>
+    <mapping class="co.com.siscomputo.proveedores.persistencia.TipoEvaluacionEntity"/>
   </session-factory>
 </hibernate-configuration>
