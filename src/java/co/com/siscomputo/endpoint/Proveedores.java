@@ -6,11 +6,12 @@
 package co.com.siscomputo.endpoint;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
-import co.com.siscomputo.administracion.persistencia.AccionEntity;
+import co.com.siscomputo.proveedores.logic.AnexosContratoLogic;
 import co.com.siscomputo.proveedores.logic.CertificadoLogic;
 import co.com.siscomputo.proveedores.logic.ContratosLogic;
 import co.com.siscomputo.proveedores.logic.CuentasProveedoresLogic;
 import co.com.siscomputo.proveedores.logic.EstadoProveedorLogic;
+import co.com.siscomputo.proveedores.logic.FiltroContratosLogic;
 import co.com.siscomputo.proveedores.logic.TipoDocumentoLogic;
 import co.com.siscomputo.proveedores.logic.TipoProveedorLogic;
 import co.com.siscomputo.proveedores.logic.TipoTributarioLogic;
@@ -22,7 +23,9 @@ import co.com.siscomputo.proveedores.logic.LineaLogic;
 import co.com.siscomputo.proveedores.logic.PolizaLogic;
 import co.com.siscomputo.proveedores.logic.ProveedoresLogic;
 import co.com.siscomputo.proveedores.logic.TipoCuentaLogic;
+import co.com.siscomputo.proveedores.logic.TipoEvaluacionLogic;
 import co.com.siscomputo.proveedores.logic.TipoMonedaLogic;
+import co.com.siscomputo.proveedores.persistencia.AnexoContratoEntity;
 import co.com.siscomputo.proveedores.persistencia.CertificadoCalidadEntity;
 import co.com.siscomputo.proveedores.persistencia.ContratosEntity;
 import co.com.siscomputo.proveedores.persistencia.FormasPagoEntity;
@@ -30,6 +33,7 @@ import co.com.siscomputo.proveedores.persistencia.LineaEntity;
 import co.com.siscomputo.proveedores.persistencia.PolizasEntity;
 import co.com.siscomputo.proveedores.persistencia.ProveedoresEntity;
 import co.com.siscomputo.proveedores.persistencia.TipoDocumentoEntity;
+import co.com.siscomputo.proveedores.persistencia.TipoEvaluacionEntity;
 import co.com.siscomputo.proveedores.persistencia.TipoMonedaEntity;
 import co.com.siscomputo.proveedores.persistencia.TipoProveedorEntity;
 import co.com.siscomputo.proveedores.persistencia.TipoTributarioEntity;
@@ -735,9 +739,11 @@ public class Proveedores {
     }
 
     /**
-     *Metodo para listar los certificados
+     * Metodo para listar los certificados
+     *
      * @return
      */
+    @WebMethod(operationName = "listarCertificado")
     public ObjetoRetornaEntity listaCertificado() {
         ObjetoRetornaEntity obj = new ObjetoRetornaEntity();
         try {
@@ -750,4 +756,162 @@ public class Proveedores {
         }
         return obj;
     }
+
+    /**
+     * Metodo para filtrar contratos por TipoProveedor,Estado,TipoContrato y
+     * fecha de vencimiento
+     *
+     * @param IdTipoProveedor
+     * @param estadoContrato
+     * @param IdProveedor
+     * @param fechafinal
+     * @return
+     */
+    @WebMethod(operationName = "FiltroContratos")
+    public ObjetoRetornaEntity FiltroContratos(@WebParam(name = "IdTipoProveedor") Integer IdTipoProveedor, @WebParam(name = "estadoContrato") String estadoContrato, @WebParam(name = "idProveedorContrato") Integer IdProveedor, @WebParam(name = "fechafinalContrato") String fechafinal) {
+        FiltroContratosLogic retorn = new FiltroContratosLogic();
+        return retorn.filtrarContratos(IdTipoProveedor, estadoContrato, IdProveedor, fechafinal);
+
+    }
+
+    /**
+     * Metodo para insertar un anexo de contrato
+     *
+     * @param objAnexo
+     * @return
+     */
+    @WebMethod(operationName = "InsertarAnexoContrato")
+    public AnexoContratoEntity insertarAnexoContrato(@WebParam(name = "objAnexo") AnexoContratoEntity objAnexo) {
+        try {
+            Valida valida = new Valida();
+            String respuesta = valida.valida(objAnexo.getUbicacionAnexo(), "ubicación");
+            respuesta = valida.valida(objAnexo.getIdContratoAnexo(), "idcontrato");
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                AnexosContratoLogic logica = new AnexosContratoLogic();
+                logica.InsertarAnexo(objAnexo);
+
+            } else {
+                objAnexo.setTrazaRespuesta(respuesta);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return objAnexo;
+    }
+
+    /**
+     * Metodo para actualizar un anexo de contrato
+     *
+     * @param objAnexo
+     * @return
+     */
+    @WebMethod(operationName = "actualizarAnexoContrato")
+    public AnexoContratoEntity actualizarAnexoContrato(@WebParam(name = "objAnexo") AnexoContratoEntity objAnexo) {
+        Valida valida = new Valida();
+        String respuesta = valida.valida(objAnexo.getUbicacionAnexo(), "ubicación");
+        respuesta = valida.valida(objAnexo.getIdContratoAnexo(), "idcontrato");
+        respuesta = valida.valida(objAnexo.getIdAnexo(), "id");
+        try {
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                AnexosContratoLogic logica = new AnexosContratoLogic();
+                logica.actualizarAnexoContrato(objAnexo);
+            } else {
+                objAnexo.setTrazaRespuesta(respuesta);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return objAnexo;
+    }
+
+    /**
+     * Metodo para listar los anexos de los contratos
+     *
+     * @return
+     */
+    @WebMethod(operationName = "listarAnexosContratos")
+    public ObjetoRetornaEntity listarAnexoContrato() {
+        ObjetoRetornaEntity obj = new ObjetoRetornaEntity();
+        try {
+            AnexosContratoLogic logica = new AnexosContratoLogic();
+            return logica.listarAnexos();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return obj;
+    }
+
+    /**
+     * Metodo para insertar un tipo de evaluacion
+     *
+     * @param objTipoE
+     * @return
+     */
+    @WebMethod(operationName = "InsertarTipoEvaluacion")
+    public TipoEvaluacionEntity insertarTipoEvaluacion(@WebParam(name = "TipoEvaluacion") TipoEvaluacionEntity objTipoE) {
+        try {
+            Valida valida = new Valida();
+            String respuesta = valida.valida(objTipoE.getTipoEvaluacion(), "Tipo Evaluacion");
+            respuesta = valida.valida(objTipoE.getRangoMedioEvaluacion(), "Rango medio");
+            respuesta = valida.valida(objTipoE.getRangoBajoEvaluacion(), "Rango bajo");
+            respuesta = valida.valida(objTipoE.getRangoAltoEvaluacion(), "Rango alto");
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                TipoEvaluacionLogic logica = new TipoEvaluacionLogic();
+                logica.insertarTipoEvaluacion(objTipoE);
+            } else {
+                objTipoE.setTrazaRespuesta(respuesta);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return objTipoE;
+
+    }
+
+    /**
+     * Metodo para actualizar un tipo de evaluacion
+     *
+     * @param objTipoE
+     * @return
+     */
+    @WebMethod(operationName = "actualizarTipoEvaluacion")
+    public TipoEvaluacionEntity actualizarTipoEvaluacion(@WebParam(name = "TipoEvaluacion") TipoEvaluacionEntity objTipoE) {
+        try {
+            Valida valida = new Valida();
+            String respuesta = valida.valida(objTipoE.getTipoEvaluacion(), "Tipo Evaluacion");
+            respuesta = valida.valida(objTipoE.getRangoMedioEvaluacion(), "Rango medio");
+            respuesta = valida.valida(objTipoE.getRangoBajoEvaluacion(), "Rango bajo");
+            respuesta = valida.valida(objTipoE.getRangoAltoEvaluacion(), "Rango alto");
+            respuesta = valida.valida(objTipoE.getIdTipoEvaluacion(), "ID");
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                TipoEvaluacionLogic logica = new TipoEvaluacionLogic();
+                logica.actualizarTipoEvaluacion(objTipoE);
+            } else {
+                objTipoE.setTrazaRespuesta(respuesta);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return objTipoE;
+
+    }
+
+    /**
+     *Metodo para listar los tipos de evaluacion
+     * @return
+     */
+    @WebMethod(operationName = "listarTipoDeEvaluacion")
+    public ObjetoRetornaEntity listarTiposDeEvaluacion() {
+        ObjetoRetornaEntity retorno = new ObjetoRetornaEntity();
+        try {
+            TipoEvaluacionLogic logica = new TipoEvaluacionLogic();
+            retorno = logica.listarTipoEvaluaciones();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return retorno;
+    }
+
 }

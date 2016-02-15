@@ -7,7 +7,7 @@ package co.com.siscomputo.proveedores.logic;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
-import co.com.siscomputo.proveedores.persistencia.ContratosEntity;
+import co.com.siscomputo.proveedores.persistencia.TipoEvaluacionEntity;
 import java.util.ArrayList;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -17,7 +17,7 @@ import org.hibernate.Transaction;
  *
  * @author Felipe
  */
-public class ContratosLogic {
+public class TipoEvaluacionLogic {
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -55,7 +55,7 @@ public class ContratosLogic {
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
             } else {
-                Query query = sesion.createQuery("SELECT MAX(IdContrato) FROM ContratosEntity");
+                Query query = sesion.createQuery("SELECT MAX(IdTipoEvaluacion) FROM TipoEvaluacionEntity");
                 ret = (int) query.uniqueResult();
                 ret++;
             }
@@ -66,72 +66,64 @@ public class ContratosLogic {
     }
 
     /**
-     * Metodo Insertar un contrato
+     * Metodo para insertar un tipo de evaluacion
      *
-     * @param objContrato
+     * @param ObjTipoE
      * @return
      */
-    public ContratosEntity insertarContrato(ContratosEntity objContrato) {
+    public TipoEvaluacionEntity insertarTipoEvaluacion(TipoEvaluacionEntity ObjTipoE) {
         try {
             String conexion = initOperation();
             if ("OK".equalsIgnoreCase(conexion)) {
-                objContrato.setIdContrato(maxDocumento());
-                sesion.save(objContrato);
+                ObjTipoE.setIdTipoEvaluacion(maxDocumento());
+                sesion.save(ObjTipoE);
                 tx.commit();
-                objContrato.setNumeroRespuesta(23);
-                objContrato.setTrazaRespuesta("Insercion correcta");
-
+                ObjTipoE.setNumeroRespuesta(0);
+                ObjTipoE.setTrazaRespuesta("Inserción correcta");
             } else {
-                objContrato = new ContratosEntity();
-                objContrato.setNumeroRespuesta(0);
-                objContrato.setTrazaRespuesta("Error de conexion " + conexion);
+                ObjTipoE = new TipoEvaluacionEntity();
+                ObjTipoE.setNumeroRespuesta(0);
+                ObjTipoE.setTrazaRespuesta(conexion);
             }
 
         } catch (Exception e) {
-            objContrato = new ContratosEntity();
             e.printStackTrace();
-            objContrato.setNumeroRespuesta(0);
-            objContrato.setTrazaRespuesta(e.getMessage());
+            ObjTipoE = new TipoEvaluacionEntity();
+            ObjTipoE.setNumeroRespuesta(0);
+            ObjTipoE.setTrazaRespuesta(e.getMessage());
         } finally {
             try {
                 sesion.close();
             } catch (Exception e) {
-                objContrato = new ContratosEntity();
                 e.printStackTrace();
-                objContrato.setNumeroRespuesta(0);
-                objContrato.setTrazaRespuesta(e.getMessage());
             }
 
         }
-        return objContrato;
+        return ObjTipoE;
     }
 
     /**
-     * Metodo para actualizar un contrato
+     * Metodo para actualizar el tipo de evaluacion
      *
-     * @param ObjContratos
+     * @param ObjTipoE
      * @return
      */
-    public ContratosEntity actualizarContrato(ContratosEntity ObjContratos) {
+    public TipoEvaluacionEntity actualizarTipoEvaluacion(TipoEvaluacionEntity ObjTipoE) {
         try {
             String conexion = initOperation();
             if ("OK".equalsIgnoreCase(conexion)) {
-                sesion.update(ObjContratos);
+                sesion.update(ObjTipoE);
                 tx.commit();
-                ObjContratos.setNumeroRespuesta(23);
-                ObjContratos.setTrazaRespuesta("Inserción exitosa");
-
             } else {
-                ObjContratos = new ContratosEntity();
-                ObjContratos.setNumeroRespuesta(0);
-                ObjContratos.setTrazaRespuesta("Error de conexion " + conexion);
+                ObjTipoE = new TipoEvaluacionEntity();
+                ObjTipoE.setNumeroRespuesta(0);
+                ObjTipoE.setTrazaRespuesta("Error de conexion : " + conexion);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            ObjContratos = new ContratosEntity();
-            ObjContratos.setNumeroRespuesta(0);
-            ObjContratos.setTrazaRespuesta(e.getMessage());
-
+            ObjTipoE = new TipoEvaluacionEntity();
+            ObjTipoE.setNumeroRespuesta(0);
+            ObjTipoE.setTrazaRespuesta(e.getMessage());
         } finally {
             try {
                 sesion.close();
@@ -139,30 +131,32 @@ public class ContratosLogic {
                 e.printStackTrace();
             }
         }
-        return ObjContratos;
+
+        return ObjTipoE;
     }
 
     /**
-     * Metodo para traer todos los contratos
+     * Metodo para listar los tipos de evaluaciones
      *
      * @return
      */
-    public ObjetoRetornaEntity listaContratos() {
+    public ObjetoRetornaEntity listarTipoEvaluaciones() {
         ObjetoRetornaEntity retorno = new ObjetoRetornaEntity();
+
         try {
             String Conexion = initOperation();
             if ("OK".equalsIgnoreCase(Conexion)) {
-                Query sentencia = sesion.createQuery("From ContratosEntity WHERE estadoContrato<>'E'");
+                Query sentencia = sesion.createQuery("From TipoEvaluacionEntity");
                 retorno.setRetorna((ArrayList<Object>) sentencia.list());
-                retorno.setTrazaRespuesta("Consulta tabla  de contratos exitosa");
+                retorno.setTrazaRespuesta("Consulta tabla  de tipos de evaluacion exitosa");
                 retorno.setNumeroRespuesta(1);
             } else {
                 retorno.setNumeroRespuesta(0);
-                retorno.setTrazaRespuesta("Error de conexion" + Conexion);
+                retorno.setTrazaRespuesta("Error de conexion: " + Conexion);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
-            retorno = new ObjetoRetornaEntity();
             retorno.setNumeroRespuesta(0);
             retorno.setTrazaRespuesta(e.getMessage());
         } finally {
@@ -170,10 +164,9 @@ public class ContratosLogic {
                 sesion.close();
             } catch (Exception e) {
                 e.printStackTrace();
-                retorno.setNumeroRespuesta(0);
-                retorno.setTrazaRespuesta(e.getMessage());
             }
         }
         return retorno;
     }
+
 }
