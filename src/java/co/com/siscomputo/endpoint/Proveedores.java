@@ -6,11 +6,11 @@
 package co.com.siscomputo.endpoint;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
-<<<<<<< HEAD
+
 import co.com.siscomputo.proveedores.logic.AnexoProveedorLogic;
-=======
+
 import co.com.siscomputo.proveedores.logic.AnexosContratoLogic;
->>>>>>> origin/master
+
 import co.com.siscomputo.proveedores.logic.CertificadoLogic;
 import co.com.siscomputo.proveedores.logic.ContratosLogic;
 import co.com.siscomputo.proveedores.logic.CuentasProveedoresLogic;
@@ -29,11 +29,11 @@ import co.com.siscomputo.proveedores.logic.ProveedoresLogic;
 import co.com.siscomputo.proveedores.logic.TipoCuentaLogic;
 import co.com.siscomputo.proveedores.logic.TipoEvaluacionLogic;
 import co.com.siscomputo.proveedores.logic.TipoMonedaLogic;
-<<<<<<< HEAD
+
 import co.com.siscomputo.proveedores.persistencia.AnexoProveedorEntity;
-=======
+
 import co.com.siscomputo.proveedores.persistencia.AnexoContratoEntity;
->>>>>>> origin/master
+
 import co.com.siscomputo.proveedores.persistencia.CertificadoCalidadEntity;
 import co.com.siscomputo.proveedores.persistencia.ContratosEntity;
 import co.com.siscomputo.proveedores.persistencia.FormasPagoEntity;
@@ -764,53 +764,55 @@ public class Proveedores {
         }
         return obj;
     }
-<<<<<<< HEAD
-    
+
     /**
      * Método que permite insertar un Anexos del proveedor nuevo
+     *
      * @param objeto
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "insertarAnexoProveedor")
-    public AnexoProveedorEntity insertarAnexoProveedor(@WebParam(name = "objeto") AnexoProveedorEntity objeto){
+    public AnexoProveedorEntity insertarAnexoProveedor(@WebParam(name = "objeto") AnexoProveedorEntity objeto) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getProveedorAnexoProveedor(), "Sede"))) {
             AnexoProveedorEntity ret = new AnexoProveedorEntity();
             ret.setTrazaRespuesta(valida.valida(objeto.getProveedorAnexoProveedor(), "Sede"));
             return ret;
         } else {
-        AnexoProveedorLogic anexoProveedorLogic=new AnexoProveedorLogic();
-        return anexoProveedorLogic.insertarAnexoProveedor(objeto);
+            AnexoProveedorLogic anexoProveedorLogic = new AnexoProveedorLogic();
+            return anexoProveedorLogic.insertarAnexoProveedor(objeto);
         }
-}
-     /**
+    }
+
+    /**
      * Método que permite actualizar un Anexos del proveedor
+     *
      * @param objeto
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "actualizarAnexoProveedor")
-    public AnexoProveedorEntity actualizarAnexoProveedor(@WebParam(name = "objeto")AnexoProveedorEntity objeto){
+    public AnexoProveedorEntity actualizarAnexoProveedor(@WebParam(name = "objeto") AnexoProveedorEntity objeto) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getProveedorAnexoProveedor(), "Sede"))) {
             AnexoProveedorEntity ret = new AnexoProveedorEntity();
             ret.setTrazaRespuesta(valida.valida(objeto.getProveedorAnexoProveedor(), "Sede"));
             return ret;
         } else {
-            AnexoProveedorLogic metodoRecuperacionLogic=new AnexoProveedorLogic();
+            AnexoProveedorLogic metodoRecuperacionLogic = new AnexoProveedorLogic();
             return metodoRecuperacionLogic.actualizarAnexoProveedor(objeto);
         }
     }
+
     /**
      * Método que trae una lista de Anexos del proveedor
-     * @return 
+     *
+     * @return
      */
     @WebMethod(operationName = "listaAnexoProveedor")
-    public ObjetoRetornaEntity listaAnexoProveedor(){
-        AnexoProveedorLogic anexoProveedorLogic=new AnexoProveedorLogic();
+    public ObjetoRetornaEntity listaAnexoProveedor() {
+        AnexoProveedorLogic anexoProveedorLogic = new AnexoProveedorLogic();
         return anexoProveedorLogic.listaAnexoProveedor();
-     }
-    
-=======
+    }
 
     /**
      * Metodo para filtrar contratos por TipoProveedor,Estado,TipoContrato y
@@ -954,7 +956,8 @@ public class Proveedores {
     }
 
     /**
-     *Metodo para listar los tipos de evaluacion
+     * Metodo para listar los tipos de evaluacion
+     *
      * @return
      */
     @WebMethod(operationName = "listarTipoDeEvaluacion")
@@ -969,5 +972,4 @@ public class Proveedores {
         return retorno;
     }
 
->>>>>>> origin/master
 }
