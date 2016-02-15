@@ -7,7 +7,7 @@ package co.com.siscomputo.proveedores.logic;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
-import co.com.siscomputo.proveedores.persistencia.ContratosEntity;
+import co.com.siscomputo.proveedores.persistencia.AnexoContratoEntity;
 import java.util.ArrayList;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -17,7 +17,7 @@ import org.hibernate.Transaction;
  *
  * @author Felipe
  */
-public class ContratosLogic {
+public class AnexosContratoLogic {
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -55,7 +55,7 @@ public class ContratosLogic {
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
             } else {
-                Query query = sesion.createQuery("SELECT MAX(IdContrato) FROM ContratosEntity");
+                Query query = sesion.createQuery("SELECT MAX(idAnexo) FROM AnexoContratoEntity");
                 ret = (int) query.uniqueResult();
                 ret++;
             }
@@ -66,72 +66,28 @@ public class ContratosLogic {
     }
 
     /**
-     * Metodo Insertar un contrato
+     * Metodo para insertar un anexo
      *
-     * @param objContrato
+     * @param Objanexo
      * @return
      */
-    public ContratosEntity insertarContrato(ContratosEntity objContrato) {
+    public AnexoContratoEntity InsertarAnexo(AnexoContratoEntity Objanexo) {
         try {
+
             String conexion = initOperation();
             if ("OK".equalsIgnoreCase(conexion)) {
-                objContrato.setIdContrato(maxDocumento());
-                sesion.save(objContrato);
-                tx.commit();
-                objContrato.setNumeroRespuesta(23);
-                objContrato.setTrazaRespuesta("Insercion correcta");
-
+                Objanexo.setIdAnexo(maxDocumento());
+                sesion.save(Objanexo);
+                Objanexo.setTrazaRespuesta("Insercion correcta");
+                Objanexo.setNumeroRespuesta(23);
             } else {
-                objContrato = new ContratosEntity();
-                objContrato.setNumeroRespuesta(0);
-                objContrato.setTrazaRespuesta("Error de conexion " + conexion);
-            }
-
-        } catch (Exception e) {
-            objContrato = new ContratosEntity();
-            e.printStackTrace();
-            objContrato.setNumeroRespuesta(0);
-            objContrato.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                objContrato = new ContratosEntity();
-                e.printStackTrace();
-                objContrato.setNumeroRespuesta(0);
-                objContrato.setTrazaRespuesta(e.getMessage());
-            }
-
-        }
-        return objContrato;
-    }
-
-    /**
-     * Metodo para actualizar un contrato
-     *
-     * @param ObjContratos
-     * @return
-     */
-    public ContratosEntity actualizarContrato(ContratosEntity ObjContratos) {
-        try {
-            String conexion = initOperation();
-            if ("OK".equalsIgnoreCase(conexion)) {
-                sesion.update(ObjContratos);
-                tx.commit();
-                ObjContratos.setNumeroRespuesta(23);
-                ObjContratos.setTrazaRespuesta("Inserción exitosa");
-
-            } else {
-                ObjContratos = new ContratosEntity();
-                ObjContratos.setNumeroRespuesta(0);
-                ObjContratos.setTrazaRespuesta("Error de conexion " + conexion);
+                Objanexo.setTrazaRespuesta("Error de conexion :" + conexion);
+                Objanexo.setNumeroRespuesta(0);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            ObjContratos = new ContratosEntity();
-            ObjContratos.setNumeroRespuesta(0);
-            ObjContratos.setTrazaRespuesta(e.getMessage());
-
+            Objanexo.setIdAnexo(0);
+            Objanexo.setTrazaRespuesta(e.getMessage());
         } finally {
             try {
                 sesion.close();
@@ -139,26 +95,62 @@ public class ContratosLogic {
                 e.printStackTrace();
             }
         }
-        return ObjContratos;
+
+        return Objanexo;
     }
 
     /**
-     * Metodo para traer todos los contratos
+     * Metodo para actualizar un anexo de contrato
+     *
+     * @param ObjContratoAne
+     * @return
+     */
+    public AnexoContratoEntity actualizarAnexoContrato(AnexoContratoEntity ObjContratoAne) {
+        try {
+            String conexion = initOperation();
+            if ("OK".equalsIgnoreCase(conexion)) {
+                sesion.update(ObjContratoAne);
+                tx.commit();
+                ObjContratoAne.setTrazaRespuesta("Actualizacion correcta");
+                ObjContratoAne.setNumeroRespuesta(23);
+            } else {
+                ObjContratoAne.setTrazaRespuesta("Error de conexion :" + conexion);
+                ObjContratoAne.setNumeroRespuesta(0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            ObjContratoAne.setTrazaRespuesta(e.getMessage());
+            ObjContratoAne.setNumeroRespuesta(0);
+        } finally {
+            try {
+                sesion.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+        return ObjContratoAne;
+
+    }
+
+    /**
+     * Metodo para listar todos los anexos de los contratos
      *
      * @return
      */
-    public ObjetoRetornaEntity listaContratos() {
+    public ObjetoRetornaEntity listarAnexos() {
         ObjetoRetornaEntity retorno = new ObjetoRetornaEntity();
+        String conex = initOperation();
         try {
-            String Conexion = initOperation();
-            if ("OK".equalsIgnoreCase(Conexion)) {
-                Query sentencia = sesion.createQuery("From ContratosEntity WHERE estadoContrato<>'E'");
+
+            if ("OK".equalsIgnoreCase(conex)) {
+                Query sentencia = sesion.createQuery("From AnexoContratoEntity where ubicacionAnexo<>''");
                 retorno.setRetorna((ArrayList<Object>) sentencia.list());
-                retorno.setTrazaRespuesta("Consulta tabla  de contratos exitosa");
+                retorno.setTrazaRespuesta("Consulta tabla  de anexos exitosa");
                 retorno.setNumeroRespuesta(1);
             } else {
                 retorno.setNumeroRespuesta(0);
-                retorno.setTrazaRespuesta("Error de conexion" + Conexion);
+                retorno.setTrazaRespuesta("Error de conexion" + conex);
             }
         } catch (Exception e) {
             e.printStackTrace();

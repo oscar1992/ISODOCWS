@@ -4,8 +4,13 @@
   <session-factory>
     <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
     <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+<<<<<<< HEAD
     <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=ISODOC</property>
     <property name="hibernate.connection.username">ISODOC-B</property>
+=======
+    <property name="hibernate.connection.url">jdbc:sqlserver://192.168.1.147:1433;databaseName=ISODOC</property>
+    <property name="hibernate.connection.username">ISODOC-A</property>
+>>>>>>> origin/master
     <property name="hibernate.connection.password">ISODOC</property>
     <property name="show_sql">false</property>
     <property name="format_sql">true</property>
@@ -58,5 +63,6 @@
     <mapping class="co.com.siscomputo.proveedores.persistencia.ContratosEntity"/>
     <mapping class="co.com.siscomputo.proveedores.persistencia.PolizasEntity"/>
     <mapping class="co.com.siscomputo.proveedores.persistencia.CertificadoCalidadEntity"/>
+    <mapping class="co.com.siscomputo.proveedores.persistencia.AnexoContratoEntity"/>
   </session-factory>
 </hibernate-configuration>

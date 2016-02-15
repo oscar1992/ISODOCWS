@@ -225,6 +225,9 @@ public class GestionDocumental {
      * Método que trae una lista de documentos filatrdos por varios cirterios
      * @param idTipoDocumental
      * @param idPlantilla
+     * @param idAccion
+     * @param fecha1
+     * @param fecha2
      * @return 
      */
     @WebMethod(operationName = "documetosFiltrados")

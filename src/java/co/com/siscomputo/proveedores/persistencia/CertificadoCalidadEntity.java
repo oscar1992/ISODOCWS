@@ -22,7 +22,7 @@ import javax.persistence.TemporalType;
  * @author Felipe
  */
 @Entity
-@Table
+@Table(name = "PRO_TCER")
 public class CertificadoCalidadEntity extends ObjetoRetornaEntity implements Serializable {
 
     @Id
