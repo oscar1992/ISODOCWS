@@ -106,6 +106,11 @@ public class ProveedoresEntity extends ObjetoRetornaEntity implements Serializab
 
     @Column(name = "PROV_ESTA")
     private String estadoProveedores;
+    
+    @JoinColumn(name = "PROV_LINE")
+    @ManyToOne
+    private LineaEntity lineaProveedores;
+    
 
     public Integer getIdProveedor() {
         return idProveedor;
@@ -305,6 +310,14 @@ public class ProveedoresEntity extends ObjetoRetornaEntity implements Serializab
 
     public void setEstadoProveedores(String estadoProveedores) {
         this.estadoProveedores = estadoProveedores;
+    }
+
+    public LineaEntity getLineaProveedores() {
+        return lineaProveedores;
+    }
+
+    public void setLineaProveedores(LineaEntity lineaProveedores) {
+        this.lineaProveedores = lineaProveedores;
     }
     
     

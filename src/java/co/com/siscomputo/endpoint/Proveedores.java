@@ -6,7 +6,7 @@
 package co.com.siscomputo.endpoint;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
-import co.com.siscomputo.administracion.persistencia.AccionEntity;
+import co.com.siscomputo.proveedores.logic.AnexoProveedorLogic;
 import co.com.siscomputo.proveedores.logic.CertificadoLogic;
 import co.com.siscomputo.proveedores.logic.ContratosLogic;
 import co.com.siscomputo.proveedores.logic.CuentasProveedoresLogic;
@@ -23,6 +23,7 @@ import co.com.siscomputo.proveedores.logic.PolizaLogic;
 import co.com.siscomputo.proveedores.logic.ProveedoresLogic;
 import co.com.siscomputo.proveedores.logic.TipoCuentaLogic;
 import co.com.siscomputo.proveedores.logic.TipoMonedaLogic;
+import co.com.siscomputo.proveedores.persistencia.AnexoProveedorEntity;
 import co.com.siscomputo.proveedores.persistencia.CertificadoCalidadEntity;
 import co.com.siscomputo.proveedores.persistencia.ContratosEntity;
 import co.com.siscomputo.proveedores.persistencia.FormasPagoEntity;
@@ -750,4 +751,49 @@ public class Proveedores {
         }
         return obj;
     }
+    
+    /**
+     * Método que permite insertar un Anexos del proveedor nuevo
+     * @param objeto
+     * @return 
+     */
+    @WebMethod(operationName = "insertarAnexoProveedor")
+    public AnexoProveedorEntity insertarAnexoProveedor(@WebParam(name = "objeto") AnexoProveedorEntity objeto){
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getProveedorAnexoProveedor(), "Sede"))) {
+            AnexoProveedorEntity ret = new AnexoProveedorEntity();
+            ret.setTrazaRespuesta(valida.valida(objeto.getProveedorAnexoProveedor(), "Sede"));
+            return ret;
+        } else {
+        AnexoProveedorLogic anexoProveedorLogic=new AnexoProveedorLogic();
+        return anexoProveedorLogic.insertarAnexoProveedor(objeto);
+        }
+}
+     /**
+     * Método que permite actualizar un Anexos del proveedor
+     * @param objeto
+     * @return 
+     */
+    @WebMethod(operationName = "actualizarAnexoProveedor")
+    public AnexoProveedorEntity actualizarAnexoProveedor(@WebParam(name = "objeto")AnexoProveedorEntity objeto){
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getProveedorAnexoProveedor(), "Sede"))) {
+            AnexoProveedorEntity ret = new AnexoProveedorEntity();
+            ret.setTrazaRespuesta(valida.valida(objeto.getProveedorAnexoProveedor(), "Sede"));
+            return ret;
+        } else {
+            AnexoProveedorLogic metodoRecuperacionLogic=new AnexoProveedorLogic();
+            return metodoRecuperacionLogic.actualizarAnexoProveedor(objeto);
+        }
+    }
+    /**
+     * Método que trae una lista de Anexos del proveedor
+     * @return 
+     */
+    @WebMethod(operationName = "listaAnexoProveedor")
+    public ObjetoRetornaEntity listaAnexoProveedor(){
+        AnexoProveedorLogic anexoProveedorLogic=new AnexoProveedorLogic();
+        return anexoProveedorLogic.listaAnexoProveedor();
+     }
+    
 }

@@ -7,6 +7,7 @@ import co.com.siscomputo.administracion.persistencia.PlantillaEntity;
 import co.com.siscomputo.administracion.persistencia.ProcesoEntity;
 import co.com.siscomputo.administracion.persistencia.TiposDocumentalesEntity;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -14,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -47,8 +50,9 @@ public class DocumentoEntity extends ObjetoRetornaEntity implements Serializable
     @JoinColumn(name = "DOCU_PROC2")
     @OneToOne
     private ProcesoEntity procesoDocumento;
-    @Column(name = "DOCU_FCRE")
-    private String fechaDocumento;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "DOCU_FCRE")    
+    private java.util.Date fechaDocumento;
     @Column(name = "DOCU_RUTA")
     private String rutaDocumento;
     
@@ -125,14 +129,13 @@ public class DocumentoEntity extends ObjetoRetornaEntity implements Serializable
         this.procesoDocumento = procesoDocumento;
     }
 
-    public String getFechaDocumento() {
+    public Date getFechaDocumento() {
         return fechaDocumento;
     }
 
-    public void setFechaDocumento(String fechaDocumento) {
+    public void setFechaDocumento(Date fechaDocumento) {
         this.fechaDocumento = fechaDocumento;
     }
-
 
     public String getRutaDocumento() {
         return rutaDocumento;

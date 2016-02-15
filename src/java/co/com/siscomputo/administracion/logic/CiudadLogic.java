@@ -9,6 +9,7 @@ import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.administracion.persistencia.CiudadEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
 import java.util.ArrayList;
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -175,7 +176,8 @@ public class CiudadLogic {
                 retorna.setNumeroRespuesta(3);
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                Query query=sesion.createQuery("FROM CiudadEntity C, DepartamentoEntity D, PaisEntity P WHERE C.estadoCiudad<>'E' AND D.idDepartamento=C.ciudadDepartamento.idDepartamento AND  P.idPais=D.idPais.idPais AND P.idPais=:idP");
+                Criteria criteria=sesion.createCriteria(CiudadEntity.class);
+                Query query=sesion.createQuery("SELECT C FROM CiudadEntity C, DepartamentoEntity D, PaisEntity P WHERE C.estadoCiudad<>'E' AND D.idDepartamento=C.ciudadDepartamento.idDepartamento AND  P.idPais=D.idPais.idPais AND P.idPais=:idP");
                 query.setParameter("idP", idPais);
                 retorna.setRetorna((ArrayList<Object>) query.list());
                 retorna.setTrazaRespuesta("Consulta tabla Ciudades exitosa");

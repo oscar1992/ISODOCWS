@@ -9,12 +9,15 @@ import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.administracion.persistencia.AccionEntity;
 import co.com.siscomputo.administracion.persistencia.GrupoUsuariosEntity;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -36,8 +39,9 @@ public class GrupoDocumentoEntity extends ObjetoRetornaEntity implements Seriali
     @JoinColumn(name = "GRDO_ACCI")
     @ManyToOne
     private AccionEntity accionGrupoDocumento;
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "GRDO_FECH")
-    private String fecha;
+    private java.util.Date fecha;
 
     public int getIdGrupoDocumento() {
         return idGrupoDocumento;
@@ -71,13 +75,15 @@ public class GrupoDocumentoEntity extends ObjetoRetornaEntity implements Seriali
         this.accionGrupoDocumento = accionGrupoDocumento;
     }
 
-    public String getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
+
+
 
      
 }
