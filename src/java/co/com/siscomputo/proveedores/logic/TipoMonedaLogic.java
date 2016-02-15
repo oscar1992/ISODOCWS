@@ -141,7 +141,7 @@ public class TipoMonedaLogic {
         try {
             String conexion = initOperation();
             if ("OK".equalsIgnoreCase(conexion)) {
-                Query sentencia = sesion.createQuery("FROM TipoMonedaEntity WHERE estadoMoneda<>'E'");
+                Query sentencia = sesion.createQuery("FROM TipoMonedaEntity");
                 retorno.setRetorna((ArrayList<Object>) sentencia.list());
                 retorno.setTrazaRespuesta("Consulta tabla lista de moneda exitosa");
                 retorno.setNumeroRespuesta(1);

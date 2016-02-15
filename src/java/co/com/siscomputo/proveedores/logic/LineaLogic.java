@@ -56,7 +56,7 @@ public class LineaLogic {
                 sesion.save(objetoLinea);
                 tx.commit();
 
-                objetoLinea.setTrazaRespuesta("Inserción de MetodoRecuperación exitoso");
+                objetoLinea.setTrazaRespuesta("Inserción de Linea exitoso");
                 objetoLinea.setNumeroRespuesta(18);
                 sesion.close();
             }
@@ -108,7 +108,7 @@ public class LineaLogic {
                 sesion.update(objetoLinea);
                 tx.commit();
                 sesion.close();
-                objetoLinea.setTrazaRespuesta("Actualización de MetodoRecuperación exitoso");
+                objetoLinea.setTrazaRespuesta("Actualización de Linea exitoso");
                 objetoLinea.setNumeroRespuesta(19);
             }
         } catch (Exception e) {
