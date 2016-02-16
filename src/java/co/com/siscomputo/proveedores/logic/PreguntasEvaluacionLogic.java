@@ -7,40 +7,41 @@ package co.com.siscomputo.proveedores.logic;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
-import co.com.siscomputo.proveedores.persistencia.ProveedoresEntity;
+import co.com.siscomputo.proveedores.persistencia.LineaEntity;
+import co.com.siscomputo.proveedores.persistencia.PreguntasEvaluacionEntity;
 import java.util.ArrayList;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.omg.CORBA.OBJECT_NOT_EXIST;
 
 /**
  *
  * @author Felipe
  */
-public class ProveedoresLogic {
+public class PreguntasEvaluacionLogic {
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
 
     /**
-     * Metodo para establecer una conexion con la base de datos
+     * Metodo que establece la conexión a la base de datos, previa validación de
+     * que la sesión no exista o este nula
      *
-     * @return
+     * @throws HibernateException
      */
     private String initOperation() {
-        String respuesta;
+        String retorno;
         try {
             if (sesion == null) {
                 sesion = HibernateUtil.getSessionFactory().openSession();
                 tx = sesion.beginTransaction();
             }
-            respuesta = "Ok";
-
-        } catch (Exception e) {
-            respuesta = "Error Conexión Hibernate " + e;
+            retorno = "Ok";
+        } catch (Error e) {
+            retorno = "Error Conexión Hibernate " + e;
         }
-
-        return respuesta;
+        return retorno;
     }
 
     /**
@@ -55,7 +56,7 @@ public class ProveedoresLogic {
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
             } else {
-                Query query = sesion.createQuery("SELECT MAX(idProveedor) FROM ProveedoresEntity ");
+                Query query = sesion.createQuery("SELECT MAX(idPregunta) FROM PreguntasEvaluacionEntity");
                 ret = (int) query.uniqueResult();
                 ret++;
             }
@@ -66,109 +67,108 @@ public class ProveedoresLogic {
     }
 
     /**
-     * Metodo para insertar un proveedor
+     * Método que inserta una pregunta nueva
      *
-     * @param objProveedor
+     * @param objetoPre
      * @return
      */
-    public ProveedoresEntity InsertarProveedor(ProveedoresEntity objProveedor) {
+    public PreguntasEvaluacionEntity insertarPregunta(PreguntasEvaluacionEntity objetoPre) {
         try {
             String conexion = initOperation();
             if ("OK".equalsIgnoreCase(conexion)) {
-                objProveedor.setIdProveedor(maxDocumento());
-                sesion.save(objProveedor);
+                objetoPre.setIdPregunta(maxDocumento());
+                sesion.save(objetoPre);
                 tx.commit();
-                objProveedor.setNumeroRespuesta(23);
-                objProveedor.setTrazaRespuesta("Insercion exitosa");
-
+                objetoPre.setNumeroRespuesta(23);
+                objetoPre.setTrazaRespuesta("Insercion exitosa");
             } else {
-                objProveedor.setNumeroRespuesta(3);
-                objProveedor.setTrazaRespuesta("Error de Conexión " + conexion);
+                objetoPre = new PreguntasEvaluacionEntity();
+                objetoPre.setNumeroRespuesta(0);
+                objetoPre.setTrazaRespuesta("Error de conexion " + conexion);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            objProveedor.setNumeroRespuesta(0);
-            objProveedor.setTrazaRespuesta(e.getMessage());
+            objetoPre = new PreguntasEvaluacionEntity();
+            objetoPre.setIdPregunta(0);
+            objetoPre.setTrazaRespuesta(e.getMessage());
         } finally {
             try {
                 sesion.close();
             } catch (Exception e) {
                 e.printStackTrace();
-                objProveedor.setNumeroRespuesta(0);
-                objProveedor.setTrazaRespuesta(e.getMessage());
             }
-
         }
-        return objProveedor;
+        return objetoPre;
     }
 
     /**
-     * Metodo para actualziar un proveedor
+     * Metodo para actualizar una pregunta
      *
-     * @param objProveedor
+     * @param objPre
      * @return
      */
-    public ProveedoresEntity actualizarProveedores(ProveedoresEntity objProveedor) {
+    public PreguntasEvaluacionEntity actualizarPreguntaEvaluacion(PreguntasEvaluacionEntity objPre) {
         try {
             String conexion = initOperation();
             if ("OK".equalsIgnoreCase(conexion)) {
-                sesion.update(objProveedor);
+                sesion.update(objPre);
                 tx.commit();
-                objProveedor.setNumeroRespuesta(23);
-                objProveedor.setTrazaRespuesta("Insercion exitosa");
+                objPre.setNumeroRespuesta(23);
+                objPre.setTrazaRespuesta("Actualizacion correcta");
             } else {
-                objProveedor.setNumeroRespuesta(3);
-                objProveedor.setTrazaRespuesta("Error de Conexión " + conexion);
+                objPre = new PreguntasEvaluacionEntity();
+                objPre.setNumeroRespuesta(0);
+                objPre.setTrazaRespuesta("Error de conexion" + conexion);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
-            objProveedor.setNumeroRespuesta(0);
-            objProveedor.setTrazaRespuesta(e.getMessage());
+            objPre = new PreguntasEvaluacionEntity();
+            objPre.setNumeroRespuesta(0);
+            objPre.setTrazaRespuesta(e.getMessage());
         } finally {
             try {
                 sesion.close();
             } catch (Exception e) {
                 e.printStackTrace();
-                objProveedor.setNumeroRespuesta(0);
-                objProveedor.setTrazaRespuesta(e.getMessage());
             }
-            
         }
-        return objProveedor;
+        return objPre;
     }
 
     /**
-     * Metodo para mostrar todos los proveedores
+     * Metodo para listar preguntas
      *
      * @return
      */
-    public ObjetoRetornaEntity listaProveedores() {
-        ObjetoRetornaEntity retorno = new ObjetoRetornaEntity();
-
+    public ObjetoRetornaEntity listarPreguntas() {
+        ObjetoRetornaEntity obj = new ObjetoRetornaEntity();
         try {
             String conexion = initOperation();
             if ("OK".equalsIgnoreCase(conexion)) {
-                Query sentencia = sesion.createQuery("FROM ProveedoresEntity p WHERE p.estadoProveedores<>'E'");
-                retorno.setRetorna((ArrayList<Object>) sentencia.list());
-                retorno.setTrazaRespuesta("Consulta tabla Proveedores exitosa");
-                retorno.setNumeroRespuesta(1);
+                Query sentencia = sesion.createQuery("FROM PreguntasEvaluacionEntity");
+                obj.setNumeroRespuesta(23);
+                obj.setRetorna((ArrayList<Object>) sentencia.list());
+                obj.setTrazaRespuesta("Consulta exitosa");
             } else {
-                retorno.setNumeroRespuesta(0);
-                retorno.setTrazaRespuesta("Error de conexion" + conexion);
+                obj.setNumeroRespuesta(0);
+                obj.setTrazaRespuesta("Error de conexion " + conexion);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
-            retorno = new ObjetoRetornaEntity();
-            retorno.setNumeroRespuesta(0);
-            retorno.setTrazaRespuesta(e.getMessage());
+            obj = new ObjetoRetornaEntity();
+            obj.setNumeroRespuesta(0);
+            obj.setTrazaRespuesta(e.getMessage());
         } finally {
             try {
                 sesion.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
         }
-        return  retorno;
+        return obj;
     }
 }

@@ -115,6 +115,7 @@ public class AnexoProveedorLogic {
     }
      /**
      * Método Método para consultar la lista de Anexos del proveedor
+     * @return 
      */public ObjetoRetornaEntity listaAnexoProveedor(){
         ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
         try {
