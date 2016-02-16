@@ -6,16 +6,15 @@
 package co.com.siscomputo.endpoint;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
-<<<<<<< HEAD
+
 
 import co.com.siscomputo.proveedores.logic.AnexoProveedorLogic;
 
 import co.com.siscomputo.proveedores.logic.AnexosContratoLogic;
 
-=======
 import co.com.siscomputo.proveedores.logic.AnexoProveedorLogic;
 import co.com.siscomputo.proveedores.logic.AnexosContratoLogic;
->>>>>>> d3a8f6f7fd822de412f514f2cd11cab0982ecfd1
+
 import co.com.siscomputo.proveedores.logic.CertificadoLogic;
 import co.com.siscomputo.proveedores.logic.ContratosLogic;
 import co.com.siscomputo.proveedores.logic.CuentasProveedoresLogic;
@@ -36,16 +35,16 @@ import co.com.siscomputo.proveedores.logic.TemaEvaluacionLogic;
 import co.com.siscomputo.proveedores.logic.TipoCuentaLogic;
 import co.com.siscomputo.proveedores.logic.TipoEvaluacionLogic;
 import co.com.siscomputo.proveedores.logic.TipoMonedaLogic;
-<<<<<<< HEAD
+
 
 import co.com.siscomputo.proveedores.persistencia.AnexoProveedorEntity;
 
 import co.com.siscomputo.proveedores.persistencia.AnexoContratoEntity;
 
-=======
+
 import co.com.siscomputo.proveedores.persistencia.AnexoProveedorEntity;
 import co.com.siscomputo.proveedores.persistencia.AnexoContratoEntity;
->>>>>>> d3a8f6f7fd822de412f514f2cd11cab0982ecfd1
+
 import co.com.siscomputo.proveedores.persistencia.CertificadoCalidadEntity;
 import co.com.siscomputo.proveedores.persistencia.ContratosEntity;
 import co.com.siscomputo.proveedores.persistencia.FormasPagoEntity;
@@ -1010,8 +1009,7 @@ public class Proveedores {
         return retorno;
     }
 
-<<<<<<< HEAD
-=======
+
     /**
      * Metodo para insertar un tema de evaluacion
      *
@@ -1176,5 +1174,5 @@ public class Proveedores {
 
     }
 
->>>>>>> d3a8f6f7fd822de412f514f2cd11cab0982ecfd1
+
 }
