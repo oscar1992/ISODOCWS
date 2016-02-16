@@ -122,6 +122,7 @@ public class LineaLogic {
 
     /**
      * Método Método para consultar la lista de Linea del Proveedor
+     * @return 
      */
     public ObjetoRetornaEntity listaLinea() {
         ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();

@@ -28,7 +28,7 @@ public class PolizasEntity extends ObjetoRetornaEntity implements Serializable {
 
     @Column(name = "POLI_NUME")
     private String numeroPoliza;
-
+    
     @JoinColumn(name = "POLI_CONT")
     @ManyToOne
     private ContratosEntity  idContratoPoliza;

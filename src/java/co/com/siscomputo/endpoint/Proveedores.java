@@ -6,11 +6,8 @@
 package co.com.siscomputo.endpoint;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
-<<<<<<< HEAD
 import co.com.siscomputo.proveedores.logic.AnexoProveedorLogic;
-=======
 import co.com.siscomputo.proveedores.logic.AnexosContratoLogic;
->>>>>>> origin/master
 import co.com.siscomputo.proveedores.logic.CertificadoLogic;
 import co.com.siscomputo.proveedores.logic.ContratosLogic;
 import co.com.siscomputo.proveedores.logic.CuentasProveedoresLogic;
@@ -25,21 +22,22 @@ import co.com.siscomputo.proveedores.logic.FormasPagoLogic;
 import co.com.siscomputo.proveedores.persistencia.TipoCuentaEntity;
 import co.com.siscomputo.proveedores.logic.LineaLogic;
 import co.com.siscomputo.proveedores.logic.PolizaLogic;
+import co.com.siscomputo.proveedores.logic.PreguntasEvaluacionLogic;
 import co.com.siscomputo.proveedores.logic.ProveedoresLogic;
+import co.com.siscomputo.proveedores.logic.TemaEvaluacionLogic;
 import co.com.siscomputo.proveedores.logic.TipoCuentaLogic;
 import co.com.siscomputo.proveedores.logic.TipoEvaluacionLogic;
 import co.com.siscomputo.proveedores.logic.TipoMonedaLogic;
-<<<<<<< HEAD
 import co.com.siscomputo.proveedores.persistencia.AnexoProveedorEntity;
-=======
 import co.com.siscomputo.proveedores.persistencia.AnexoContratoEntity;
->>>>>>> origin/master
 import co.com.siscomputo.proveedores.persistencia.CertificadoCalidadEntity;
 import co.com.siscomputo.proveedores.persistencia.ContratosEntity;
 import co.com.siscomputo.proveedores.persistencia.FormasPagoEntity;
 import co.com.siscomputo.proveedores.persistencia.LineaEntity;
 import co.com.siscomputo.proveedores.persistencia.PolizasEntity;
+import co.com.siscomputo.proveedores.persistencia.PreguntasEvaluacionEntity;
 import co.com.siscomputo.proveedores.persistencia.ProveedoresEntity;
+import co.com.siscomputo.proveedores.persistencia.TemaEvaluacionEntity;
 import co.com.siscomputo.proveedores.persistencia.TipoDocumentoEntity;
 import co.com.siscomputo.proveedores.persistencia.TipoEvaluacionEntity;
 import co.com.siscomputo.proveedores.persistencia.TipoMonedaEntity;
@@ -49,6 +47,7 @@ import co.com.siscomputo.utilidades.Valida;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
+import sun.dc.pr.PRError;
 
 /**
  *
@@ -372,7 +371,7 @@ public class Proveedores {
         Valida validac = new Valida();
         if ("OK".equalsIgnoreCase(validac.valida(formaPago.getEstadoFormaPago(), "estado"))) {
             FormasPagoLogic pagoLogic = new FormasPagoLogic();
-            pagoLogic.insertarFormasPago(formaPago);
+            formaPago = pagoLogic.insertarFormasPago(formaPago);
         } else {
             formaPago.setNumeroRespuesta(0);
             formaPago.setTrazaRespuesta(validac.valida(formaPago.getEstadoFormaPago(), "estado"));
@@ -423,7 +422,7 @@ public class Proveedores {
             Valida validac = new Valida();
             if ("OK".equalsIgnoreCase(validac.valida(objProveedor.getEstadoProveedor(), "estado"))) {
                 ProveedoresLogic logicaP = new ProveedoresLogic();
-                logicaP.InsertarProveedor(objProveedor);
+                objProveedor = logicaP.InsertarProveedor(objProveedor);
             } else {
                 objProveedor.setNumeroRespuesta(0);
                 objProveedor.setTrazaRespuesta(validac.valida(objProveedor.getEstadoProveedor(), "estado"));
@@ -531,7 +530,7 @@ public class Proveedores {
             Valida validac = new Valida();
             if ("OK".equalsIgnoreCase(validac.valida(objMoneda.getEstadoMoneda(), "Estado"))) {
                 TipoMonedaLogic logica = new TipoMonedaLogic();
-                logica.InsertarTipoMoneda(objMoneda);
+                objMoneda = logica.InsertarTipoMoneda(objMoneda);
             } else {
                 objMoneda.setNumeroRespuesta(0);
                 objMoneda.setTrazaRespuesta(validac.valida(objMoneda.getEstadoMoneda(), "Estado"));
@@ -555,7 +554,7 @@ public class Proveedores {
             Valida validac = new Valida();
             if ("OK".equalsIgnoreCase(validac.valida(ObjMoneda.getIdMoneda(), "IdTipoMoneda"))) {
                 TipoMonedaLogic logica = new TipoMonedaLogic();
-                logica.actualizarTipoMoneda(ObjMoneda);
+                ObjMoneda = logica.actualizarTipoMoneda(ObjMoneda);
             } else {
                 ObjMoneda.setNumeroRespuesta(0);
                 ObjMoneda.setTrazaRespuesta(validac.valida(ObjMoneda.getIdMoneda(), "IdTipoMoneda"));
@@ -590,7 +589,7 @@ public class Proveedores {
             Valida validac = new Valida();
             if ("OK".equalsIgnoreCase(validac.valida(objContratos.getEstadoContrato(), "Estado"))) {
                 ContratosLogic logic = new ContratosLogic();
-                logic.insertarContrato(objContratos);
+                objContratos = logic.insertarContrato(objContratos);
                 objContratos.setNumeroRespuesta(23);
                 objContratos.setTrazaRespuesta("Insercion correcta");
             } else {
@@ -615,7 +614,7 @@ public class Proveedores {
             Valida validac = new Valida();
             if ("OK".equalsIgnoreCase(validac.valida(objContratos.getIdContrato(), "IdEstado"))) {
                 ContratosLogic logic = new ContratosLogic();
-                logic.actualizarContrato(objContratos);
+                objContratos = logic.actualizarContrato(objContratos);
                 objContratos.setNumeroRespuesta(23);
                 objContratos.setTrazaRespuesta("Actualización correcta");
             } else {
@@ -651,7 +650,7 @@ public class Proveedores {
             Valida valida = new Valida();
             if ("OK".equalsIgnoreCase(valida.valida(objPolizas.getIdPoliza(), "idPoliza"))) {
                 PolizaLogic poliza = new PolizaLogic();
-                poliza.actualizarPoliza(objPolizas);
+                objPolizas = poliza.actualizarPoliza(objPolizas);
             } else {
                 objPolizas.setNumeroRespuesta(0);
                 objPolizas.setTrazaRespuesta(valida.valida(objPolizas.getIdPoliza(), "idPoliza"));
@@ -674,7 +673,7 @@ public class Proveedores {
             Valida valida = new Valida();
             if ("OK".equalsIgnoreCase(valida.valida(objPolizas.getIdPoliza(), "idPoliza"))) {
                 PolizaLogic logica = new PolizaLogic();
-                logica.actualizarPoliza(objPolizas);
+                objPolizas = logica.actualizarPoliza(objPolizas);
             } else {
                 objPolizas.setNumeroRespuesta(0);
                 objPolizas.setTrazaRespuesta(valida.valida(objPolizas.getIdPoliza(), "idPoliza"));
@@ -709,7 +708,7 @@ public class Proveedores {
             String res = valida.valida(ObjCertificado.getTipoCertificado(), "tipo");
             if ("OK".equalsIgnoreCase(res)) {
                 CertificadoLogic logica = new CertificadoLogic();
-                logica.insertarCertificadoCalidad(ObjCertificado);
+                ObjCertificado = logica.insertarCertificadoCalidad(ObjCertificado);
             } else {
                 ObjCertificado.setNumeroRespuesta(0);
                 ObjCertificado.setTrazaRespuesta(res);
@@ -733,7 +732,7 @@ public class Proveedores {
             String res = valida.valida(ObjCertificado.getIdCertificado(), "idCertificado");
             if ("OK".equalsIgnoreCase(res)) {
                 CertificadoLogic logica = new CertificadoLogic();
-                logica.actualizarCertificados(ObjCertificado);
+                ObjCertificado = logica.actualizarCertificados(ObjCertificado);
             } else {
                 ObjCertificado.setNumeroRespuesta(0);
                 ObjCertificado.setTrazaRespuesta(res);
@@ -764,53 +763,55 @@ public class Proveedores {
         }
         return obj;
     }
-<<<<<<< HEAD
-    
+
     /**
      * Método que permite insertar un Anexos del proveedor nuevo
+     *
      * @param objeto
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "insertarAnexoProveedor")
-    public AnexoProveedorEntity insertarAnexoProveedor(@WebParam(name = "objeto") AnexoProveedorEntity objeto){
+    public AnexoProveedorEntity insertarAnexoProveedor(@WebParam(name = "objeto") AnexoProveedorEntity objeto) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getProveedorAnexoProveedor(), "Sede"))) {
             AnexoProveedorEntity ret = new AnexoProveedorEntity();
             ret.setTrazaRespuesta(valida.valida(objeto.getProveedorAnexoProveedor(), "Sede"));
             return ret;
         } else {
-        AnexoProveedorLogic anexoProveedorLogic=new AnexoProveedorLogic();
-        return anexoProveedorLogic.insertarAnexoProveedor(objeto);
+            AnexoProveedorLogic anexoProveedorLogic = new AnexoProveedorLogic();
+            return anexoProveedorLogic.insertarAnexoProveedor(objeto);
         }
-}
-     /**
+    }
+
+    /**
      * Método que permite actualizar un Anexos del proveedor
+     *
      * @param objeto
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "actualizarAnexoProveedor")
-    public AnexoProveedorEntity actualizarAnexoProveedor(@WebParam(name = "objeto")AnexoProveedorEntity objeto){
+    public AnexoProveedorEntity actualizarAnexoProveedor(@WebParam(name = "objeto") AnexoProveedorEntity objeto) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getProveedorAnexoProveedor(), "Sede"))) {
             AnexoProveedorEntity ret = new AnexoProveedorEntity();
             ret.setTrazaRespuesta(valida.valida(objeto.getProveedorAnexoProveedor(), "Sede"));
             return ret;
         } else {
-            AnexoProveedorLogic metodoRecuperacionLogic=new AnexoProveedorLogic();
+            AnexoProveedorLogic metodoRecuperacionLogic = new AnexoProveedorLogic();
             return metodoRecuperacionLogic.actualizarAnexoProveedor(objeto);
         }
     }
+
     /**
      * Método que trae una lista de Anexos del proveedor
-     * @return 
+     *
+     * @return
      */
     @WebMethod(operationName = "listaAnexoProveedor")
-    public ObjetoRetornaEntity listaAnexoProveedor(){
-        AnexoProveedorLogic anexoProveedorLogic=new AnexoProveedorLogic();
+    public ObjetoRetornaEntity listaAnexoProveedor() {
+        AnexoProveedorLogic anexoProveedorLogic = new AnexoProveedorLogic();
         return anexoProveedorLogic.listaAnexoProveedor();
-     }
-    
-=======
+    }
 
     /**
      * Metodo para filtrar contratos por TipoProveedor,Estado,TipoContrato y
@@ -840,10 +841,13 @@ public class Proveedores {
         try {
             Valida valida = new Valida();
             String respuesta = valida.valida(objAnexo.getUbicacionAnexo(), "ubicación");
-            respuesta = valida.valida(objAnexo.getIdContratoAnexo(), "idcontrato");
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                respuesta = valida.valida(objAnexo.getIdContratoAnexo(), "idcontrato");
+
+            }
             if ("OK".equalsIgnoreCase(respuesta)) {
                 AnexosContratoLogic logica = new AnexosContratoLogic();
-                logica.InsertarAnexo(objAnexo);
+                objAnexo = logica.InsertarAnexo(objAnexo);
 
             } else {
                 objAnexo.setTrazaRespuesta(respuesta);
@@ -864,12 +868,17 @@ public class Proveedores {
     public AnexoContratoEntity actualizarAnexoContrato(@WebParam(name = "objAnexo") AnexoContratoEntity objAnexo) {
         Valida valida = new Valida();
         String respuesta = valida.valida(objAnexo.getUbicacionAnexo(), "ubicación");
-        respuesta = valida.valida(objAnexo.getIdContratoAnexo(), "idcontrato");
-        respuesta = valida.valida(objAnexo.getIdAnexo(), "id");
+        if ("OK".equalsIgnoreCase(respuesta)) {
+            respuesta = valida.valida(objAnexo.getIdContratoAnexo(), "idcontrato");
+        }
+        if ("OK".equalsIgnoreCase(respuesta)) {
+            respuesta = valida.valida(objAnexo.getIdAnexo(), "id");
+
+        }
         try {
             if ("OK".equalsIgnoreCase(respuesta)) {
                 AnexosContratoLogic logica = new AnexosContratoLogic();
-                logica.actualizarAnexoContrato(objAnexo);
+                objAnexo = logica.actualizarAnexoContrato(objAnexo);
             } else {
                 objAnexo.setTrazaRespuesta(respuesta);
             }
@@ -907,12 +916,18 @@ public class Proveedores {
         try {
             Valida valida = new Valida();
             String respuesta = valida.valida(objTipoE.getTipoEvaluacion(), "Tipo Evaluacion");
-            respuesta = valida.valida(objTipoE.getRangoMedioEvaluacion(), "Rango medio");
-            respuesta = valida.valida(objTipoE.getRangoBajoEvaluacion(), "Rango bajo");
-            respuesta = valida.valida(objTipoE.getRangoAltoEvaluacion(), "Rango alto");
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                respuesta = valida.valida(objTipoE.getRangoMedioEvaluacion(), "Rango medio");
+            }
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                respuesta = valida.valida(objTipoE.getRangoBajoEvaluacion(), "Rango bajo");
+            }
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                respuesta = valida.valida(objTipoE.getRangoAltoEvaluacion(), "Rango alto");
+            }
             if ("OK".equalsIgnoreCase(respuesta)) {
                 TipoEvaluacionLogic logica = new TipoEvaluacionLogic();
-                logica.insertarTipoEvaluacion(objTipoE);
+                objTipoE = logica.insertarTipoEvaluacion(objTipoE);
             } else {
                 objTipoE.setTrazaRespuesta(respuesta);
             }
@@ -935,13 +950,22 @@ public class Proveedores {
         try {
             Valida valida = new Valida();
             String respuesta = valida.valida(objTipoE.getTipoEvaluacion(), "Tipo Evaluacion");
-            respuesta = valida.valida(objTipoE.getRangoMedioEvaluacion(), "Rango medio");
-            respuesta = valida.valida(objTipoE.getRangoBajoEvaluacion(), "Rango bajo");
-            respuesta = valida.valida(objTipoE.getRangoAltoEvaluacion(), "Rango alto");
-            respuesta = valida.valida(objTipoE.getIdTipoEvaluacion(), "ID");
+
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                respuesta = valida.valida(objTipoE.getRangoMedioEvaluacion(), "Rango medio");
+            }
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                respuesta = valida.valida(objTipoE.getRangoBajoEvaluacion(), "Rango bajo");
+            }
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                respuesta = valida.valida(objTipoE.getRangoAltoEvaluacion(), "Rango alto");
+            }
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                respuesta = valida.valida(objTipoE.getIdTipoEvaluacion(), "ID");
+            }
             if ("OK".equalsIgnoreCase(respuesta)) {
                 TipoEvaluacionLogic logica = new TipoEvaluacionLogic();
-                logica.actualizarTipoEvaluacion(objTipoE);
+                objTipoE = logica.actualizarTipoEvaluacion(objTipoE);
             } else {
                 objTipoE.setTrazaRespuesta(respuesta);
             }
@@ -954,7 +978,8 @@ public class Proveedores {
     }
 
     /**
-     *Metodo para listar los tipos de evaluacion
+     * Metodo para listar los tipos de evaluacion
+     *
      * @return
      */
     @WebMethod(operationName = "listarTipoDeEvaluacion")
@@ -969,5 +994,168 @@ public class Proveedores {
         return retorno;
     }
 
->>>>>>> origin/master
+    /**
+     * Metodo para insertar un tema de evaluacion
+     *
+     * @param objtema
+     * @return
+     */
+    @WebMethod(operationName = "InsertarTemaEvaluacion")
+    public TemaEvaluacionEntity insertarTemaEvaluacion(@WebParam(name = "TemaEvaluacion") TemaEvaluacionEntity objtema) {
+
+        try {
+            Valida valida = new Valida();
+            String respuesta = "";
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                respuesta = valida.valida(objtema.getMaxRespuestaEvaluacion(), "maximo respuesta");
+            }
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                respuesta = valida.valida(objtema.getNombreTemaEvaluacion(), "nombre tema");
+            }
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                respuesta = valida.valida(objtema.getPorcentajeEvaluacion(), "porcentaje tema");
+            }
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                TemaEvaluacionLogic logica = new TemaEvaluacionLogic();
+                objtema = logica.insertarTemaEvaluacion(objtema);
+            } else {
+                objtema.setTrazaRespuesta(respuesta);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return objtema;
+    }
+
+    @WebMethod(operationName = "ActualizarTemaEvaluacion")
+    public TemaEvaluacionEntity ActualizarTemaEvaluacion(@WebParam(name = "TemaEvaluacion") TemaEvaluacionEntity objte) {
+        try {
+            Valida valida = new Valida();
+            String respuesta = "";
+            respuesta = valida.valida(objte.getIdTemaEvaluacion(), "id tema evaluacion");
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                respuesta = valida.valida(objte.getMaxRespuestaEvaluacion(), "maximo respuesta");
+            }
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                respuesta = valida.valida(objte.getNombreTemaEvaluacion(), "nombre tema");
+            }
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                respuesta = valida.valida(objte.getPorcentajeEvaluacion(), "porcentaje tema");
+            }
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                TemaEvaluacionLogic logica = new TemaEvaluacionLogic();
+                objte = logica.actualizarTemaEvaluacion(objte);
+            } else {
+                objte.setTrazaRespuesta(respuesta);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return objte;
+    }
+
+    /**
+     * Metodo para listar los temas de evaluacion
+     *
+     * @return
+     */
+    @WebMethod(operationName = "ListarTemasEvaluacion")
+    public ObjetoRetornaEntity listaTemaEvaluacion() {
+        ObjetoRetornaEntity retorno = new ObjetoRetornaEntity();
+        try {
+            TemaEvaluacionLogic logica = new TemaEvaluacionLogic();
+            retorno = logica.listaTemasEvaluacion();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return retorno;
+
+    }
+
+    /**
+     * Metodo para insertar una pregunta de evaluacion
+     *
+     * @param objPre
+     * @return
+     */
+    @WebMethod(operationName = "InsertarPreguntas")
+    public PreguntasEvaluacionEntity insertarPreguntas(@WebParam(name = "PreguntasEvaluacion") PreguntasEvaluacionEntity objPre) {
+        try {
+            Valida valida = new Valida();
+            String respuesta = "";
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                respuesta = valida.valida(objPre.getDescripcionDetallada(), "Descripcion");
+            }
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                respuesta = valida.valida(objPre.getPesoItem(), "PesoItem");
+            }
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                respuesta = valida.valida(objPre.getPregunta(), "Pregunta");
+            }
+
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                PreguntasEvaluacionLogic logica = new PreguntasEvaluacionLogic();
+                objPre = logica.insertarPregunta(objPre);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            objPre.setTrazaRespuesta(e.getMessage());
+        }
+        return objPre;
+    }
+
+    /**
+     * Metodo para actualizar una pregunta
+     *
+     * @param objPre
+     * @return
+     */
+    @WebMethod(operationName = "ActualizarPreguntas")
+    public PreguntasEvaluacionEntity actualizarPreguntas(@WebParam(name = "PreguntasEvaluacion") PreguntasEvaluacionEntity objPre) {
+        try {
+            Valida valida = new Valida();
+            String respuesta = "";
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                respuesta = valida.valida(objPre.getDescripcionDetallada(), "Descripcion");
+            }
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                respuesta = valida.valida(objPre.getPesoItem(), "PesoItem");
+            }
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                respuesta = valida.valida(objPre.getPregunta(), "Pregunta");
+            }
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                respuesta = valida.valida(objPre.getIdPregunta(), "idPregunta");
+            }
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                PreguntasEvaluacionLogic logica = new PreguntasEvaluacionLogic();
+                objPre = logica.actualizarPreguntaEvaluacion(objPre);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return objPre;
+    }
+
+    /**
+     * Metodo para listar los temas de evaluacion
+     *
+     * @return
+     */
+    @WebMethod(operationName = "ListarPreguntasEvaluacion")
+    public ObjetoRetornaEntity listaPreguntasEvaluacion() {
+        ObjetoRetornaEntity retorno = new ObjetoRetornaEntity();
+        try {
+            PreguntasEvaluacionLogic logica = new PreguntasEvaluacionLogic();
+            retorno = logica.listarPreguntas();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return retorno;
+
+    }
+
 }
