@@ -64,5 +64,8 @@
     <mapping class="co.com.siscomputo.proveedores.persistencia.TipoEvaluacionEntity"/>
     <mapping class="co.com.siscomputo.proveedores.persistencia.TemaEvaluacionEntity"/>
     <mapping class="co.com.siscomputo.proveedores.persistencia.PreguntasEvaluacionEntity"/>
+    <mapping class="co.com.siscomputo.proveedores.persistencia.EvaluacionesEntity"/>
+    <mapping class="co.com.siscomputo.proveedores.persistencia.AnexoEvalucionEntity"/>
+"/>
   </session-factory>
 </hibernate-configuration>

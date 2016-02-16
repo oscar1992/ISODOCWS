@@ -6,12 +6,14 @@
 package co.com.siscomputo.endpoint;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
+import co.com.siscomputo.proveedores.logic.AnexoEvalucionLogic;
 import co.com.siscomputo.proveedores.logic.AnexoProveedorLogic;
 import co.com.siscomputo.proveedores.logic.AnexosContratoLogic;
 import co.com.siscomputo.proveedores.logic.CertificadoLogic;
 import co.com.siscomputo.proveedores.logic.ContratosLogic;
 import co.com.siscomputo.proveedores.logic.CuentasProveedoresLogic;
 import co.com.siscomputo.proveedores.logic.EstadoProveedorLogic;
+import co.com.siscomputo.proveedores.logic.EvaluacionesLogic;
 import co.com.siscomputo.proveedores.logic.FiltroContratosLogic;
 import co.com.siscomputo.proveedores.logic.TipoDocumentoLogic;
 import co.com.siscomputo.proveedores.logic.TipoProveedorLogic;
@@ -30,8 +32,10 @@ import co.com.siscomputo.proveedores.logic.TipoEvaluacionLogic;
 import co.com.siscomputo.proveedores.logic.TipoMonedaLogic;
 import co.com.siscomputo.proveedores.persistencia.AnexoProveedorEntity;
 import co.com.siscomputo.proveedores.persistencia.AnexoContratoEntity;
+import co.com.siscomputo.proveedores.persistencia.AnexoEvalucionEntity;
 import co.com.siscomputo.proveedores.persistencia.CertificadoCalidadEntity;
 import co.com.siscomputo.proveedores.persistencia.ContratosEntity;
+import co.com.siscomputo.proveedores.persistencia.EvaluacionesEntity;
 import co.com.siscomputo.proveedores.persistencia.FormasPagoEntity;
 import co.com.siscomputo.proveedores.persistencia.LineaEntity;
 import co.com.siscomputo.proveedores.persistencia.PolizasEntity;
@@ -1158,4 +1162,94 @@ public class Proveedores {
 
     }
 
+    
+    /**
+     * Método que permite insertar un Evaluacion nuevo
+     * @param objeto
+     * @return 
+     */
+    @WebMethod(operationName = "insertarEvaluaciones")
+    public EvaluacionesEntity insertarEvaluaciones(@WebParam(name = "objeto") EvaluacionesEntity objeto){
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getFechaEvaluaciones(), "fecha"))) {
+            EvaluacionesEntity ret = new EvaluacionesEntity();
+            ret.setTrazaRespuesta(valida.valida(objeto.getFechaEvaluaciones(), "fecha"));
+            return ret;
+        } else {
+        EvaluacionesLogic evaluacionesLogic=new EvaluacionesLogic();
+        return evaluacionesLogic.insertarEvaluaciones(objeto);
+        }
+}
+     /**
+     * Método que permite actualizar un Evaluacion
+     * @param objeto
+     * @return 
+     */
+    @WebMethod(operationName = "actualizarEvaluaciones")
+    public EvaluacionesEntity actualizarEvaluaciones(@WebParam(name = "objeto")EvaluacionesEntity objeto){
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getFechaEvaluaciones(), "fecha"))) {
+            EvaluacionesEntity ret = new EvaluacionesEntity();
+            ret.setTrazaRespuesta(valida.valida(objeto.getFechaEvaluaciones(), "fecha"));
+            return ret;
+        } else {
+            EvaluacionesLogic metodoRecuperacionLogic=new EvaluacionesLogic();
+            return metodoRecuperacionLogic.actualizarEvaluaciones(objeto);
+        }
+    }
+    /**
+     * Método que trae una lista de Evaluacion
+     * @return 
+     */
+    @WebMethod(operationName = "listaEvaluaciones")
+    public ObjetoRetornaEntity listaEvaluaciones(){
+        EvaluacionesLogic evaluacionesLogic=new EvaluacionesLogic();
+        return evaluacionesLogic.listaEvaluaciones();
+     }
+    
+    
+    /**
+     * Método que permite insertar un anexo nuevo
+     * @param objeto
+     * @return 
+     */
+    @WebMethod(operationName = "insertarAnexoEvalucion")
+    public AnexoEvalucionEntity insertarAnexoEvalucion(@WebParam(name = "objeto") AnexoEvalucionEntity objeto){
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getRutaAnexoEvalucion(), "ruta"))) {
+            AnexoEvalucionEntity ret = new AnexoEvalucionEntity();
+            ret.setTrazaRespuesta(valida.valida(objeto.getRutaAnexoEvalucion(), "ruta"));
+            return ret;
+        } else {
+        AnexoEvalucionLogic anexoEvalucionLogic=new AnexoEvalucionLogic();
+        return anexoEvalucionLogic.insertarAnexoEvalucion(objeto);
+        }
+}
+     /**
+     * Método que permite actualizar un anexo
+     * @param objeto
+     * @return 
+     */
+    @WebMethod(operationName = "actualizarAnexoEvalucion")
+    public AnexoEvalucionEntity actualizarAnexoEvalucion(@WebParam(name = "objeto")AnexoEvalucionEntity objeto){
+        Valida valida = new Valida();
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getRutaAnexoEvalucion(), "Ruta"))) {
+            AnexoEvalucionEntity ret = new AnexoEvalucionEntity();
+            ret.setTrazaRespuesta(valida.valida(objeto.getRutaAnexoEvalucion(), "Ruta"));
+            return ret;
+        } else {
+            AnexoEvalucionLogic metodoRecuperacionLogic=new AnexoEvalucionLogic();
+            return metodoRecuperacionLogic.actualizarAnexoEvalucion(objeto);
+        }
+    }
+    /**
+     * Método que trae una lista de anexo
+     * @return 
+     */
+    @WebMethod(operationName = "listaAnexoEvalucion")
+    public ObjetoRetornaEntity listaAnexoEvalucion(){
+        AnexoEvalucionLogic anexoEvalucionLogic=new AnexoEvalucionLogic();
+        return anexoEvalucionLogic.listaAnexoEvalucion();
+     }
+    
 }

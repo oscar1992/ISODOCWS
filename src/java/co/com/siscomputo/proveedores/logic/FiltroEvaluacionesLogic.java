@@ -7,7 +7,7 @@ package co.com.siscomputo.proveedores.logic;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
-import co.com.siscomputo.proveedores.persistencia.ContratosEntity;
+import co.com.siscomputo.proveedores.persistencia.EvaluacionesEntity;
 import java.util.ArrayList;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -16,9 +16,9 @@ import org.hibernate.criterion.Restrictions;
 
 /**
  *
- * @author Felipe
+ * @author Personal
  */
-public class FiltroContratosLogic {
+public class FiltroEvaluacionesLogic {
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -43,50 +43,50 @@ public class FiltroContratosLogic {
         return retorno;
     }
 
-    /**
-     * Metodo para filtrar contratos
-     *
-     * @param idTipoProveedorContrato
-     * @param estadoContrato
-     * @param idProveedorContrato
-     * @param fechafinalContrato
-     * @return
-     */
-    public ObjetoRetornaEntity filtrarContratos(Integer idTipoProveedorContrato, String estadoContrato, Integer idProveedorContrato, String fechafinalContrato) {
+    public ObjetoRetornaEntity filtrarEvaluaciones(Integer empresa, Integer proveedor, String nit, String anio, Integer tipoEvaluacion, Integer liderImplementador, String fechaEvaluacion, Integer estado) {
         ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
+        String conexion = initOperation();
+
         try {
-            String validaConexion = initOperation();
-            if ("Ok".equalsIgnoreCase(validaConexion)) {
-                Criteria criteria = sesion.createCriteria(ContratosEntity.class);
-                if (idTipoProveedorContrato == 1) {
-                    criteria.add(Restrictions.eq("idTipoProveedorContrato.idTipoProveedor", idTipoProveedorContrato));
+            if ("OK".equalsIgnoreCase(conexion)) {
+                Criteria criteria = sesion.createCriteria(EvaluacionesEntity.class);
+                if (empresa == 1) {
+                    criteria.add(Restrictions.eq("empresaEvaluaciones", empresa));
                 }
-                if (estadoContrato != null) {
-                    criteria.add(Restrictions.eq("estadoContrato", estadoContrato));
+                if (proveedor == 1) {
+                    criteria.add(Restrictions.eq("ProveedoresEntity.idProveedor", proveedor));
                 }
-                if (idProveedorContrato == 1) {
-                    criteria.add(Restrictions.eq("idProveedorContrato.idProveedor", idProveedorContrato));
+                if (nit != null) {
+                    criteria.add(Restrictions.eq("documentoEvaluaciones", nit));
                 }
-                if (fechafinalContrato != null) {
-                    criteria.add(Restrictions.eq("fechafinalContrato", fechafinalContrato));
+                if (anio != null) {
+                    criteria.add(Restrictions.eq("AnioEvaluaciones", anio));
+                }
+                if (tipoEvaluacion == 1) {
+                    criteria.add(Restrictions.eq("TipoEvaluacionEntity.idTemaEvaluacion", tipoEvaluacion));
+                }
+                if (fechaEvaluacion != null) {
+                    criteria.add(Restrictions.eq("fechaEvaluaciones", fechaEvaluacion));
+                }
+                if (estado == 1) {
+                    criteria.add(Restrictions.eq("estadoProveedorEvaluaciones", estado));
                 }
                 retorna.setRetorna((ArrayList<Object>) criteria.list());
                 retorna.setTrazaRespuesta("Carga exitosa de documentos filtrados");
                 retorna.setNumeroRespuesta(99);
-            } else {
-                retorna.setNumeroRespuesta(3);
-                retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            retorna = new ObjetoRetornaEntity();
-            retorna.setNumeroRespuesta(0);
-            retorna.setTrazaRespuesta(e.getMessage());
+            retorna.setNumeroRespuesta(3);
+            retorna.setTrazaRespuesta("Error de Conexión " + conexion);
         } finally {
             try {
                 sesion.close();
             } catch (Exception e) {
                 e.printStackTrace();
+                retorna = new ObjetoRetornaEntity();
+                retorna.setNumeroRespuesta(0);
+                retorna.setTrazaRespuesta(e.getMessage());
             }
 
         }
