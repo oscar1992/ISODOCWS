@@ -4,10 +4,17 @@
   <session-factory>
     <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
     <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+<<<<<<< HEAD
+
+    <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=ISODOC</property>
+    <property name="hibernate.connection.username">ISODOC-B</property>
+
+=======
     <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=ISODOC</property>
     <property name="hibernate.connection.username">ISODOC-B</property>
     <property name="hibernate.connection.url">jdbc:sqlserver://192.168.1.147:1433;databaseName=ISODOC</property>
     <property name="hibernate.connection.username">ISODOC-A</property>
+>>>>>>> d3a8f6f7fd822de412f514f2cd11cab0982ecfd1
     <property name="hibernate.connection.password">ISODOC</property>
     <property name="show_sql">false</property>
     <property name="format_sql">true</property>
@@ -24,8 +31,7 @@
     <mapping class="co.com.siscomputo.administracion.persistencia.SedeEntity"/>
     <mapping class="co.com.siscomputo.administracion.persistencia.EmpresaEntity"/>
     <mapping class="co.com.siscomputo.administracion.persistencia.SedeEmpresaEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.FestivosEntity"/>
-    
+    <mapping class="co.com.siscomputo.administracion.persistencia.FestivosEntity"/>    
     <mapping class="co.com.siscomputo.administracion.persistencia.TiposDocumentalesEntity"/>
     <mapping class="co.com.siscomputo.administracion.persistencia.DisposicionesEntity"/>
     <mapping class="co.com.siscomputo.administracion.persistencia.MetodoRecuperacionEntity"/>

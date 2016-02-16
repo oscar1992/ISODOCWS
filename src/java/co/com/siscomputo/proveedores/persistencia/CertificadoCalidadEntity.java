@@ -34,7 +34,7 @@ public class CertificadoCalidadEntity extends ObjetoRetornaEntity implements Ser
     
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CERT_FECHA")
-    private java.util.Date fechacertificado;
+    private java.util.Date fechaCertificado;
     
     @JoinColumn(name = "CERT_PROCERT" )
     @ManyToOne
@@ -70,11 +70,11 @@ public class CertificadoCalidadEntity extends ObjetoRetornaEntity implements Ser
     }
 
     public Date getFechacertificado() {
-        return fechacertificado;
+        return fechaCertificado;
     }
 
     public void setFechacertificado(Date fechacertificado) {
-        this.fechacertificado = fechacertificado;
+        this.fechaCertificado = fechacertificado;
     }
 
     public ProveedoresEntity getIdProveedor() {

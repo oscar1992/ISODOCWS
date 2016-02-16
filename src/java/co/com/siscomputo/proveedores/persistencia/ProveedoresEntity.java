@@ -9,12 +9,15 @@ import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.administracion.persistencia.EmpresaEntity;
 import co.com.siscomputo.administracion.persistencia.UsuarioEntity;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -30,9 +33,10 @@ public class ProveedoresEntity extends ObjetoRetornaEntity implements Serializab
 
     @Column(name = "PROV_NOMB")
     private String nombreProveedor;
-
+    
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "PROV_FECH")
-    private String fechaCreacion;
+    private java.util.Date fechaCreacion;
 
     @JoinColumn(name = "PROV_TESTA")
     @ManyToOne
@@ -110,6 +114,12 @@ public class ProveedoresEntity extends ObjetoRetornaEntity implements Serializab
     @JoinColumn(name = "PROV_LINE")
     @ManyToOne
     private LineaEntity lineaProveedores;
+    @Column(name = "PROV_TITU")
+    private String titularProveedor;
+    @Column(name = "PROV_NCUE")
+    private String ncuentaProveedor;
+    @Column(name = "PROV_BANC")
+    private String bancoProveedor;
     
 
     public Integer getIdProveedor() {
@@ -128,13 +138,14 @@ public class ProveedoresEntity extends ObjetoRetornaEntity implements Serializab
         this.nombreProveedor = nombreProveedor;
     }
 
-    public String getFechaCreacion() {
+    public Date getFechaCreacion() {
         return fechaCreacion;
     }
 
-    public void setFechaCreacion(String fechaCreacion) {
+    public void setFechaCreacion(Date fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
+
 
     public EstadoProveedorEntity getEstadoProveedor() {
         return estadoProveedor;
@@ -318,6 +329,30 @@ public class ProveedoresEntity extends ObjetoRetornaEntity implements Serializab
 
     public void setLineaProveedores(LineaEntity lineaProveedores) {
         this.lineaProveedores = lineaProveedores;
+    }
+
+    public String getTitularProveedor() {
+        return titularProveedor;
+    }
+
+    public void setTitularProveedor(String titularProveedor) {
+        this.titularProveedor = titularProveedor;
+    }
+
+    public String getNcuentaProveedor() {
+        return ncuentaProveedor;
+    }
+
+    public void setNcuentaProveedor(String ncuentaProveedor) {
+        this.ncuentaProveedor = ncuentaProveedor;
+    }
+
+    public String getBancoProveedor() {
+        return bancoProveedor;
+    }
+
+    public void setBancoProveedor(String bancoProveedor) {
+        this.bancoProveedor = bancoProveedor;
     }
     
     

@@ -6,9 +6,19 @@
 package co.com.siscomputo.endpoint;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
+<<<<<<< HEAD
 import co.com.siscomputo.proveedores.logic.AnexoEvalucionLogic;
+=======
+
+
+>>>>>>> origin/master
+import co.com.siscomputo.proveedores.logic.AnexoProveedorLogic;
+
+import co.com.siscomputo.proveedores.logic.AnexosContratoLogic;
+
 import co.com.siscomputo.proveedores.logic.AnexoProveedorLogic;
 import co.com.siscomputo.proveedores.logic.AnexosContratoLogic;
+
 import co.com.siscomputo.proveedores.logic.CertificadoLogic;
 import co.com.siscomputo.proveedores.logic.ContratosLogic;
 import co.com.siscomputo.proveedores.logic.CuentasProveedoresLogic;
@@ -30,9 +40,20 @@ import co.com.siscomputo.proveedores.logic.TemaEvaluacionLogic;
 import co.com.siscomputo.proveedores.logic.TipoCuentaLogic;
 import co.com.siscomputo.proveedores.logic.TipoEvaluacionLogic;
 import co.com.siscomputo.proveedores.logic.TipoMonedaLogic;
+
+
+import co.com.siscomputo.proveedores.persistencia.AnexoProveedorEntity;
+
+import co.com.siscomputo.proveedores.persistencia.AnexoContratoEntity;
+
+
 import co.com.siscomputo.proveedores.persistencia.AnexoProveedorEntity;
 import co.com.siscomputo.proveedores.persistencia.AnexoContratoEntity;
+<<<<<<< HEAD
 import co.com.siscomputo.proveedores.persistencia.AnexoEvalucionEntity;
+=======
+
+>>>>>>> origin/master
 import co.com.siscomputo.proveedores.persistencia.CertificadoCalidadEntity;
 import co.com.siscomputo.proveedores.persistencia.ContratosEntity;
 import co.com.siscomputo.proveedores.persistencia.EvaluacionesEntity;
@@ -998,6 +1019,7 @@ public class Proveedores {
         return retorno;
     }
 
+
     /**
      * Metodo para insertar un tema de evaluacion
      *
@@ -1162,6 +1184,7 @@ public class Proveedores {
 
     }
 
+<<<<<<< HEAD
     
     /**
      * Método que permite insertar un Evaluacion nuevo
@@ -1252,4 +1275,7 @@ public class Proveedores {
         return anexoEvalucionLogic.listaAnexoEvalucion();
      }
     
+=======
+
+>>>>>>> origin/master
 }

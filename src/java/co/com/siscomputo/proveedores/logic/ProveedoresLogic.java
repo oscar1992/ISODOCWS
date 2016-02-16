@@ -149,7 +149,7 @@ public class ProveedoresLogic {
         try {
             String conexion = initOperation();
             if ("OK".equalsIgnoreCase(conexion)) {
-                Query sentencia = sesion.createQuery("FROM ProveedoresEntity p WHERE p.estadoProveedor<>'E'");
+                Query sentencia = sesion.createQuery("FROM ProveedoresEntity p WHERE p.estadoProveedores<>'E'");
                 retorno.setRetorna((ArrayList<Object>) sentencia.list());
                 retorno.setTrazaRespuesta("Consulta tabla Proveedores exitosa");
                 retorno.setNumeroRespuesta(1);

@@ -9,6 +9,7 @@ import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
 import co.com.siscomputo.proveedores.persistencia.ContratosEntity;
 import java.util.ArrayList;
+import java.util.Date;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -67,8 +68,14 @@ public class FiltroContratosLogic {
                 if (idProveedorContrato == 1) {
                     criteria.add(Restrictions.eq("idProveedorContrato.idProveedor", idProveedorContrato));
                 }
+<<<<<<< HEAD
                 if (fechafinalContrato != null) {
                     criteria.add(Restrictions.eq("fechafinalContrato", fechafinalContrato));
+=======
+                if (fechafinalContrato == null) {
+                    Date fecha=new Date(Integer.parseInt(fechafinalContrato.substring(7, 10)), Integer.parseInt(fechafinalContrato.substring(4, 5)), Integer.parseInt(fechafinalContrato.substring(0, 2)));
+                    criteria.add(Restrictions.eq("fechafinalContrato", fecha));
+>>>>>>> origin/master
                 }
                 retorna.setRetorna((ArrayList<Object>) criteria.list());
                 retorna.setTrazaRespuesta("Carga exitosa de documentos filtrados");
