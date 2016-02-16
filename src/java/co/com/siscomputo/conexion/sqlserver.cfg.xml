@@ -1,77 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-  <session-factory>
-    <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
-    <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
-<<<<<<< HEAD
+    <session-factory>
+        <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
+        <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
 
-    <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=ISODOC</property>
-    <property name="hibernate.connection.username">ISODOC-B</property>
+        <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=ISODOC</property>
+        <property name="hibernate.connection.username">ISODOC-B</property>
 
-=======
-    <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=ISODOC</property>
-    <property name="hibernate.connection.username">ISODOC-B</property>
-    <property name="hibernate.connection.url">jdbc:sqlserver://192.168.1.147:1433;databaseName=ISODOC</property>
-    <property name="hibernate.connection.username">ISODOC-A</property>
->>>>>>> d3a8f6f7fd822de412f514f2cd11cab0982ecfd1
-    <property name="hibernate.connection.password">ISODOC</property>
-    <property name="show_sql">false</property>
-    <property name="format_sql">true</property>
-    <mapping class="co.com.siscomputo.administracion.persistencia.ModuloEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.PermisosEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.RolPermisoEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.RolesEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.UsuarioEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.UsuarioRolEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.AreaEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.PaisEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.DepartamentoEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.CiudadEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.SedeEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.EmpresaEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.SedeEmpresaEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.FestivosEntity"/>    
-    <mapping class="co.com.siscomputo.administracion.persistencia.TiposDocumentalesEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.DisposicionesEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.MetodoRecuperacionEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.MetodoProteccionEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.TiposAccesoEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.TipoAlmacenamientoEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.TipoControlDistribucionEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.PlantillaEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.ElaboradorEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.AccionEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.GrupoUsuariosEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.UsuarioGrupoUsuarioEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.ProcesoEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.GrupoProcesoEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.NivelEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.RutasEntity"/>
-    <mapping class="co.com.siscomputo.administracion.persistencia.ExtensionesEntity"/>
-    <mapping class="co.com.siscomputo.gestiondocumental.persistencia.DocumentoEntity"/>
-    <mapping class="co.com.siscomputo.gestiondocumental.persistencia.DocumentoProcesoEntity"/>
-    <mapping class="co.com.siscomputo.gestiondocumental.persistencia.GrupoDocumentoEntity"/>
-    <mapping class="co.com.siscomputo.gestiondocumental.persistencia.DocumentoRolEntity"/>
-    <mapping class="co.com.siscomputo.gestiondocumental.persistencia.UsuarioDocumentoEntity"/>
-    <mapping class="co.com.siscomputo.proveedores.persistencia.LineaEntity"/>
-    <mapping class="co.com.siscomputo.proveedores.persistencia.TipoDocumentoEntity"/>
-    <mapping class="co.com.siscomputo.proveedores.persistencia.EstadoProveedorEntity"/>
-    <mapping class="co.com.siscomputo.proveedores.persistencia.TipoProveedorEntity"/>
-    <mapping class="co.com.siscomputo.proveedores.persistencia.TipoTributarioEntity"/>
-    <mapping class="co.com.siscomputo.proveedores.persistencia.TipoCuentaEntity"/>
-    <mapping class="co.com.siscomputo.proveedores.persistencia.FormasPagoEntity"/>
-    <mapping class="co.com.siscomputo.proveedores.persistencia.ProveedoresEntity"/>
-    <mapping class="co.com.siscomputo.proveedores.persistencia.TipoMonedaEntity"/>
-    <mapping class="co.com.siscomputo.proveedores.persistencia.ContratosEntity"/>
-    <mapping class="co.com.siscomputo.proveedores.persistencia.PolizasEntity"/>
-    <mapping class="co.com.siscomputo.proveedores.persistencia.CertificadoCalidadEntity"/>
-    <mapping class="co.com.siscomputo.proveedores.persistencia.AnexoContratoEntity"/>
-    <mapping class="co.com.siscomputo.proveedores.persistencia.TipoEvaluacionEntity"/>
-    <mapping class="co.com.siscomputo.proveedores.persistencia.TemaEvaluacionEntity"/>
-    <mapping class="co.com.siscomputo.proveedores.persistencia.PreguntasEvaluacionEntity"/>
-    <mapping class="co.com.siscomputo.proveedores.persistencia.EvaluacionesEntity"/>
-    <mapping class="co.com.siscomputo.proveedores.persistencia.AnexoEvalucionEntity"/>
-"/>
-  </session-factory>
+        <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=ISODOC</property>
+        <property name="hibernate.connection.username">ISODOC-B</property>
+        <property name="hibernate.connection.url">jdbc:sqlserver://192.168.1.147:1433;databaseName=ISODOC</property>
+        <property name="hibernate.connection.username">ISODOC-A</property>
+
+        <property name="hibernate.connection.password">ISODOC</property>
+        <property name="show_sql">false</property>
+        <property name="format_sql">true</property>
+        <mapping class="co.com.siscomputo.administracion.persistencia.ModuloEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.PermisosEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.RolPermisoEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.RolesEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.UsuarioEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.UsuarioRolEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.AreaEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.PaisEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.DepartamentoEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.CiudadEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.SedeEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.EmpresaEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.SedeEmpresaEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.FestivosEntity"/>    
+        <mapping class="co.com.siscomputo.administracion.persistencia.TiposDocumentalesEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.DisposicionesEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.MetodoRecuperacionEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.MetodoProteccionEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.TiposAccesoEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.TipoAlmacenamientoEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.TipoControlDistribucionEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.PlantillaEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.ElaboradorEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.AccionEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.GrupoUsuariosEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.UsuarioGrupoUsuarioEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.ProcesoEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.GrupoProcesoEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.NivelEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.RutasEntity"/>
+        <mapping class="co.com.siscomputo.administracion.persistencia.ExtensionesEntity"/>
+        <mapping class="co.com.siscomputo.gestiondocumental.persistencia.DocumentoEntity"/>
+        <mapping class="co.com.siscomputo.gestiondocumental.persistencia.DocumentoProcesoEntity"/>
+        <mapping class="co.com.siscomputo.gestiondocumental.persistencia.GrupoDocumentoEntity"/>
+        <mapping class="co.com.siscomputo.gestiondocumental.persistencia.DocumentoRolEntity"/>
+        <mapping class="co.com.siscomputo.gestiondocumental.persistencia.UsuarioDocumentoEntity"/>
+        <mapping class="co.com.siscomputo.proveedores.persistencia.LineaEntity"/>
+        <mapping class="co.com.siscomputo.proveedores.persistencia.TipoDocumentoEntity"/>
+        <mapping class="co.com.siscomputo.proveedores.persistencia.EstadoProveedorEntity"/>
+        <mapping class="co.com.siscomputo.proveedores.persistencia.TipoProveedorEntity"/>
+        <mapping class="co.com.siscomputo.proveedores.persistencia.TipoTributarioEntity"/>
+        <mapping class="co.com.siscomputo.proveedores.persistencia.TipoCuentaEntity"/>
+        <mapping class="co.com.siscomputo.proveedores.persistencia.FormasPagoEntity"/>
+        <mapping class="co.com.siscomputo.proveedores.persistencia.ProveedoresEntity"/>
+        <mapping class="co.com.siscomputo.proveedores.persistencia.TipoMonedaEntity"/>
+        <mapping class="co.com.siscomputo.proveedores.persistencia.ContratosEntity"/>
+        <mapping class="co.com.siscomputo.proveedores.persistencia.PolizasEntity"/>
+        <mapping class="co.com.siscomputo.proveedores.persistencia.CertificadoCalidadEntity"/>
+        <mapping class="co.com.siscomputo.proveedores.persistencia.AnexoContratoEntity"/>
+        <mapping class="co.com.siscomputo.proveedores.persistencia.TipoEvaluacionEntity"/>
+        <mapping class="co.com.siscomputo.proveedores.persistencia.TemaEvaluacionEntity"/>
+        <mapping class="co.com.siscomputo.proveedores.persistencia.PreguntasEvaluacionEntity"/>
+        <mapping class="co.com.siscomputo.proveedores.persistencia.EvaluacionesEntity"/>
+        <mapping class="co.com.siscomputo.proveedores.persistencia.AnexoEvalucionEntity"/>
+
+    
+    </session-factory>
 </hibernate-configuration>
