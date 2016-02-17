@@ -12,8 +12,6 @@ import co.com.siscomputo.proveedores.logic.AnexoEvalucionLogic;
 
 import co.com.siscomputo.proveedores.logic.AnexoProveedorLogic;
 import co.com.siscomputo.proveedores.logic.AnexosContratoLogic;
-import co.com.siscomputo.proveedores.logic.AnexoProveedorLogic;
-import co.com.siscomputo.proveedores.logic.AnexosContratoLogic;
 
 import co.com.siscomputo.proveedores.logic.CertificadoLogic;
 import co.com.siscomputo.proveedores.logic.ContratosLogic;
@@ -38,8 +36,6 @@ import co.com.siscomputo.proveedores.logic.TipoEvaluacionLogic;
 import co.com.siscomputo.proveedores.logic.TipoMonedaLogic;
 import co.com.siscomputo.proveedores.persistencia.AnexoProveedorEntity;
 import co.com.siscomputo.proveedores.persistencia.AnexoContratoEntity;
-import co.com.siscomputo.proveedores.persistencia.AnexoProveedorEntity;
-import co.com.siscomputo.proveedores.persistencia.AnexoContratoEntity;
 import co.com.siscomputo.proveedores.persistencia.AnexoEvalucionEntity;
 import co.com.siscomputo.proveedores.persistencia.CertificadoCalidadEntity;
 import co.com.siscomputo.proveedores.persistencia.ContratosEntity;
@@ -59,7 +55,6 @@ import co.com.siscomputo.utilidades.Valida;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
-import sun.dc.pr.PRError;
 
 /**
  *

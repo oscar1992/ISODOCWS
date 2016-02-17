@@ -29,11 +29,11 @@ public class PreguntasEvaluacionEntity extends ObjetoRetornaEntity implements Se
     
     @JoinColumn(name = "PREGU_EVAL")
     @OneToOne
-    private Integer idEvaluacionPregunta;
+    private EvaluacionesEntity idEvaluacionPregunta;
     
     @JoinColumn(name = "PREGU_TEMA")
     @OneToOne
-    private Integer idTemaPregunta;
+    private TemaEvaluacionEntity idTemaPregunta;
     
     @Column(name="PREGU_PREGU")
     private String pregunta;
@@ -52,21 +52,23 @@ public class PreguntasEvaluacionEntity extends ObjetoRetornaEntity implements Se
         this.idPregunta = idPregunta;
     }
 
-    public Integer getIdEvaluacionPregunta() {
+    public EvaluacionesEntity getIdEvaluacionPregunta() {
         return idEvaluacionPregunta;
     }
 
-    public void setIdEvaluacionPregunta(Integer idEvaluacionPregunta) {
+    public void setIdEvaluacionPregunta(EvaluacionesEntity idEvaluacionPregunta) {
         this.idEvaluacionPregunta = idEvaluacionPregunta;
     }
 
-    public Integer getIdTemaPregunta() {
+    public TemaEvaluacionEntity getIdTemaPregunta() {
         return idTemaPregunta;
     }
 
-    public void setIdTemaPregunta(Integer idTemaPregunta) {
+    public void setIdTemaPregunta(TemaEvaluacionEntity idTemaPregunta) {
         this.idTemaPregunta = idTemaPregunta;
     }
+
+   
 
     public String getPregunta() {
         return pregunta;
