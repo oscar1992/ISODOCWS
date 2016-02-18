@@ -7,6 +7,7 @@
 package co.com.siscomputo.mejoramientocontinuo.persistencia;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
+import co.com.siscomputo.administracion.persistencia.ProcesoEntity;
 import co.com.siscomputo.administracion.persistencia.RolesEntity;
 import java.io.Serializable;
 import java.util.Date;
@@ -52,8 +53,9 @@ public class AccionesRapidasEntity extends ObjetoRetornaEntity implements Serial
     @Column(name = "ACRA_RESP")
     private String responsableAuditoria;
 
-    @Column(name = "ACRA_PROC")
-    private String procesoAuditoria;
+    @JoinColumn(name = "ACRA_PROC")
+    @ManyToOne 
+    private ProcesoEntity procesoAuditoria;
 
     @Column(name = "ACRA_ORIG")
     private String origenAuditoria;
@@ -129,13 +131,15 @@ public class AccionesRapidasEntity extends ObjetoRetornaEntity implements Serial
         this.responsableAuditoria = responsableAuditoria;
     }
 
-    public String getProcesoAuditoria() {
+    public ProcesoEntity getProcesoAuditoria() {
         return procesoAuditoria;
     }
 
-    public void setProcesoAuditoria(String procesoAuditoria) {
+    public void setProcesoAuditoria(ProcesoEntity procesoAuditoria) {
         this.procesoAuditoria = procesoAuditoria;
     }
+
+    
 
     public String getOrigenAuditoria() {
         return origenAuditoria;

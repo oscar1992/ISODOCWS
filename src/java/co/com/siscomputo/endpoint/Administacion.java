@@ -33,15 +33,19 @@ import co.com.siscomputo.administracion.logic.MetodoProteccionLogic;
 import co.com.siscomputo.administracion.logic.MetodoRecuperacionLogic;
 import co.com.siscomputo.administracion.logic.ModificadorLogic;
 import co.com.siscomputo.administracion.logic.NivelLogic;
+import co.com.siscomputo.administracion.logic.OrigenLogic;
 import co.com.siscomputo.administracion.logic.PlantillaLogic;
 import co.com.siscomputo.administracion.logic.ProcesoLogic;
 import co.com.siscomputo.administracion.logic.RutasLogic;
 import co.com.siscomputo.administracion.logic.TipoAlmacenamientoLogic;
 import co.com.siscomputo.administracion.logic.TipoControlDistribucionLogic;
 import co.com.siscomputo.administracion.logic.TiposAccesoLogic;
+import co.com.siscomputo.administracion.logic.UnidadDeNegocioLogic;
 import co.com.siscomputo.administracion.logic.UsuarioGrupoUsuarioLogic;
 import co.com.siscomputo.administracion.persistencia.ExtensionesEntity;
+import co.com.siscomputo.administracion.persistencia.OrigenEntity;
 import co.com.siscomputo.administracion.persistencia.RutasEntity;
+import co.com.siscomputo.administracion.persistencia.UnidadDeNegocioEntity;
 import co.com.siscomputo.utilidades.Valida;
 import java.util.ArrayList;
 import javax.jws.WebService;
@@ -1248,4 +1252,139 @@ public class Administacion {
         return extensionesLogic.listaExtensiones();
      }
     
+    
+    
+    
+    /**
+     * Metodo para insertar una unidad de negocio
+     *
+     * @param obj
+     * @return
+     */
+    @WebMethod(operationName = "insertarUnidadDeNegocio")
+    public UnidadDeNegocioEntity insertarUnidadDeNegocio(@WebParam(name = "UnidadNegocio") UnidadDeNegocioEntity obj) {
+        try {
+            Valida valida = new Valida();
+            String respuesta = "";
+            respuesta = valida.valida(obj.getEstadoNegocio(), "Estado");
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                UnidadDeNegocioLogic logica = new UnidadDeNegocioLogic();
+                obj = logica.insertarUnidadNegocio(obj);
+            } else {
+                obj.setTrazaRespuesta(respuesta);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return obj;
+    }
+
+    /**
+     * Metodo para actualizar una unidad negocio
+     *
+     * @param obj
+     * @return
+     */
+    @WebMethod(operationName = "actualizarUnidadNegocio")
+    public UnidadDeNegocioEntity actualizarUnidadNegocio(@WebParam(name = "UnidadNegocio") UnidadDeNegocioEntity obj) {
+        try {
+            Valida valida = new Valida();
+            String respuesta = "";
+            respuesta = valida.valida(obj.getIdUnidadNegocio(), "Id");
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                UnidadDeNegocioLogic logica = new UnidadDeNegocioLogic();
+                obj = logica.actualizarUnidadNegocio(obj);
+            } else {
+                obj.setTrazaRespuesta(respuesta);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return obj;
+    }
+
+    /**
+     * Metodo para listar anexos de plan de accion
+     * @return
+     */
+    @WebMethod(operationName = "ListarPlanAccion")
+    public ObjetoRetornaEntity ListarPlanAccion() {
+        ObjetoRetornaEntity retorno = new ObjetoRetornaEntity();
+        try {
+            UnidadDeNegocioLogic logic = new UnidadDeNegocioLogic();
+            retorno = logic.listarUnidades();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return retorno;
+    }
+    
+    /**
+     * Metodo para insertar un origen
+     *
+     * @param obj
+     * @return
+     */
+    @WebMethod(operationName = "insertarOrigen")
+    public OrigenEntity insertarOrigen(@WebParam(name = "Origen") OrigenEntity obj) {
+        try {
+            Valida valida = new Valida();
+            String respuesta = "";
+            respuesta = valida.valida(obj.getEstadoOrigen(), "Estado");
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                OrigenLogic logica = new OrigenLogic();
+                obj = logica.insertarOrigen(obj);
+            } else {
+                obj.setTrazaRespuesta(respuesta);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return obj;
+    }
+
+    /**
+     * Metodo para actualizar un origen
+     *
+     * @param obj
+     * @return
+     */
+    @WebMethod(operationName = "actualizarOrigen")
+    public OrigenEntity actualizarOrigen(@WebParam(name = "Origen") OrigenEntity obj) {
+        try {
+            Valida valida = new Valida();
+            String respuesta = "";
+            respuesta = valida.valida(obj.getIdOrigen(), "Id");
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                OrigenLogic logica = new OrigenLogic();
+                obj = logica.actualizarOrigen(obj);
+            } else {
+                obj.setTrazaRespuesta(respuesta);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return obj;
+    }
+
+    /**
+     * Metodo para listar origen
+     * @return
+     */
+    @WebMethod(operationName = "ListarOrigen")
+    public ObjetoRetornaEntity ListarOrigen() {
+        ObjetoRetornaEntity retorno = new ObjetoRetornaEntity();
+        try {
+            OrigenLogic logic = new OrigenLogic();
+            retorno = logic.listarOrigen();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return retorno;
+    }
+
 }
