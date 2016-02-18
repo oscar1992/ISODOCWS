@@ -17,7 +17,7 @@ import org.hibernate.Transaction;
  *
  * @author Felipe
  */
-public class ProveedoresLogic {
+public class ProveedoresLogic implements AutoCloseable{
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -90,16 +90,7 @@ public class ProveedoresLogic {
             e.printStackTrace();
             objProveedor.setNumeroRespuesta(0);
             objProveedor.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-                objProveedor.setNumeroRespuesta(0);
-                objProveedor.setTrazaRespuesta(e.getMessage());
-            }
-
-        }
+        } 
         return objProveedor;
     }
 
@@ -125,16 +116,7 @@ public class ProveedoresLogic {
             e.printStackTrace();
             objProveedor.setNumeroRespuesta(0);
             objProveedor.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-                objProveedor.setNumeroRespuesta(0);
-                objProveedor.setTrazaRespuesta(e.getMessage());
-            }
-            
-        }
+        } 
         return objProveedor;
     }
 
@@ -162,13 +144,23 @@ public class ProveedoresLogic {
             retorno = new ObjetoRetornaEntity();
             retorno.setNumeroRespuesta(0);
             retorno.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        } 
         return  retorno;
+    }
+    
+    @Override
+    public void close() throws Exception {
+        try {
+            if (tx != null) {
+                tx.commit();
+            }
+            if (sesion != null) {
+                sesion.close();
+                sesion = null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

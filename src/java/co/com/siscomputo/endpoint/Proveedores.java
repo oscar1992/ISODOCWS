@@ -19,6 +19,7 @@ import co.com.siscomputo.proveedores.logic.CuentasProveedoresLogic;
 import co.com.siscomputo.proveedores.logic.EstadoProveedorLogic;
 import co.com.siscomputo.proveedores.logic.EvaluacionesLogic;
 import co.com.siscomputo.proveedores.logic.FiltroContratosLogic;
+import co.com.siscomputo.proveedores.logic.FiltroProveedores;
 import co.com.siscomputo.proveedores.logic.TipoDocumentoLogic;
 import co.com.siscomputo.proveedores.logic.TipoProveedorLogic;
 import co.com.siscomputo.proveedores.logic.TipoTributarioLogic;
@@ -475,7 +476,14 @@ public class Proveedores {
         ProveedoresLogic logica = new ProveedoresLogic();
         return logica.listaProveedores();
     }
-
+    
+    @WebMethod(operationName = "proveedoresFiltardos")
+    public ObjetoRetornaEntity proveedoresFiltardos(@WebParam(name = "idTipoEstado") Integer idTipoEstado, @WebParam(name = "idCiudad") Integer idCiudad, @WebParam(name = "idLinea") Integer idLinea, @WebParam(name = "idEmpresa") Integer idEmpresa, @WebParam(name = "idResponsable") Integer idResponsable, @WebParam(name = "idTipoProveedor") Integer idTipoProveedor, @WebParam(name = "idTibutaria") Integer idTibutaria, @WebParam(name = "idTipoCuenta") Integer idTipoCuenta, @WebParam(name = "idFormaPago") Integer idFormaPago){
+        FiltroProveedores filtroProveedores=new FiltroProveedores();
+        return filtroProveedores.filtrarProvedores(idTipoEstado, idCiudad, idLinea, idEmpresa, idResponsable, idTipoProveedor, idTibutaria, idTipoCuenta, idFormaPago);
+    }
+    
+    
     /**
      * Método que permite insertar un Tipo de Cuenta nuevo
      *

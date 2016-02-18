@@ -50,9 +50,9 @@ public class DocumentoEntity extends ObjetoRetornaEntity implements Serializable
     @JoinColumn(name = "DOCU_PROC2")
     @OneToOne
     private ProcesoEntity procesoDocumento;
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @Column(name = "DOCU_FCRE")    
-    private java.util.Date fechaDocumento;
+    private Date fechaDocumento;
     @Column(name = "DOCU_RUTA")
     private String rutaDocumento;
     

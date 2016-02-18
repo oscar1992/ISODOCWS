@@ -17,6 +17,7 @@ import co.com.siscomputo.gestiondocumental.persistencia.DocumentoProcesoEntity;
 import co.com.siscomputo.gestiondocumental.persistencia.DocumentoRolEntity;
 import co.com.siscomputo.gestiondocumental.persistencia.UsuarioDocumentoEntity;
 import co.com.siscomputo.utilidades.Valida;
+import java.util.Date;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -231,7 +232,7 @@ public class GestionDocumental {
      * @return 
      */
     @WebMethod(operationName = "documetosFiltrados")
-    public ObjetoRetornaEntity documentosFiltrados(@WebParam(name = "idTipoDoc")Integer idTipoDocumental, @WebParam(name = "idPlantilla")Integer idPlantilla, @WebParam(name = "idAccion")Integer idAccion, @WebParam(name = "fecha1")String fecha1, @WebParam(name = "fecha2")String fecha2){
+    public ObjetoRetornaEntity documentosFiltrados(@WebParam(name = "idTipoDoc")Integer idTipoDocumental, @WebParam(name = "idPlantilla")Integer idPlantilla, @WebParam(name = "idAccion")Integer idAccion, @WebParam(name = "fecha1")Date fecha1, @WebParam(name = "fecha2")Date fecha2){
         FiltroLogic filtroLogic=new FiltroLogic();
         return filtroLogic.documentosFiltrado(idTipoDocumental, idPlantilla, idAccion, fecha1, fecha2);
     }

@@ -8,6 +8,7 @@ package co.com.siscomputo.proveedores.logic;
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
 import co.com.siscomputo.proveedores.persistencia.ContratosEntity;
+import co.com.siscomputo.proveedores.persistencia.ProveedoresEntity;
 import java.util.ArrayList;
 import java.util.Date;
 import org.hibernate.Criteria;
@@ -17,10 +18,9 @@ import org.hibernate.criterion.Restrictions;
 
 /**
  *
- * @author Felipe
+ * @author LENOVO
  */
-public class FiltroContratosLogic {
-
+public class FiltroProveedores {
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
 
@@ -43,40 +43,55 @@ public class FiltroContratosLogic {
         }
         return retorno;
     }
-
     /**
-     * Metodo para filtrar contratos
-     *
-     * @param idTipoProveedorContrato
-     * @param estadoContrato
-     * @param idProveedorContrato
-     * @param fechafinalContrato
-     * @return
+     * 
+     * @param idTipoEstado
+     * @param idCiudad
+     * @param idLinea
+     * @param idEmpresa
+     * @param idResponsable
+     * @param idTipoProveedor
+     * @param idTibutaria
+     * @param idTipoCuenta
+     * @param idFormaPago
+     * @return 
      */
-    public ObjetoRetornaEntity filtrarContratos(Integer idTipoProveedorContrato, String estadoContrato, Integer idProveedorContrato, String fechafinalContrato) {
+    public ObjetoRetornaEntity filtrarProvedores(Integer idTipoEstado, Integer idCiudad, Integer idLinea, Integer idEmpresa, Integer idResponsable, Integer idTipoProveedor, Integer idTibutaria, Integer idTipoCuenta, Integer idFormaPago) {
         ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
         try {
             String validaConexion = initOperation();
             if ("Ok".equalsIgnoreCase(validaConexion)) {
-                Criteria criteria = sesion.createCriteria(ContratosEntity.class);
-                if (idTipoProveedorContrato != 0) {
-                    criteria.add(Restrictions.eq("idTipoProveedorContrato.idTipoProveedor", idTipoProveedorContrato));
+                Criteria criteria = sesion.createCriteria(ProveedoresEntity.class);
+                if (idTipoEstado != 0) {
+                    criteria.add(Restrictions.eq("estadoProveedor.idEstadoProveedor", idTipoEstado));
                 }
-                if (estadoContrato != null) {
-                    criteria.add(Restrictions.eq("estadoContrato", estadoContrato));
+                if (idCiudad != 0) {
+                    criteria.add(Restrictions.eq("ciudadProveedor", idCiudad));
                 }
-                if (idProveedorContrato != 0) {
-                    criteria.add(Restrictions.eq("idProveedorContrato.idProveedor", idProveedorContrato));
+                if (idLinea != 0) {
+                    criteria.add(Restrictions.eq("lineaProveedores.idLinea", idLinea));
                 }
-                if (fechafinalContrato != null) {
-                    criteria.add(Restrictions.eq("fechafinalContrato", fechafinalContrato));
+                if (idEmpresa != 0) {
+                    criteria.add(Restrictions.eq("empresaProveedor.idEmpresa", idEmpresa));
                 }
-                if (fechafinalContrato == null) {
-                    Date fecha=new Date(Integer.parseInt(fechafinalContrato.substring(7, 10)), Integer.parseInt(fechafinalContrato.substring(4, 5)), Integer.parseInt(fechafinalContrato.substring(0, 2)));
-                    criteria.add(Restrictions.eq("fechafinalContrato", fecha));
+                if (idResponsable != 0) {
+                    criteria.add(Restrictions.eq("usuarioResponsable.idUsuario", idResponsable));
                 }
+                if (idTipoProveedor != 0) {
+                    criteria.add(Restrictions.eq("idTipoProveedor.idTipoProveedor", idTipoProveedor));
+                }
+                if (idTibutaria != 0) {
+                    criteria.add(Restrictions.eq("idTipoTributario.idTipoTributario", idTibutaria));
+                }
+                if (idTipoCuenta != 0) {
+                    criteria.add(Restrictions.eq("idTipocuenta.idTipoCuenta", idTipoCuenta));
+                }
+                if (idFormaPago != 0) {
+                    criteria.add(Restrictions.eq("idFormaPago.idFormasPagos", idFormaPago));
+                }
+                
                 retorna.setRetorna((ArrayList<Object>) criteria.list());
-                retorna.setTrazaRespuesta("Carga exitosa de documentos filtrados");
+                retorna.setTrazaRespuesta("Carga exitosa de proveedores filtrados");
                 retorna.setNumeroRespuesta(99);
             } else {
                 retorna.setNumeroRespuesta(3);

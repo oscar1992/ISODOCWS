@@ -8,13 +8,8 @@
         <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=ISODOC</property>
         <property name="hibernate.connection.username">ISODOC-B</property>
 
-        <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=ISODOC</property>
-        <property name="hibernate.connection.username">ISODOC-B</property>
-        <property name="hibernate.connection.url">jdbc:sqlserver://192.168.1.147:1433;databaseName=ISODOC</property>
-        <property name="hibernate.connection.username">ISODOC-A</property>
-
         <property name="hibernate.connection.password">ISODOC</property>
-        <property name="show_sql">false</property>
+        <property name="show_sql">true</property>
         <property name="format_sql">true</property>
         <mapping class="co.com.siscomputo.administracion.persistencia.ModuloEntity"/>
         <mapping class="co.com.siscomputo.administracion.persistencia.PermisosEntity"/>

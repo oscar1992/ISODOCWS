@@ -8,7 +8,9 @@ package co.com.siscomputo.gestiondocumental.logic;
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
 import co.com.siscomputo.gestiondocumental.persistencia.DocumentoEntity;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -43,7 +45,7 @@ public class FiltroLogic {
         return retorno;
     }
     
-    public ObjetoRetornaEntity documentosFiltrado(Integer idTipoDocumental, Integer idPlantilla, Integer idAccion, String fecha1, String fecha2){
+    public ObjetoRetornaEntity documentosFiltrado(Integer idTipoDocumental, Integer idPlantilla, Integer idAccion, Date fecha1, Date fecha2){
         ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
         try {
             String validaConexion = initOperation();
@@ -51,43 +53,61 @@ public class FiltroLogic {
                 retorna.setNumeroRespuesta(3);
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                System.out.println("F1: "+idTipoDocumental);
-                System.out.println("F2: "+idPlantilla);
-                System.out.println("F3: "+idAccion);
+                //System.ot.println("F1: "+idTipoDocumental);
+                //System.ot.println("F2: "+idPlantilla);
+                //System.ot.println("F3: "+idAccion);
                 System.out.println("F4: "+fecha1);
-                System.out.println("F5: "+fecha2);
+                //System.ot.println("F5: "+fecha2);
                 Criteria criteria=sesion.createCriteria(DocumentoEntity.class);
                 if (idTipoDocumental==0) {
-                    System.out.println("TipoDocumental Nulo");
+                    //System.ot.println("TipoDocumental Nulo");
                 }else{
-                    System.out.println("");
+                    //System.ot.println("");
                     criteria.add(Restrictions.eq("tipoDocumentalDocumento.idTipoDocumental", idTipoDocumental));
                 }
                 if (idPlantilla==0) {
-                    System.out.println("Plantilla Nulo");
+                    //System.ot.println("Plantilla Nulo");
                 }else{
                     criteria.add(Restrictions.eq("plantilla.idPlantilla", idPlantilla));
                 }
                 if(idAccion==0){
-                    System.out.println("accion nula");
+                    //System.ot.println("accion nula");
                 }else{
                     criteria.add(Restrictions.eq("accionDocumento.idAccion", idAccion));
                 }
                 
-                if(fecha1==null){
+                if(fecha1==null||fecha2!=null){
                     System.out.println("Fecha1 Nula");
                 }else{
-                    //criteria.add(Restrictions.between("fechaDocumento", fecha1, fecha2));
+                    
+                    SimpleDateFormat formas=new SimpleDateFormat("dd-MM-yyyy");
+                    String faux=formas.format(fecha1);
+                    System.out.println("No nula1: "+fecha1);
+                    criteria.add(Restrictions.sqlRestriction("DOCU_FCRE>'"+faux+"'"));
+                    //criteria.add(Restrictions.ge("fechaDocumento", fecha1));
                 }
-                if(fecha2==null){
+                if(fecha2==null||fecha1!=null){
                     System.out.println("Fecha2 Nula");
                 }else{
+                    
+                    SimpleDateFormat formas=new SimpleDateFormat("dd-MM-yyyy");
+                    String faux2=formas.format(fecha2);
+                    System.out.println("No nula2: "+fecha2);
+                    criteria.add(Restrictions.sqlRestriction("DOCU_FCRE<'"+faux2+"'"));
+                }
+                if(fecha1!=null&&fecha2!=null){
+                    SimpleDateFormat formas=new SimpleDateFormat("dd-MM-yyyy");
+                    String faux=formas.format(fecha1);
+                    System.out.println("No nula1: "+fecha1);
+                    String faux2=formas.format(fecha2);
+                    System.out.println("No nula2: "+fecha2);
+                    criteria.add(Restrictions.between("fechaDocumento", fecha1, fecha2));
                     
                 }
                 retorna.setRetorna((ArrayList<Object>) criteria.list());
                 retorna.setTrazaRespuesta("Carga exitosa de documentos filtrados");
                 retorna.setNumeroRespuesta(99);
-                System.out.println("UAB: "+criteria.list().size());
+                //System.ot.println("UAB: "+criteria.list().size());
             }
         } catch (Exception e) {
             e.printStackTrace();
