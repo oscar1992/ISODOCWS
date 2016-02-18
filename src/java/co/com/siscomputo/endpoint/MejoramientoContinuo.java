@@ -178,7 +178,7 @@ public class MejoramientoContinuo {
      * @return
      */
     @WebMethod(operationName = "actualizarAccionRapida")
-    public AccionesRapidasEntity actualizarAccionRapida(@WebParam(name = "auditoria") AccionesRapidasEntity objAudi) {
+    public AccionesRapidasEntity actualizarAccionRapida(@WebParam(name = "Accion") AccionesRapidasEntity objAudi) {
         try {
             Valida valida = new Valida();
             String respuesta = "";
@@ -244,8 +244,8 @@ public class MejoramientoContinuo {
      * @param objAudi
      * @return
      */
-    @WebMethod(operationName = "actualizarAccionRapida")
-    public AnexosAccionesRapidasEntity actualizarAccionRapida(@WebParam(name = "AnexoAccionRapida") AnexosAccionesRapidasEntity objAudi) {
+    @WebMethod(operationName = "actualizarAnexoAccionRapida")
+    public AnexosAccionesRapidasEntity actualizarAnexoAccionRapida(@WebParam(name = "AnexoAccionRapida") AnexosAccionesRapidasEntity objAudi) {
         try {
             Valida valida = new Valida();
             String respuesta = "";
@@ -377,8 +377,8 @@ public class MejoramientoContinuo {
      * @param obj
      * @return
      */
-    @WebMethod(operationName = "actualizarPlanesAccion")
-    public AnexoPlanesAccionEntity actualizarPlanesAccion(@WebParam(name = "AnexoPlanAccion") AnexoPlanesAccionEntity obj) {
+    @WebMethod(operationName = "actualizarAnexoPlanesAccion")
+    public AnexoPlanesAccionEntity actualizarAnexoPlanesAccion(@WebParam(name = "AnexoPlanAccion") AnexoPlanesAccionEntity obj) {
         try {
             Valida valida = new Valida();
             String respuesta = "";
