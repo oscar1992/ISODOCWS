@@ -10,4 +10,5 @@
   <endpoint implementation="co.com.siscomputo.endpoint.Administacion" name="Administacion" url-pattern="/Administacion"/>
   <endpoint implementation="co.com.siscomputo.endpoint.GestionDocumental" name="GestionDocumental" url-pattern="/GestionDocumental"/>
   <endpoint implementation="co.com.siscomputo.endpoint.Proveedores" name="Proveedores" url-pattern="/Proveedores"/>
+  <endpoint implementation="co.com.siscomputo.endpoint.MejoramientoContinuo" name="MejoramientoContinuo" url-pattern="/MejoramientoContinuo"/>
 </endpoints>
