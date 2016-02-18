@@ -9,10 +9,12 @@ import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.mejoramientocontinuo.logic.AccionesRapidaLogic;
 import co.com.siscomputo.mejoramientocontinuo.logic.AnexoAccionesRapidasLogic;
 import co.com.siscomputo.mejoramientocontinuo.logic.AnexoAuditoriaLogic;
+import co.com.siscomputo.mejoramientocontinuo.logic.AnexoPlanesAccionLogic;
 import co.com.siscomputo.mejoramientocontinuo.logic.AuditoriaLogic;
 import co.com.siscomputo.mejoramientocontinuo.logic.PlanesAccionLogic;
 import co.com.siscomputo.mejoramientocontinuo.persistencia.AccionesRapidasEntity;
 import co.com.siscomputo.mejoramientocontinuo.persistencia.AnexoAuditoriaEntity;
+import co.com.siscomputo.mejoramientocontinuo.persistencia.AnexoPlanesAccionEntity;
 import co.com.siscomputo.mejoramientocontinuo.persistencia.AnexosAccionesRapidasEntity;
 import co.com.siscomputo.mejoramientocontinuo.persistencia.AuditoriaEntity;
 import co.com.siscomputo.mejoramientocontinuo.persistencia.PlanesAccionEntity;
@@ -339,6 +341,71 @@ public class MejoramientoContinuo {
         try {
             PlanesAccionLogic logic = new PlanesAccionLogic();
             retorno = logic.listarPlanesAccion();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return retorno;
+    }
+    /**
+     * Metodo para insertar un  anexo de plan de accion
+     *
+     * @param obj
+     * @return
+     */
+    @WebMethod(operationName = "insertarAnexoPlanAccion")
+    public AnexoPlanesAccionEntity insertarAnexoPlanAccion(@WebParam(name = "AnexoPlanAccion") AnexoPlanesAccionEntity obj) {
+        try {
+            Valida valida = new Valida();
+            String respuesta = "";
+            respuesta = valida.valida(obj.getUbicacionAnexo(), "ruta");
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                AnexoPlanesAccionLogic logica = new AnexoPlanesAccionLogic();
+                obj = logica.insertarAnexoAcciones(obj);
+            } else {
+                obj.setTrazaRespuesta(respuesta);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return obj;
+    }
+
+    /**
+     * Metodo para actualizar un anexo de plan de accion
+     *
+     * @param obj
+     * @return
+     */
+    @WebMethod(operationName = "actualizarPlanesAccion")
+    public AnexoPlanesAccionEntity actualizarPlanesAccion(@WebParam(name = "AnexoPlanAccion") AnexoPlanesAccionEntity obj) {
+        try {
+            Valida valida = new Valida();
+            String respuesta = "";
+            respuesta = valida.valida(obj.getIdPlanesAccion(), "Id");
+            if ("OK".equalsIgnoreCase(respuesta)) {
+                AnexoPlanesAccionLogic logica = new AnexoPlanesAccionLogic();
+                obj = logica.actualizarAnexoAcciones(obj);
+            } else {
+                obj.setTrazaRespuesta(respuesta);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return obj;
+    }
+
+    /**
+     * Metodo para listar anexos de plan de accion
+     * @return
+     */
+    @WebMethod(operationName = "listaAnexoPlanAccion")
+    public ObjetoRetornaEntity listaAnexoPlanAccion() {
+        ObjetoRetornaEntity retorno = new ObjetoRetornaEntity();
+        try {
+            AnexoPlanesAccionLogic logic = new AnexoPlanesAccionLogic();
+            retorno = logic.listarAnexoAcciones();
         } catch (Exception e) {
             e.printStackTrace();
         }

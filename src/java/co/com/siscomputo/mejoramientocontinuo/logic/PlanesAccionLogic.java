@@ -7,9 +7,9 @@ package co.com.siscomputo.mejoramientocontinuo.logic;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
-import co.com.siscomputo.mejoramientocontinuo.persistencia.AnexosAccionesRapidasEntity;
 import co.com.siscomputo.mejoramientocontinuo.persistencia.PlanesAccionEntity;
 import java.util.ArrayList;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
