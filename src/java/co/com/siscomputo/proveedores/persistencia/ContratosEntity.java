@@ -79,9 +79,12 @@ public class ContratosEntity extends ObjetoRetornaEntity implements Serializable
 
     @Column(name = "CONT_OBJE")
     private String objetoContrato;
-    
+
     @Column(name = "CONT_ESTA")
     private String estadoContrato;
+
+    @Column(name = "CONT_DOCU")
+    private String documentoContrato;
 
     public String getEstadoContrato() {
         return estadoContrato;
@@ -90,8 +93,7 @@ public class ContratosEntity extends ObjetoRetornaEntity implements Serializable
     public void setEstadoContrato(String estadoContrato) {
         this.estadoContrato = estadoContrato;
     }
-    
-    
+
     public Integer getIdContrato() {
         return IdContrato;
     }
@@ -139,7 +141,6 @@ public class ContratosEntity extends ObjetoRetornaEntity implements Serializable
     public void setPlazoEjecucion(java.util.Date plazoEjecucion) {
         this.plazoEjecucion = plazoEjecucion;
     }
-
 
     public UsuarioEntity getSupervisorContrato() {
         return supervisorContrato;
@@ -203,6 +204,14 @@ public class ContratosEntity extends ObjetoRetornaEntity implements Serializable
 
     public void setObjetoContrato(String objetoContrato) {
         this.objetoContrato = objetoContrato;
+    }
+
+    public String getDocumentoContrato() {
+        return documentoContrato;
+    }
+
+    public void setDocumentoContrato(String documentoContrato) {
+        this.documentoContrato = documentoContrato;
     }
 
 }
