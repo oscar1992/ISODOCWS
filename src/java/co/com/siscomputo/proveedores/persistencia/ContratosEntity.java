@@ -8,6 +8,7 @@ package co.com.siscomputo.proveedores.persistencia;
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.administracion.persistencia.AreaEntity;
 import co.com.siscomputo.administracion.persistencia.EmpresaEntity;
+import co.com.siscomputo.administracion.persistencia.ProcesoEntity;
 import co.com.siscomputo.administracion.persistencia.UsuarioEntity;
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -74,8 +75,9 @@ public class ContratosEntity extends ObjetoRetornaEntity implements Serializable
     @ManyToOne
     private AreaEntity idAreaContrato;
 
-    @Column(name = "CONT_PROC")
-    private Integer procesoContrato;
+    @JoinColumn(name = "CONT_PROC")
+    @ManyToOne
+    private ProcesoEntity procesoContrato;
 
     @Column(name = "CONT_OBJE")
     private String objetoContrato;
@@ -191,14 +193,16 @@ public class ContratosEntity extends ObjetoRetornaEntity implements Serializable
         this.idAreaContrato = idAreaContrato;
     }
 
-    public Integer getProcesoContrato() {
+    public ProcesoEntity getProcesoContrato() {
         return procesoContrato;
     }
 
-    public void setProcesoContrato(Integer procesoContrato) {
+    public void setProcesoContrato(ProcesoEntity procesoContrato) {
         this.procesoContrato = procesoContrato;
     }
-
+    
+    
+    
     public String getObjetoContrato() {
         return objetoContrato;
     }
@@ -216,4 +220,3 @@ public class ContratosEntity extends ObjetoRetornaEntity implements Serializable
     }
     
 }
-
