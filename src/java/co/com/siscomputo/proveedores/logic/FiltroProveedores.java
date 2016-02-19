@@ -10,6 +10,7 @@ import co.com.siscomputo.conexion.HibernateUtil;
 import co.com.siscomputo.proveedores.persistencia.ProveedoresEntity;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -91,7 +92,7 @@ public class FiltroProveedores implements AutoCloseable{
                 if (idFormaPago != null) {
                     criteria.add(Restrictions.eq("idFormaPago.idFormasPagos", idFormaPago));
                 }
-<<<<<<< HEAD
+
                 if(fecha1==null||fecha2!=null){
                     System.out.println("Fecha1 Nula");
                 }else{
@@ -115,9 +116,9 @@ public class FiltroProveedores implements AutoCloseable{
                     criteria.add(Restrictions.between("fechaCreacion", fecha1, fecha2));
                     
                 }
-=======
 
->>>>>>> origin/master
+
+
                 retorna.setRetorna((ArrayList<Object>) criteria.list());
                 retorna.setTrazaRespuesta("Carga exitosa de proveedores filtrados");
                 retorna.setNumeroRespuesta(99);
