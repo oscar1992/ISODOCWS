@@ -14,7 +14,7 @@ import org.hibernate.criterion.Restrictions;
  *
  * @author LENOVO
  */
-public class LineaLogic {
+public class LineaLogic implements AutoCloseable {
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -122,7 +122,8 @@ public class LineaLogic {
 
     /**
      * Método Método para consultar la lista de Linea del Proveedor
-     * @return 
+     *
+     * @return
      */
     public ObjetoRetornaEntity listaLinea() {
         ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
@@ -146,5 +147,21 @@ public class LineaLogic {
             retorna.setTrazaRespuesta(e.getMessage());
         }
         return retorna;
+    }
+
+    @Override
+    public void close() throws Exception {
+        try {
+            if (tx != null) {
+                tx.commit();
+            }
+            if (sesion != null) {
+                sesion.close();
+                sesion = null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

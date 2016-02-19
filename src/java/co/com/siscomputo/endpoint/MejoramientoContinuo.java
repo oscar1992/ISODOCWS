@@ -104,7 +104,7 @@ public class MejoramientoContinuo {
      * @return
      */
     @WebMethod(operationName = "insertarAnexoAuditoria")
-    public AnexoAuditoriaEntity insertarAnexoAuditoria(@WebParam(name = "objeto") AnexoAuditoriaEntity objeto) {
+    public AnexoAuditoriaEntity insertarAnexoAuditoria(@WebParam(name = "AnexoAuditora") AnexoAuditoriaEntity objeto) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getIdAnexo(), "id"))) {
             AnexoAuditoriaEntity ret = new AnexoAuditoriaEntity();
@@ -123,7 +123,7 @@ public class MejoramientoContinuo {
      * @return
      */
     @WebMethod(operationName = "actualizarAnexoAuditoria")
-    public AnexoAuditoriaEntity actualizarAnexoAuditoria(@WebParam(name = "objeto") AnexoAuditoriaEntity objeto) {
+    public AnexoAuditoriaEntity actualizarAnexoAuditoria(@WebParam(name = "AnexoAuditoria") AnexoAuditoriaEntity objeto) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getIdAnexo(), "Id"))) {
             AnexoAuditoriaEntity ret = new AnexoAuditoriaEntity();
@@ -178,7 +178,7 @@ public class MejoramientoContinuo {
      * @return
      */
     @WebMethod(operationName = "actualizarAccionRapida")
-    public AccionesRapidasEntity actualizarAccionRapida(@WebParam(name = "Accion") AccionesRapidasEntity objAudi) {
+    public AccionesRapidasEntity actualizarAccionRapida(@WebParam(name = "AccionRapida") AccionesRapidasEntity objAudi) {
         try {
             Valida valida = new Valida();
             String respuesta = "";

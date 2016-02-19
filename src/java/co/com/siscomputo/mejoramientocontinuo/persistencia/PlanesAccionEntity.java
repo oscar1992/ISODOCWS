@@ -6,58 +6,66 @@
 package co.com.siscomputo.mejoramientocontinuo.persistencia;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
+import co.com.siscomputo.administracion.persistencia.EmpresaEntity;
+import co.com.siscomputo.administracion.persistencia.OrigenEntity;
+import co.com.siscomputo.administracion.persistencia.UnidadDeNegocioEntity;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.glassfish.gmbal.ManagedAttribute;
 
 /**
  *
  * @author Felipe
  */
-
 @Entity
 @Table(name = "MJ_TPLAN")
-public class PlanesAccionEntity extends ObjetoRetornaEntity implements Serializable{
-    
+public class PlanesAccionEntity extends ObjetoRetornaEntity implements Serializable {
+
     @Id
     @Column(name = "PLAN_PLAN")
     private Integer idPlanesAccion;
-    
+
     @Column(name = "PLAN_SOLI")
     private String solicitantePlanAccion;
 
     @Column(name = "PLAN_ESTA")
     private String estadoPlanAccion;
-    
-    @Column(name = "PLAN_ORIG")
-    private String origenTipoHallazgo;
-    
+
+    @JoinColumn(name = "PLAN_ORIG")
+    @ManyToOne
+    private OrigenEntity origen;
+
     @Column(name = "PLAN_TIPA")
     private String tipoDeAccion;
-    
+
     @Column(name = "PLAN_TIPH")
     private String tipoDeHallazgo;
-    
+
     @Column(name = "PLAN_MAG")
     private String magnitudPlanAccion;
-    
+
     @Column(name = "PLAN_TIPN")
     private String tipoNorma;
-    
+
     @Column(name = "PLAN_PRO")
     private String procesoPlanAccion;
-    
-    @Column(name = "PLAN_UNI")
-    private String unidadDeNegocio;
-    
-    @Column(name = "PLAN_EMPR")
-    private String empresaPlanAccion;
-    
+
+    @JoinColumn(name = "PLAN_UNI")
+    @ManyToOne
+    private UnidadDeNegocioEntity unidadDeNegocio;
+
+    @JoinColumn(name = "PLAN_EMPR")
+    @ManyToOne
+    private EmpresaEntity empresaPlanAccion;
+
     @Column(name = "PLAN_DESC")
     private String descripcionPlanAccion;
-    
+
     @Column(name = "PLAN_RUTA")
     private String rutaArchivoPlanAccion;
 
@@ -85,14 +93,18 @@ public class PlanesAccionEntity extends ObjetoRetornaEntity implements Serializa
         this.estadoPlanAccion = estadoPlanAccion;
     }
 
-    public String getOrigenTipoHallazgo() {
-        return origenTipoHallazgo;
+    public OrigenEntity getOrigen() {
+        return origen;
     }
 
-    public void setOrigenTipoHallazgo(String origenTipoHallazgo) {
-        this.origenTipoHallazgo = origenTipoHallazgo;
+    public void setOrigen(OrigenEntity origen) {
+        this.origen = origen;
     }
 
+ 
+    
+    
+    
     public String getTipoDeAccion() {
         return tipoDeAccion;
     }
@@ -133,19 +145,19 @@ public class PlanesAccionEntity extends ObjetoRetornaEntity implements Serializa
         this.procesoPlanAccion = procesoPlanAccion;
     }
 
-    public String getUnidadDeNegocio() {
+    public UnidadDeNegocioEntity getUnidadDeNegocio() {
         return unidadDeNegocio;
     }
 
-    public void setUnidadDeNegocio(String unidadDeNegocio) {
+    public void setUnidadDeNegocio(UnidadDeNegocioEntity unidadDeNegocio) {
         this.unidadDeNegocio = unidadDeNegocio;
     }
 
-    public String getEmpresaPlanAccion() {
+    public EmpresaEntity getEmpresaPlanAccion() {
         return empresaPlanAccion;
     }
 
-    public void setEmpresaPlanAccion(String empresaPlanAccion) {
+    public void setEmpresaPlanAccion(EmpresaEntity empresaPlanAccion) {
         this.empresaPlanAccion = empresaPlanAccion;
     }
 
@@ -164,7 +176,5 @@ public class PlanesAccionEntity extends ObjetoRetornaEntity implements Serializa
     public void setRutaArchivoPlanAccion(String rutaArchivoPlanAccion) {
         this.rutaArchivoPlanAccion = rutaArchivoPlanAccion;
     }
-    
-            
-    
+
 }

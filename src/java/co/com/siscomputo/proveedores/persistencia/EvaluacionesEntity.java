@@ -20,24 +20,21 @@ public class EvaluacionesEntity extends ObjetoRetornaEntity implements Serializa
     @Id
     @Column(name = "EVA_EVA")
     private int IDEvaluaciones;
-    
+
     @Column(name = "EVA_FECH")
     private String fechaEvaluaciones;
-    
+
     @JoinColumn(name = "EVA_PRO")
     @ManyToOne
     private ProveedoresEntity proveedoresEntity;
-    
+
     @JoinColumn(name = "EVA_TIPRO")
     @ManyToOne
     private TipoProveedorEntity tipoProveedorEntity;
-    
+
     @JoinColumn(name = "EVA_TIEVA")
     @ManyToOne
     private TipoEvaluacionEntity tipoEvaluacionEntity;
-    
-    
-    
     @Column(name = "EVA_ANIO")
     private String AnioEvaluaciones;
     @Column(name = "EVA_PERI")
@@ -50,8 +47,10 @@ public class EvaluacionesEntity extends ObjetoRetornaEntity implements Serializa
     private String UnidadNegocioEvaluaciones;
     @Column(name = "EVA_EMP")
     private String empresaEvaluaciones;
-    @Column(name = "EVA_CONTR")
-    private String contratoEvaluaciones;
+    @JoinColumn(name = "EVA_CONTR")
+    @ManyToOne
+    private ContratosEntity contratoEvaluaciones;
+
     @Column(name = "EVA_RESP")
     private String responsableEvaluaciones;
     @Column(name = "EVA_UBIC")
@@ -96,9 +95,6 @@ public class EvaluacionesEntity extends ObjetoRetornaEntity implements Serializa
     public void setTipoEvaluacionEntity(TipoEvaluacionEntity tipoEvaluacionEntity) {
         this.tipoEvaluacionEntity = tipoEvaluacionEntity;
     }
-
-    
-    
 
     public String getAnioEvaluaciones() {
         return AnioEvaluaciones;
@@ -148,13 +144,15 @@ public class EvaluacionesEntity extends ObjetoRetornaEntity implements Serializa
         this.empresaEvaluaciones = empresaEvaluaciones;
     }
 
-    public String getContratoEvaluaciones() {
+    public ContratosEntity getContratoEvaluaciones() {
         return contratoEvaluaciones;
     }
 
-    public void setContratoEvaluaciones(String contratoEvaluaciones) {
+    public void setContratoEvaluaciones(ContratosEntity contratoEvaluaciones) {
         this.contratoEvaluaciones = contratoEvaluaciones;
     }
+
+    
 
     public String getResponsableEvaluaciones() {
         return responsableEvaluaciones;

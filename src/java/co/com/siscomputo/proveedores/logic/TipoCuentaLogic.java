@@ -17,7 +17,7 @@ import org.hibernate.Transaction;
  *
  * @author Felipe
  */
-public class TipoCuentaLogic {
+public class TipoCuentaLogic implements AutoCloseable {
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -89,12 +89,6 @@ public class TipoCuentaLogic {
             ObjtipoCuenta = new TipoCuentaEntity();
             ObjtipoCuenta.setNumeroRespuesta(0);
             ObjtipoCuenta.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
         }
         return ObjtipoCuenta;
@@ -122,12 +116,6 @@ public class TipoCuentaLogic {
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
 
         return ObjtipoCuenta;
@@ -155,17 +143,24 @@ public class TipoCuentaLogic {
             retorno = new ObjetoRetornaEntity();
             retorno.setNumeroRespuesta(0);
             retorno.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                retorno = new ObjetoRetornaEntity();
-                retorno.setNumeroRespuesta(0);
-                retorno.setTrazaRespuesta(e.getMessage());
-            }
         }
 
         return retorno;
     }
 
+    @Override
+    public void close() throws Exception {
+        try {
+            if (tx != null) {
+                tx.commit();
+            }
+            if (sesion != null) {
+                sesion.close();
+                sesion = null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

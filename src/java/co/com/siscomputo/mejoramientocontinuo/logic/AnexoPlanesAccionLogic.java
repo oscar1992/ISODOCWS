@@ -17,7 +17,7 @@ import org.hibernate.Transaction;
  *
  * @author Felipe
  */
-public class AnexoPlanesAccionLogic {
+public class AnexoPlanesAccionLogic implements AutoCloseable {
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -65,7 +65,6 @@ public class AnexoPlanesAccionLogic {
         return ret;
     }
 
-    
     /**
      * Metodo para insertar un plan de accion
      *
@@ -92,13 +91,7 @@ public class AnexoPlanesAccionLogic {
             obj = new AnexoPlanesAccionEntity();
             obj.setNumeroRespuesta(0);
             obj.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        } 
         return obj;
     }
 
@@ -124,13 +117,7 @@ public class AnexoPlanesAccionLogic {
             e.printStackTrace();
             obj.setNumeroRespuesta(0);
             obj.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        } 
         return obj;
     }
 
@@ -158,13 +145,23 @@ public class AnexoPlanesAccionLogic {
             obj = new ObjetoRetornaEntity();
             obj.setNumeroRespuesta(0);
             obj.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        } 
         return obj;
+    }
+
+    @Override
+    public void close() throws Exception {
+        try {
+            if (tx != null) {
+                tx.commit();
+            }
+            if (sesion != null) {
+                sesion.close();
+                sesion = null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

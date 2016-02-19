@@ -6,6 +6,8 @@
 package co.com.siscomputo.mejoramientocontinuo.persistencia;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
+import co.com.siscomputo.administracion.persistencia.SedeEmpresaEntity;
+import co.com.siscomputo.administracion.persistencia.UnidadDeNegocioEntity;
 import co.com.siscomputo.administracion.persistencia.UsuarioEntity;
 import java.io.Serializable;
 import java.util.Date;
@@ -25,39 +27,37 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "MJ_TAUDI")
 public class AuditoriaEntity extends ObjetoRetornaEntity implements Serializable {
-    
-    
+
     @Id
-    @Column(name ="AUDI_AUDI")
-    private Integer idAuditoria;    
-    
+    @Column(name = "AUDI_AUDI")
+    private Integer idAuditoria;
+
     @JoinColumn(name = "AUDI_AUTO")
     @ManyToOne
     private UsuarioEntity autorAuditoria;
-    
+
     @Column(name = "AUDI_ESTA")
     private String estadoAuditoria;
-    
+
     @Temporal(TemporalType.DATE)
     @Column(name = "AUDI_FECC")
     private java.util.Date fechaAuditoria;
-    
+
     @Column(name = "AUDI_CODI")
     private String codigoAuditoria;
-    
-    @Column(name = "AUDI_UNID")
-    private String unidadAuditoria;
-    
-    
-    @Column(name = "AUDI_SEDE")
-    private String sedeAuditoria;
-    
-    
+
+    @JoinColumn(name = "AUDI_UNID")
+    @ManyToOne
+    private UnidadDeNegocioEntity unidadAuditoria;
+
+    @JoinColumn(name = "AUDI_SEDE")
+    @ManyToOne
+    private SedeEmpresaEntity sedeAuditoria;
+
     @Temporal(TemporalType.DATE)
     @Column(name = "AUDI_FECI")
     private java.util.Date fechaInicioAuditoria;
-    
-    
+
     @Temporal(TemporalType.DATE)
     @Column(name = "AUDI_FECF")
     private java.util.Date fechaFinalAuditoria;
@@ -102,19 +102,19 @@ public class AuditoriaEntity extends ObjetoRetornaEntity implements Serializable
         this.codigoAuditoria = codigoAuditoria;
     }
 
-    public String getUnidadAuditoria() {
+    public UnidadDeNegocioEntity getUnidadAuditoria() {
         return unidadAuditoria;
     }
 
-    public void setUnidadAuditoria(String unidadAuditoria) {
+    public void setUnidadAuditoria(UnidadDeNegocioEntity unidadAuditoria) {
         this.unidadAuditoria = unidadAuditoria;
     }
 
-    public String getSedeAuditoria() {
+    public SedeEmpresaEntity getSedeAuditoria() {
         return sedeAuditoria;
     }
 
-    public void setSedeAuditoria(String sedeAuditoria) {
+    public void setSedeAuditoria(SedeEmpresaEntity sedeAuditoria) {
         this.sedeAuditoria = sedeAuditoria;
     }
 
@@ -133,8 +133,5 @@ public class AuditoriaEntity extends ObjetoRetornaEntity implements Serializable
     public void setFechaFinalAuditoria(Date fechaFinalAuditoria) {
         this.fechaFinalAuditoria = fechaFinalAuditoria;
     }
-    
-    
-    
-    
+
 }

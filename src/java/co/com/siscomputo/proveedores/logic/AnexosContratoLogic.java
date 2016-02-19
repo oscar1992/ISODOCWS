@@ -17,7 +17,7 @@ import org.hibernate.Transaction;
  *
  * @author Felipe
  */
-public class AnexosContratoLogic {
+public class AnexosContratoLogic  implements AutoCloseable{
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -167,5 +167,20 @@ public class AnexosContratoLogic {
             }
         }
         return retorno;
+    }
+    @Override
+    public void close() throws Exception {
+        try {
+            if (tx != null) {
+                tx.commit();
+            }
+            if (sesion != null) {
+                sesion.close();
+                sesion = null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

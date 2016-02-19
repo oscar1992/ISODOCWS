@@ -1,4 +1,3 @@
-
 package co.com.siscomputo.mejoramientocontinuo.logic;
 
 import co.com.siscomputo.conexion.HibernateUtil;
@@ -16,7 +15,8 @@ import org.hibernate.criterion.Restrictions;
  *
  * @author LENOVO
  */
-public class AnexoAuditoriaLogic {
+public class AnexoAuditoriaLogic implements AutoCloseable {
+
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
 
@@ -39,15 +39,17 @@ public class AnexoAuditoriaLogic {
         }
         return retorno;
     }
-    
-     /**
+
+    /**
      * Método que inserta un AnexoAuditoria nuevo
+     *
      * @param objetoAnexoAuditoria
-     * @return 
-     */    public AnexoAuditoriaEntity insertarAnexoAuditoria(AnexoAuditoriaEntity objetoAnexoAuditoria){
+     * @return
+     */
+    public AnexoAuditoriaEntity insertarAnexoAuditoria(AnexoAuditoriaEntity objetoAnexoAuditoria) {
         try {
             String validaConexion = initOperation();
-            if (!"Ok".equalsIgnoreCase(validaConexion)) {                
+            if (!"Ok".equalsIgnoreCase(validaConexion)) {
                 objetoAnexoAuditoria.setNumeroRespuesta(3);
                 objetoAnexoAuditoria.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
@@ -68,10 +70,12 @@ public class AnexoAuditoriaLogic {
         return objetoAnexoAuditoria;
     }
 
-     /**
+    /**
      * Método que trae el siguiente ID de la tabla MJ_TANEX
-     * @return 
-     */    private int maxMetodo() {
+     *
+     * @return
+     */
+    private int maxMetodo() {
         int ret = -1;
         try {
             String validaConexion = initOperation();
@@ -87,18 +91,20 @@ public class AnexoAuditoriaLogic {
         }
         return ret;
     }
-    
-     /**
+
+    /**
      * Método que actualiza un AnexoAuditoria
+     *
      * @param objetoAnexoAuditoria
-     * @return 
-     */ public AnexoAuditoriaEntity actualizarAnexoAuditoria(AnexoAuditoriaEntity objetoAnexoAuditoria){
+     * @return
+     */
+    public AnexoAuditoriaEntity actualizarAnexoAuditoria(AnexoAuditoriaEntity objetoAnexoAuditoria) {
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
                 objetoAnexoAuditoria.setNumeroRespuesta(3);
                 objetoAnexoAuditoria.setTrazaRespuesta("Error de Conexión " + validaConexion);
-            } else {                
+            } else {
                 System.out.println("JJ");
                 sesion.update(objetoAnexoAuditoria);
                 tx.commit();
@@ -114,19 +120,22 @@ public class AnexoAuditoriaLogic {
         }
         return objetoAnexoAuditoria;
     }
-     /**
+
+    /**
      * Método Método para consultar la lista de AnexoAuditoria
-     * @return 
-     */public ObjetoRetornaEntity listaAnexoAuditoria(){
-        ObjetoRetornaEntity retorna=new ObjetoRetornaEntity();
+     *
+     * @return
+     */
+    public ObjetoRetornaEntity listaAnexoAuditoria() {
+        ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
         try {
             String validaConexion = initOperation();
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
                 retorna.setNumeroRespuesta(3);
                 retorna.setTrazaRespuesta("Error de Conexión " + validaConexion);
             } else {
-                Criteria criteria=sesion.createCriteria(AnexoAuditoriaEntity.class);
-                criteria.add(Restrictions.ne("rutaAnexoAuditoria", "E"));      
+                Criteria criteria = sesion.createCriteria(AnexoAuditoriaEntity.class);
+                criteria.add(Restrictions.ne("rutaAnexoAuditoria", "E"));
                 retorna.setRetorna((ArrayList<Object>) criteria.list());
                 retorna.setTrazaRespuesta("Consulta tabla AnexoAuditoria exitosa");
                 retorna.setNumeroRespuesta(22);
@@ -134,10 +143,26 @@ public class AnexoAuditoriaLogic {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            retorna=new ObjetoRetornaEntity();
+            retorna = new ObjetoRetornaEntity();
             retorna.setNumeroRespuesta(0);
             retorna.setTrazaRespuesta(e.getMessage());
         }
-        return retorna ;
+        return retorna;
+    }
+
+    @Override
+    public void close() throws Exception {
+        try {
+            if (tx != null) {
+                tx.commit();
+            }
+            if (sesion != null) {
+                sesion.close();
+                sesion = null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

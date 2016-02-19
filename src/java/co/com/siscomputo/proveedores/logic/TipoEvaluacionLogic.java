@@ -17,7 +17,7 @@ import org.hibernate.Transaction;
  *
  * @author Felipe
  */
-public class TipoEvaluacionLogic {
+public class TipoEvaluacionLogic implements AutoCloseable{
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -91,13 +91,6 @@ public class TipoEvaluacionLogic {
             ObjTipoE = new TipoEvaluacionEntity();
             ObjTipoE.setNumeroRespuesta(0);
             ObjTipoE.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
         }
         return ObjTipoE;
     }
@@ -124,12 +117,6 @@ public class TipoEvaluacionLogic {
             ObjTipoE = new TipoEvaluacionEntity();
             ObjTipoE.setNumeroRespuesta(0);
             ObjTipoE.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
 
         return ObjTipoE;
@@ -159,14 +146,24 @@ public class TipoEvaluacionLogic {
             e.printStackTrace();
             retorno.setNumeroRespuesta(0);
             retorno.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
         return retorno;
+    }
+
+    @Override
+    public void close() throws Exception {
+        try {
+            if (tx != null) {
+                tx.commit();
+            }
+            if (sesion != null) {
+                sesion.close();
+                sesion = null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

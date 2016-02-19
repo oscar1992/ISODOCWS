@@ -17,7 +17,7 @@ import org.hibernate.Transaction;
  *
  * @author Felipe
  */
-public class FormasPagoLogic {
+public class FormasPagoLogic implements AutoCloseable {
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -86,12 +86,6 @@ public class FormasPagoLogic {
             objFormaPago = new FormasPagoEntity();
             objFormaPago.setNumeroRespuesta(0);
             objFormaPago.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
         return objFormaPago;
     }
@@ -116,14 +110,8 @@ public class FormasPagoLogic {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
         }
+
         return objFormaPago;
     }
 
@@ -149,16 +137,24 @@ public class FormasPagoLogic {
             retorno = new ObjetoRetornaEntity();
             retorno.setNumeroRespuesta(0);
             retorno.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                retorno = new ObjetoRetornaEntity();
-                retorno.setNumeroRespuesta(0);
-                retorno.setTrazaRespuesta(e.getMessage());
-            }
         }
+
         return retorno;
     }
 
+    @Override
+    public void close() throws Exception {
+        try {
+            if (tx != null) {
+                tx.commit();
+            }
+            if (sesion != null) {
+                sesion.close();
+                sesion = null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

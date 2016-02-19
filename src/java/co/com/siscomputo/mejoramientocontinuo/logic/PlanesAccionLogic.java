@@ -18,7 +18,7 @@ import org.hibernate.Transaction;
  *
  * @author Felipe
  */
-public class PlanesAccionLogic {
+public class PlanesAccionLogic implements AutoCloseable{
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -93,12 +93,6 @@ public class PlanesAccionLogic {
             obj = new PlanesAccionEntity();
             obj.setNumeroRespuesta(0);
             obj.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
         return obj;
     }
@@ -125,13 +119,7 @@ public class PlanesAccionLogic {
             e.printStackTrace();
             obj.setNumeroRespuesta(0);
             obj.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        } 
         return obj;
     }
 
@@ -159,13 +147,24 @@ public class PlanesAccionLogic {
             obj = new ObjetoRetornaEntity();
             obj.setNumeroRespuesta(0);
             obj.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        } 
         return obj;
+    }
+    
+    
+    @Override
+    public void close() throws Exception {
+        try {
+            if (tx != null) {
+                tx.commit();
+            }
+            if (sesion != null) {
+                sesion.close();
+                sesion = null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

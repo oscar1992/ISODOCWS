@@ -15,7 +15,7 @@ import org.hibernate.criterion.Restrictions;
  *
  * @author LENOVO
  */
-public class EvaluacionesLogic {
+public class EvaluacionesLogic implements AutoCloseable{
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
 
@@ -138,5 +138,20 @@ public class EvaluacionesLogic {
             retorna.setTrazaRespuesta(e.getMessage());
         }
         return retorna ;
+    }
+     @Override
+    public void close() throws Exception {
+        try {
+            if (tx != null) {
+                tx.commit();
+            }
+            if (sesion != null) {
+                sesion.close();
+                sesion = null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

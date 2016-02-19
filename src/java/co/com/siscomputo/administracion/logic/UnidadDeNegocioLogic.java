@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package co.com.siscomputo.mejoramientocontinuo.logic;
+package co.com.siscomputo.administracion.logic;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
+import co.com.siscomputo.administracion.persistencia.UnidadDeNegocioEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
-import co.com.siscomputo.mejoramientocontinuo.persistencia.AuditoriaEntity;
 import java.util.ArrayList;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -17,30 +18,29 @@ import org.hibernate.Transaction;
  *
  * @author Felipe
  */
-public class AuditoriaLogic implements AutoCloseable{
+public class UnidadDeNegocioLogic {
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
 
     /**
-     * Metodo para establecer una conexion con la base de datos
+     * Metodo que establece la conexión a la base de datos, previa validación de
+     * que la sesión no exista o este nula
      *
-     * @return
+     * @throws HibernateException
      */
     private String initOperation() {
-        String respuesta;
+        String retorno;
         try {
             if (sesion == null) {
                 sesion = HibernateUtil.getSessionFactory().openSession();
                 tx = sesion.beginTransaction();
             }
-            respuesta = "Ok";
-
-        } catch (Exception e) {
-            respuesta = "Error Conexión Hibernate " + e;
+            retorno = "Ok";
+        } catch (Error e) {
+            retorno = "Error Conexión Hibernate " + e;
         }
-
-        return respuesta;
+        return retorno;
     }
 
     /**
@@ -55,7 +55,7 @@ public class AuditoriaLogic implements AutoCloseable{
             if (!"Ok".equalsIgnoreCase(validaConexion)) {
 
             } else {
-                Query query = sesion.createQuery("SELECT MAX(idAuditoria) FROM AuditoriaEntity");
+                Query query = sesion.createQuery("SELECT MAX(idUnidadNegocio) FROM UnidadDeNegocio");
                 ret = (int) query.uniqueResult();
                 ret++;
             }
@@ -66,75 +66,86 @@ public class AuditoriaLogic implements AutoCloseable{
     }
 
     /**
-     * Metodo para insertar una auditoria
+     * Metodo para insertar una unidad de negocio
      *
-     * @param objAudi
+     * @param obj
      * @return
      */
-    public AuditoriaEntity insertarAuditoria(AuditoriaEntity objAudi) {
+    public UnidadDeNegocioEntity insertarUnidadNegocio(UnidadDeNegocioEntity obj) {
         try {
             String conexion = initOperation();
             if ("OK".equalsIgnoreCase(conexion)) {
-                objAudi.setIdAuditoria(maxDocumento());
-                sesion.save(objAudi);
+                obj.setIdUnidadNegocio(maxDocumento());
+                sesion.save(obj);
                 tx.commit();
-                objAudi.setNumeroRespuesta(23);
-                objAudi.setTrazaRespuesta("Insercion exitosa");
+                obj.setNumeroRespuesta(23);
+                obj.setTrazaRespuesta("Insercion exitosa");
             } else {
-                objAudi = new AuditoriaEntity();
-                objAudi.setNumeroRespuesta(0);
-                objAudi.setTrazaRespuesta("Error de conexion: " + conexion);
+                obj = new UnidadDeNegocioEntity();
+                obj.setNumeroRespuesta(0);
+                obj.setTrazaRespuesta("Error de conexion: " + conexion);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            objAudi = new AuditoriaEntity();
-            objAudi.setNumeroRespuesta(0);
-            objAudi.setTrazaRespuesta(e.getMessage());
+            obj = new UnidadDeNegocioEntity();
+            obj.setNumeroRespuesta(0);
+            obj.setTrazaRespuesta(e.getMessage());
+        } finally {
+            try {
+                sesion.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-
-        return objAudi;
+        return obj;
     }
 
     /**
-     * Metodo para actualizar una auditoria
+     * Metodo para actualizar unidad de negocio 
      *
-     * @param objAudi
+     * @param obj
      * @return
      */
-    public AuditoriaEntity actualizarAuditoria(AuditoriaEntity objAudi) {
+    public UnidadDeNegocioEntity actualizarUnidadNegocio(UnidadDeNegocioEntity obj) {
         try {
             String conexion = initOperation();
             if ("OK".equalsIgnoreCase(conexion)) {
-                sesion.update(objAudi);
+                sesion.update(obj);
                 tx.commit();
             } else {
-                objAudi = new AuditoriaEntity();
-                objAudi.setNumeroRespuesta(0);
-                objAudi.setTrazaRespuesta("Erro de conexion: " + conexion);
+                obj = new UnidadDeNegocioEntity();
+                obj.setNumeroRespuesta(0);
+                obj.setTrazaRespuesta("Erro de conexion: " + conexion);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            objAudi.setNumeroRespuesta(0);
-            objAudi.setTrazaRespuesta(e.getMessage());
+            obj.setNumeroRespuesta(0);
+            obj.setTrazaRespuesta(e.getMessage());
+        } finally {
+            try {
+                sesion.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return objAudi;
+        return obj;
     }
 
     /**
-     * Metodo para listar las auditorias
+     * Metodo para listar las unidades de negocio
      *
      * @return
      */
-    public ObjetoRetornaEntity listarAuditoria() {
+    public ObjetoRetornaEntity listarUnidades() {
         ObjetoRetornaEntity obj = new ObjetoRetornaEntity();
         try {
             String conexion = initOperation();
             if ("OK".equalsIgnoreCase(conexion)) {
-                Query sentencia = sesion.createQuery("From AuditoriaEntity WHERE estadoAuditoria<>'E'");
+                Query sentencia = sesion.createQuery("From UnidadDeNegocioEntity");
                 obj.setRetorna((ArrayList<Object>) sentencia.list());
-                obj.setTrazaRespuesta("Consulta tabla  de auditorias exitosa");
+                obj.setTrazaRespuesta("Consulta tabla  de  unidad de negocio exitosa");
                 obj.setNumeroRespuesta(1);
             } else {
                 obj = new ObjetoRetornaEntity();
@@ -146,23 +157,14 @@ public class AuditoriaLogic implements AutoCloseable{
             obj = new ObjetoRetornaEntity();
             obj.setNumeroRespuesta(0);
             obj.setTrazaRespuesta(e.getMessage());
+        } finally {
+            try {
+                sesion.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return obj;
     }
 
-    @Override
-    public void close() throws Exception {
-        try {
-            if (tx != null) {
-                tx.commit();
-            }
-            if (sesion != null) {
-                sesion.close();
-                sesion = null;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

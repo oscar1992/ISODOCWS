@@ -19,7 +19,7 @@ import org.hibernate.criterion.Restrictions;
  *
  * @author Felipe
  */
-public class FiltroContratosLogic {
+public class FiltroContratosLogic implements AutoCloseable {
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -72,7 +72,7 @@ public class FiltroContratosLogic {
                     criteria.add(Restrictions.eq("fechafinalContrato", fechafinalContrato));
                 }
                 if (fechafinalContrato == null) {
-                    Date fecha=new Date(Integer.parseInt(fechafinalContrato.substring(7, 10)), Integer.parseInt(fechafinalContrato.substring(4, 5)), Integer.parseInt(fechafinalContrato.substring(0, 2)));
+                    Date fecha = new Date(Integer.parseInt(fechafinalContrato.substring(7, 10)), Integer.parseInt(fechafinalContrato.substring(4, 5)), Integer.parseInt(fechafinalContrato.substring(0, 2)));
                     criteria.add(Restrictions.eq("fechafinalContrato", fecha));
                 }
                 retorna.setRetorna((ArrayList<Object>) criteria.list());
@@ -87,14 +87,24 @@ public class FiltroContratosLogic {
             retorna = new ObjetoRetornaEntity();
             retorna.setNumeroRespuesta(0);
             retorna.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
+        }
+
+        return retorna;
+    }
+
+    @Override
+    public void close() throws Exception {
+        try {
+            if (tx != null) {
+                tx.commit();
+            }
+            if (sesion != null) {
                 sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
+                sesion = null;
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return retorna;
     }
 }
