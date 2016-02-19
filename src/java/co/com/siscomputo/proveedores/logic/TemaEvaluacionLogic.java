@@ -17,7 +17,7 @@ import org.hibernate.Transaction;
  *
  * @author Felipe
  */
-public class TemaEvaluacionLogic {
+public class TemaEvaluacionLogic implements AutoCloseable{
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -90,13 +90,6 @@ public class TemaEvaluacionLogic {
             objent = new TemaEvaluacionEntity();
             objent.setNumeroRespuesta(0);
             objent.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
         }
 
         return objent;
@@ -126,13 +119,6 @@ public class TemaEvaluacionLogic {
             objent = new TemaEvaluacionEntity();
             objent.setNumeroRespuesta(0);
             objent.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
         }
 
         return objent;
@@ -162,14 +148,23 @@ public class TemaEvaluacionLogic {
             obj.setNumeroRespuesta(0);
             obj.setTrazaRespuesta(e.getMessage());
 
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        } 
         return obj;
     }
 
+    @Override
+    public void close() throws Exception {
+        try {
+            if (tx != null) {
+                tx.commit();
+            }
+            if (sesion != null) {
+                sesion.close();
+                sesion = null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

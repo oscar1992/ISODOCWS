@@ -7,19 +7,18 @@ package co.com.siscomputo.proveedores.logic;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
-import co.com.siscomputo.proveedores.persistencia.LineaEntity;
 import co.com.siscomputo.proveedores.persistencia.PreguntasEvaluacionEntity;
 import java.util.ArrayList;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.omg.CORBA.OBJECT_NOT_EXIST;
 
 /**
  *
  * @author Felipe
  */
-public class PreguntasEvaluacionLogic {
+public class PreguntasEvaluacionLogic implements AutoCloseable {
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -92,13 +91,8 @@ public class PreguntasEvaluacionLogic {
             objetoPre = new PreguntasEvaluacionEntity();
             objetoPre.setIdPregunta(0);
             objetoPre.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
+        
         return objetoPre;
     }
 
@@ -127,12 +121,7 @@ public class PreguntasEvaluacionLogic {
             objPre = new PreguntasEvaluacionEntity();
             objPre.setNumeroRespuesta(0);
             objPre.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        
         }
         return objPre;
     }
@@ -161,14 +150,24 @@ public class PreguntasEvaluacionLogic {
             obj = new ObjetoRetornaEntity();
             obj.setNumeroRespuesta(0);
             obj.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
         }
         return obj;
+    }
+
+    @Override
+    public void close() throws Exception {
+        try {
+            if (tx != null) {
+                tx.commit();
+            }
+            if (sesion != null) {
+                sesion.close();
+                sesion = null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

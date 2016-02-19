@@ -17,7 +17,7 @@ import org.hibernate.Transaction;
  *
  * @author Felipe
  */
-public class PolizaLogic {
+public class PolizaLogic implements AutoCloseable {
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -89,12 +89,6 @@ public class PolizaLogic {
             objPoliza = new PolizasEntity();
             objPoliza.setNumeroRespuesta(0);
             objPoliza.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
         return objPoliza;
     }
@@ -119,13 +113,7 @@ public class PolizaLogic {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+        
         }
         return objPoliza;
     }
@@ -153,17 +141,24 @@ public class PolizaLogic {
             retorno = new ObjetoRetornaEntity();
             retorno.setNumeroRespuesta(0);
             retorno.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                retorno = new ObjetoRetornaEntity();
-                retorno.setNumeroRespuesta(0);
-                retorno.setTrazaRespuesta(e.getMessage());
-            }
-
+         
         }
         return retorno;
     }
 
+    @Override
+    public void close() throws Exception {
+        try {
+            if (tx != null) {
+                tx.commit();
+            }
+            if (sesion != null) {
+                sesion.close();
+                sesion = null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

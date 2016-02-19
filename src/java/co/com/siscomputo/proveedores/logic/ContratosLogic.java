@@ -17,7 +17,7 @@ import org.hibernate.Transaction;
  *
  * @author Felipe
  */
-public class ContratosLogic {
+public class ContratosLogic implements AutoCloseable{
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -92,16 +92,6 @@ public class ContratosLogic {
             e.printStackTrace();
             objContrato.setNumeroRespuesta(0);
             objContrato.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                objContrato = new ContratosEntity();
-                e.printStackTrace();
-                objContrato.setNumeroRespuesta(0);
-                objContrato.setTrazaRespuesta(e.getMessage());
-            }
-
         }
         return objContrato;
     }
@@ -132,12 +122,6 @@ public class ContratosLogic {
             ObjContratos.setNumeroRespuesta(0);
             ObjContratos.setTrazaRespuesta(e.getMessage());
 
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
         return ObjContratos;
     }
@@ -165,15 +149,24 @@ public class ContratosLogic {
             retorno = new ObjetoRetornaEntity();
             retorno.setNumeroRespuesta(0);
             retorno.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-                retorno.setNumeroRespuesta(0);
-                retorno.setTrazaRespuesta(e.getMessage());
-            }
         }
+
         return retorno;
+    }
+
+    @Override
+    public void close() throws Exception {
+        try {
+            if (tx != null) {
+                tx.commit();
+            }
+            if (sesion != null) {
+                sesion.close();
+                sesion = null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

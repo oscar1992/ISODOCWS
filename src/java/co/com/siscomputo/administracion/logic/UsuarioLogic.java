@@ -318,14 +318,7 @@ public class UsuarioLogic implements AutoCloseable {
             usu = (UsuarioEntity) new UsuarioEntity();
             usu.setNumeroRespuesta(0);
             usu.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                //sesion.close();  
-                sesion.close();
-            } catch (HibernateException hibernateException) {
-                hibernateException.printStackTrace();
-            }
-        }
+        } 
         return usu;
     }
 

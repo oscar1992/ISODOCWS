@@ -16,9 +16,9 @@ import org.hibernate.Transaction;
 
 /**
  *
- * @author Personal
+ * @author Felipe
  */
-public class AnexoAccionesRapidasLogic {
+public class AnexoAccionesRapidasLogic implements AutoCloseable {
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -91,18 +91,12 @@ public class AnexoAccionesRapidasLogic {
             obj = new AnexosAccionesRapidasEntity();
             obj.setNumeroRespuesta(0);
             obj.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        } 
         return obj;
     }
 
     /**
-     * Metodo para actualizar una  anexo accionRapida
+     * Metodo para actualizar una anexo accionRapida
      *
      * @param obj
      * @return
@@ -123,12 +117,6 @@ public class AnexoAccionesRapidasLogic {
             e.printStackTrace();
             obj.setNumeroRespuesta(0);
             obj.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
         return obj;
     }
@@ -157,13 +145,23 @@ public class AnexoAccionesRapidasLogic {
             obj = new ObjetoRetornaEntity();
             obj.setNumeroRespuesta(0);
             obj.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
         return obj;
+    }
+
+    @Override
+    public void close() throws Exception {
+        try {
+            if (tx != null) {
+                tx.commit();
+            }
+            if (sesion != null) {
+                sesion.close();
+                sesion = null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

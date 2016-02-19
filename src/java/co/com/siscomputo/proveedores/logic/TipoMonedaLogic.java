@@ -17,7 +17,7 @@ import org.hibernate.Transaction;
  *
  * @author Felipe
  */
-public class TipoMonedaLogic {
+public class TipoMonedaLogic implements AutoCloseable{
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -88,15 +88,6 @@ public class TipoMonedaLogic {
             e.printStackTrace();
             objMoneda.setNumeroRespuesta(0);
             objMoneda.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-                objMoneda.setNumeroRespuesta(0);
-                objMoneda.setTrazaRespuesta(e.getMessage());
-            }
-
         }
         return objMoneda;
     }
@@ -124,15 +115,7 @@ public class TipoMonedaLogic {
             objMoneda.setNumeroRespuesta(0);
             objMoneda.setTrazaRespuesta(e.getMessage());
 
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-                objMoneda.setNumeroRespuesta(0);
-                objMoneda.setTrazaRespuesta(e.getMessage());
-            }
-        }
+        } 
         return objMoneda;
     }
 
@@ -154,16 +137,24 @@ public class TipoMonedaLogic {
             retorno = new ObjetoRetornaEntity();
             retorno.setNumeroRespuesta(0);
             retorno.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-                retorno.setNumeroRespuesta(0);
-                retorno.setTrazaRespuesta(e.getMessage());
-            }
-        }
+        } 
         return retorno;
     }
 
+    
+    @Override
+    public void close() throws Exception {
+        try {
+            if (tx != null) {
+                tx.commit();
+            }
+            if (sesion != null) {
+                sesion.close();
+                sesion = null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -18,7 +18,7 @@ import org.hibernate.criterion.Restrictions;
  *
  * @author Personal
  */
-public class FiltroEvaluacionesLogic {
+public class FiltroEvaluacionesLogic implements AutoCloseable{
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -79,17 +79,24 @@ public class FiltroEvaluacionesLogic {
             e.printStackTrace();
             retorna.setNumeroRespuesta(3);
             retorna.setTrazaRespuesta("Error de Conexión " + conexion);
-        } finally {
-            try {
+        } 
+
+        
+        return retorna;
+    }
+    @Override
+    public void close() throws Exception {
+        try {
+            if (tx != null) {
+                tx.commit();
+            }
+            if (sesion != null) {
                 sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-                retorna = new ObjetoRetornaEntity();
-                retorna.setNumeroRespuesta(0);
-                retorna.setTrazaRespuesta(e.getMessage());
+                sesion = null;
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return retorna;
     }
 }

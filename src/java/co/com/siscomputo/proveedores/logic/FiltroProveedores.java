@@ -7,11 +7,10 @@ package co.com.siscomputo.proveedores.logic;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
-import co.com.siscomputo.proveedores.persistencia.ContratosEntity;
 import co.com.siscomputo.proveedores.persistencia.ProveedoresEntity;
 import java.util.ArrayList;
-import java.util.Date;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
@@ -20,7 +19,8 @@ import org.hibernate.criterion.Restrictions;
  *
  * @author LENOVO
  */
-public class FiltroProveedores {
+public class FiltroProveedores implements AutoCloseable{
+
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
 
@@ -43,8 +43,9 @@ public class FiltroProveedores {
         }
         return retorno;
     }
+
     /**
-     * 
+     *
      * @param idTipoEstado
      * @param idCiudad
      * @param idLinea
@@ -54,7 +55,7 @@ public class FiltroProveedores {
      * @param idTibutaria
      * @param idTipoCuenta
      * @param idFormaPago
-     * @return 
+     * @return
      */
     public ObjetoRetornaEntity filtrarProvedores(Integer idTipoEstado, Integer idCiudad, Integer idLinea, Integer idEmpresa, Integer idResponsable, Integer idTipoProveedor, Integer idTibutaria, Integer idTipoCuenta, Integer idFormaPago) {
         ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
@@ -89,7 +90,7 @@ public class FiltroProveedores {
                 if (idFormaPago != 0) {
                     criteria.add(Restrictions.eq("idFormaPago.idFormasPagos", idFormaPago));
                 }
-                
+
                 retorna.setRetorna((ArrayList<Object>) criteria.list());
                 retorna.setTrazaRespuesta("Carga exitosa de proveedores filtrados");
                 retorna.setNumeroRespuesta(99);
@@ -102,14 +103,24 @@ public class FiltroProveedores {
             retorna = new ObjetoRetornaEntity();
             retorna.setNumeroRespuesta(0);
             retorna.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
+        }
+
+        return retorna;
+    }
+
+    @Override
+    public void close() throws Exception {
+        try {
+            if (tx != null) {
+                tx.commit();
+            }
+            if (sesion != null) {
                 sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
+                sesion = null;
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return retorna;
     }
 }

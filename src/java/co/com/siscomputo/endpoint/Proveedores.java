@@ -8,8 +8,6 @@ package co.com.siscomputo.endpoint;
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.proveedores.logic.AnexoEvalucionLogic;
 
-
-
 import co.com.siscomputo.proveedores.logic.AnexoProveedorLogic;
 import co.com.siscomputo.proveedores.logic.AnexosContratoLogic;
 
@@ -71,7 +69,7 @@ public class Proveedores {
      * @return
      */
     @WebMethod(operationName = "insertarLinea")
-    public LineaEntity insertarLinea(@WebParam(name = "objeto") LineaEntity objeto) {
+    public LineaEntity insertarLinea(@WebParam(name = "InsertarLineaObjeto") LineaEntity objeto) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getTipoLinea(), "Sede"))) {
             LineaEntity ret = new LineaEntity();
@@ -90,7 +88,7 @@ public class Proveedores {
      * @return
      */
     @WebMethod(operationName = "actualizarLinea")
-    public LineaEntity actualizarLinea(@WebParam(name = "objeto") LineaEntity objeto) {
+    public LineaEntity actualizarLinea(@WebParam(name = "LineaObjeto") LineaEntity objeto) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getTipoLinea(), "Sede"))) {
             LineaEntity ret = new LineaEntity();
@@ -120,7 +118,7 @@ public class Proveedores {
      * @return
      */
     @WebMethod(operationName = "insertarTipoDocumento")
-    public TipoDocumentoEntity insertarTipoDocumento(@WebParam(name = "objeto") TipoDocumentoEntity objeto) {
+    public TipoDocumentoEntity insertarTipoDocumento(@WebParam(name = "TipoDocumentoObjeto") TipoDocumentoEntity objeto) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getTipoTipoDocumento(), "Sede"))) {
             TipoDocumentoEntity ret = new TipoDocumentoEntity();
@@ -139,7 +137,7 @@ public class Proveedores {
      * @return
      */
     @WebMethod(operationName = "actualizarTipoDocumento")
-    public TipoDocumentoEntity actualizarTipoDocumento(@WebParam(name = "objeto") TipoDocumentoEntity objeto) {
+    public TipoDocumentoEntity actualizarTipoDocumento(@WebParam(name = "TipoDocmento") TipoDocumentoEntity objeto) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getTipoTipoDocumento(), "Sede"))) {
             TipoDocumentoEntity ret = new TipoDocumentoEntity();
@@ -170,7 +168,7 @@ public class Proveedores {
      * @return
      */
     @WebMethod(operationName = "insertarEstadoProveedor")
-    public EstadoProveedorEntity insertarEstadoProveedor(@WebParam(name = "objeto") EstadoProveedorEntity objeto
+    public EstadoProveedorEntity insertarEstadoProveedor(@WebParam(name = "ProveedorObjeto") EstadoProveedorEntity objeto
     ) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getTipoEstadoProveedor(), "Sede"))) {
@@ -190,7 +188,7 @@ public class Proveedores {
      * @return
      */
     @WebMethod(operationName = "actualizarEstadoProveedor")
-    public EstadoProveedorEntity actualizarEstadoProveedor(@WebParam(name = "objeto") EstadoProveedorEntity objeto
+    public EstadoProveedorEntity actualizarEstadoProveedor(@WebParam(name = "ProveedorObjeto") EstadoProveedorEntity objeto
     ) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getTipoEstadoProveedor(), "Sede"))) {
@@ -221,7 +219,7 @@ public class Proveedores {
      * @return
      */
     @WebMethod(operationName = "insertarTipoProveedor")
-    public TipoProveedorEntity insertarTipoProveedor(@WebParam(name = "objeto") TipoProveedorEntity objeto
+    public TipoProveedorEntity insertarTipoProveedor(@WebParam(name = "TipoProveedors") TipoProveedorEntity objeto
     ) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getNombreTipoProveedor(), "Sede"))) {
@@ -241,7 +239,7 @@ public class Proveedores {
      * @return
      */
     @WebMethod(operationName = "actualizarTipoProveedor")
-    public TipoProveedorEntity actualizarTipoProveedor(@WebParam(name = "objeto") TipoProveedorEntity objeto
+    public TipoProveedorEntity actualizarTipoProveedor(@WebParam(name = "TipoProveedor") TipoProveedorEntity objeto
     ) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getNombreTipoProveedor(), "Sede"))) {
@@ -272,7 +270,7 @@ public class Proveedores {
      * @return
      */
     @WebMethod(operationName = "insertarTipoTributario")
-    public TipoTributarioEntity insertarTipoTributario(@WebParam(name = "objeto") TipoTributarioEntity objeto
+    public TipoTributarioEntity insertarTipoTributario(@WebParam(name = "TipoTributarioObjeto") TipoTributarioEntity objeto
     ) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getNombreTipoTributario(), "Sede"))) {
@@ -292,12 +290,12 @@ public class Proveedores {
      * @return
      */
     @WebMethod(operationName = "actualizarTipoTributario")
-    public TipoTributarioEntity actualizarTipoTributario(@WebParam(name = "objeto") TipoTributarioEntity objeto
+    public TipoTributarioEntity actualizarTipoTributario(@WebParam(name = "TipoTributarioObjeto") TipoTributarioEntity objeto
     ) {
         Valida valida = new Valida();
-        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getNombreTipoTributario(), "Sede"))) {
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getNombreTipoTributario(), "Nombre"))) {
             TipoTributarioEntity ret = new TipoTributarioEntity();
-            ret.setTrazaRespuesta(valida.valida(objeto.getNombreTipoTributario(), "Sede"));
+            ret.setTrazaRespuesta(valida.valida(objeto.getNombreTipoTributario(), "Nombre"));
             return ret;
         } else {
             TipoTributarioLogic metodoRecuperacionLogic = new TipoTributarioLogic();
@@ -323,12 +321,12 @@ public class Proveedores {
      * @return
      */
     @WebMethod(operationName = "insertarCuentasProveedores")
-    public CuentasProveedoresEntity insertarCuentasProveedores(@WebParam(name = "objeto") CuentasProveedoresEntity objeto
+    public CuentasProveedoresEntity insertarCuentasProveedores(@WebParam(name = "CuentaProveedores") CuentasProveedoresEntity objeto
     ) {
         Valida valida = new Valida();
-        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getNombreCuentasProveedores(), "Sede"))) {
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getNombreCuentasProveedores(), "Nombre"))) {
             CuentasProveedoresEntity ret = new CuentasProveedoresEntity();
-            ret.setTrazaRespuesta(valida.valida(objeto.getNombreCuentasProveedores(), "Sede"));
+            ret.setTrazaRespuesta(valida.valida(objeto.getNombreCuentasProveedores(), "Nombre"));
             return ret;
         } else {
             CuentasProveedoresLogic cuentasProveedoresLogic = new CuentasProveedoresLogic();
@@ -343,12 +341,12 @@ public class Proveedores {
      * @return
      */
     @WebMethod(operationName = "actualizarCuentasProveedores")
-    public CuentasProveedoresEntity actualizarCuentasProveedores(@WebParam(name = "objeto") CuentasProveedoresEntity objeto
+    public CuentasProveedoresEntity actualizarCuentasProveedores(@WebParam(name = "CuentaProveedoresObjeto") CuentasProveedoresEntity objeto
     ) {
         Valida valida = new Valida();
-        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getNombreCuentasProveedores(), "Sede"))) {
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getNombreCuentasProveedores(), "Nombre"))) {
             CuentasProveedoresEntity ret = new CuentasProveedoresEntity();
-            ret.setTrazaRespuesta(valida.valida(objeto.getNombreCuentasProveedores(), "Sede"));
+            ret.setTrazaRespuesta(valida.valida(objeto.getNombreCuentasProveedores(), "Nombre"));
             return ret;
         } else {
             CuentasProveedoresLogic metodoRecuperacionLogic = new CuentasProveedoresLogic();
@@ -476,14 +474,13 @@ public class Proveedores {
         ProveedoresLogic logica = new ProveedoresLogic();
         return logica.listaProveedores();
     }
-    
+
     @WebMethod(operationName = "proveedoresFiltardos")
-    public ObjetoRetornaEntity proveedoresFiltardos(@WebParam(name = "idTipoEstado") Integer idTipoEstado, @WebParam(name = "idCiudad") Integer idCiudad, @WebParam(name = "idLinea") Integer idLinea, @WebParam(name = "idEmpresa") Integer idEmpresa, @WebParam(name = "idResponsable") Integer idResponsable, @WebParam(name = "idTipoProveedor") Integer idTipoProveedor, @WebParam(name = "idTibutaria") Integer idTibutaria, @WebParam(name = "idTipoCuenta") Integer idTipoCuenta, @WebParam(name = "idFormaPago") Integer idFormaPago){
-        FiltroProveedores filtroProveedores=new FiltroProveedores();
+    public ObjetoRetornaEntity proveedoresFiltardos(@WebParam(name = "idTipoEstado") Integer idTipoEstado, @WebParam(name = "idCiudad") Integer idCiudad, @WebParam(name = "idLinea") Integer idLinea, @WebParam(name = "idEmpresa") Integer idEmpresa, @WebParam(name = "idResponsable") Integer idResponsable, @WebParam(name = "idTipoProveedor") Integer idTipoProveedor, @WebParam(name = "idTibutaria") Integer idTibutaria, @WebParam(name = "idTipoCuenta") Integer idTipoCuenta, @WebParam(name = "idFormaPago") Integer idFormaPago) {
+        FiltroProveedores filtroProveedores = new FiltroProveedores();
         return filtroProveedores.filtrarProvedores(idTipoEstado, idCiudad, idLinea, idEmpresa, idResponsable, idTipoProveedor, idTibutaria, idTipoCuenta, idFormaPago);
     }
-    
-    
+
     /**
      * Método que permite insertar un Tipo de Cuenta nuevo
      *
@@ -491,11 +488,11 @@ public class Proveedores {
      * @return
      */
     @WebMethod(operationName = "insertarTipoCuenta")
-    public TipoCuentaEntity insertarTipoCuenta(@WebParam(name = "objeto") TipoCuentaEntity objeto) {
+    public TipoCuentaEntity insertarTipoCuenta(@WebParam(name = "TipoCuenta") TipoCuentaEntity objeto) {
         Valida valida = new Valida();
-        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getTipoTipoCuenta(), "Sede"))) {
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getTipoTipoCuenta(), "TipoCuenta"))) {
             TipoCuentaEntity ret = new TipoCuentaEntity();
-            ret.setTrazaRespuesta(valida.valida(objeto.getTipoTipoCuenta(), "Sede"));
+            ret.setTrazaRespuesta(valida.valida(objeto.getTipoTipoCuenta(), "TipoCuenta"));
             return ret;
         } else {
             TipoCuentaLogic tipoCuentaLogic = new TipoCuentaLogic();
@@ -510,11 +507,11 @@ public class Proveedores {
      * @return
      */
     @WebMethod(operationName = "actualizarTipoCuenta")
-    public TipoCuentaEntity actualizarTipoCuenta(@WebParam(name = "objeto") TipoCuentaEntity objeto) {
+    public TipoCuentaEntity actualizarTipoCuenta(@WebParam(name = "TipoCuentaObjeto") TipoCuentaEntity objeto) {
         Valida valida = new Valida();
-        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getTipoTipoCuenta(), "Sede"))) {
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getTipoTipoCuenta(), "TipoCuenta"))) {
             TipoCuentaEntity ret = new TipoCuentaEntity();
-            ret.setTrazaRespuesta(valida.valida(objeto.getTipoTipoCuenta(), "Sede"));
+            ret.setTrazaRespuesta(valida.valida(objeto.getTipoTipoCuenta(), "TipoCuenta"));
             return ret;
         } else {
             TipoCuentaLogic metodoRecuperacionLogic = new TipoCuentaLogic();
@@ -786,11 +783,11 @@ public class Proveedores {
      * @return
      */
     @WebMethod(operationName = "insertarAnexoProveedor")
-    public AnexoProveedorEntity insertarAnexoProveedor(@WebParam(name = "objeto") AnexoProveedorEntity objeto) {
+    public AnexoProveedorEntity insertarAnexoProveedor(@WebParam(name = "AnexoProveedores") AnexoProveedorEntity objeto) {
         Valida valida = new Valida();
-        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getProveedorAnexoProveedor(), "Sede"))) {
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getProveedorAnexoProveedor(), "Proveedor"))) {
             AnexoProveedorEntity ret = new AnexoProveedorEntity();
-            ret.setTrazaRespuesta(valida.valida(objeto.getProveedorAnexoProveedor(), "Sede"));
+            ret.setTrazaRespuesta(valida.valida(objeto.getProveedorAnexoProveedor(), "Proveedor"));
             return ret;
         } else {
             AnexoProveedorLogic anexoProveedorLogic = new AnexoProveedorLogic();
@@ -805,11 +802,11 @@ public class Proveedores {
      * @return
      */
     @WebMethod(operationName = "actualizarAnexoProveedor")
-    public AnexoProveedorEntity actualizarAnexoProveedor(@WebParam(name = "objeto") AnexoProveedorEntity objeto) {
+    public AnexoProveedorEntity actualizarAnexoProveedor(@WebParam(name = "AnexoProveedor") AnexoProveedorEntity objeto) {
         Valida valida = new Valida();
-        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getProveedorAnexoProveedor(), "Sede"))) {
+        if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getProveedorAnexoProveedor(), "Proveedor"))) {
             AnexoProveedorEntity ret = new AnexoProveedorEntity();
-            ret.setTrazaRespuesta(valida.valida(objeto.getProveedorAnexoProveedor(), "Sede"));
+            ret.setTrazaRespuesta(valida.valida(objeto.getProveedorAnexoProveedor(), "Proveedor"));
             return ret;
         } else {
             AnexoProveedorLogic metodoRecuperacionLogic = new AnexoProveedorLogic();
@@ -1009,7 +1006,6 @@ public class Proveedores {
         return retorno;
     }
 
-
     /**
      * Metodo para insertar un tema de evaluacion
      *
@@ -1174,94 +1170,102 @@ public class Proveedores {
 
     }
 
-    
     /**
      * Método que permite insertar un Evaluacion nuevo
+     *
      * @param objeto
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "insertarEvaluaciones")
-    public EvaluacionesEntity insertarEvaluaciones(@WebParam(name = "objeto") EvaluacionesEntity objeto){
+    public EvaluacionesEntity insertarEvaluaciones(@WebParam(name = "EvaluacionesObj") EvaluacionesEntity objeto) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getFechaEvaluaciones(), "fecha"))) {
             EvaluacionesEntity ret = new EvaluacionesEntity();
             ret.setTrazaRespuesta(valida.valida(objeto.getFechaEvaluaciones(), "fecha"));
             return ret;
         } else {
-        EvaluacionesLogic evaluacionesLogic=new EvaluacionesLogic();
-        return evaluacionesLogic.insertarEvaluaciones(objeto);
+            EvaluacionesLogic evaluacionesLogic = new EvaluacionesLogic();
+            return evaluacionesLogic.insertarEvaluaciones(objeto);
         }
-}
-     /**
+    }
+
+    /**
      * Método que permite actualizar un Evaluacion
+     *
      * @param objeto
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "actualizarEvaluaciones")
-    public EvaluacionesEntity actualizarEvaluaciones(@WebParam(name = "objeto")EvaluacionesEntity objeto){
+    public EvaluacionesEntity actualizarEvaluaciones(@WebParam(name = "EvaluacionesObj") EvaluacionesEntity objeto) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getFechaEvaluaciones(), "fecha"))) {
             EvaluacionesEntity ret = new EvaluacionesEntity();
             ret.setTrazaRespuesta(valida.valida(objeto.getFechaEvaluaciones(), "fecha"));
             return ret;
         } else {
-            EvaluacionesLogic metodoRecuperacionLogic=new EvaluacionesLogic();
+            EvaluacionesLogic metodoRecuperacionLogic = new EvaluacionesLogic();
             return metodoRecuperacionLogic.actualizarEvaluaciones(objeto);
         }
     }
+
     /**
      * Método que trae una lista de Evaluacion
-     * @return 
+     *
+     * @return
      */
     @WebMethod(operationName = "listaEvaluaciones")
-    public ObjetoRetornaEntity listaEvaluaciones(){
-        EvaluacionesLogic evaluacionesLogic=new EvaluacionesLogic();
+    public ObjetoRetornaEntity listaEvaluaciones() {
+        EvaluacionesLogic evaluacionesLogic = new EvaluacionesLogic();
         return evaluacionesLogic.listaEvaluaciones();
-     }
-    
-    
+    }
+
     /**
      * Método que permite insertar un anexo nuevo
+     *
      * @param objeto
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "insertarAnexoEvalucion")
-    public AnexoEvalucionEntity insertarAnexoEvalucion(@WebParam(name = "objeto") AnexoEvalucionEntity objeto){
+    public AnexoEvalucionEntity insertarAnexoEvalucion(@WebParam(name = "EvauacionesObj") AnexoEvalucionEntity objeto) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getRutaAnexoEvalucion(), "ruta"))) {
             AnexoEvalucionEntity ret = new AnexoEvalucionEntity();
             ret.setTrazaRespuesta(valida.valida(objeto.getRutaAnexoEvalucion(), "ruta"));
             return ret;
         } else {
-        AnexoEvalucionLogic anexoEvalucionLogic=new AnexoEvalucionLogic();
-        return anexoEvalucionLogic.insertarAnexoEvalucion(objeto);
+            AnexoEvalucionLogic anexoEvalucionLogic = new AnexoEvalucionLogic();
+            return anexoEvalucionLogic.insertarAnexoEvalucion(objeto);
         }
-}
-     /**
+    }
+
+    /**
      * Método que permite actualizar un anexo
+     *
      * @param objeto
-     * @return 
+     * @return
      */
     @WebMethod(operationName = "actualizarAnexoEvalucion")
-    public AnexoEvalucionEntity actualizarAnexoEvalucion(@WebParam(name = "objeto")AnexoEvalucionEntity objeto){
+    public AnexoEvalucionEntity actualizarAnexoEvalucion(@WebParam(name = "AnexoEvaluacionesObj") AnexoEvalucionEntity objeto) {
         Valida valida = new Valida();
         if (!"Ok".equalsIgnoreCase(valida.valida(objeto.getRutaAnexoEvalucion(), "Ruta"))) {
             AnexoEvalucionEntity ret = new AnexoEvalucionEntity();
             ret.setTrazaRespuesta(valida.valida(objeto.getRutaAnexoEvalucion(), "Ruta"));
             return ret;
         } else {
-            AnexoEvalucionLogic metodoRecuperacionLogic=new AnexoEvalucionLogic();
+            AnexoEvalucionLogic metodoRecuperacionLogic = new AnexoEvalucionLogic();
             return metodoRecuperacionLogic.actualizarAnexoEvalucion(objeto);
         }
     }
+
     /**
      * Método que trae una lista de anexo
-     * @return 
+     *
+     * @return
      */
     @WebMethod(operationName = "listaAnexoEvalucion")
-    public ObjetoRetornaEntity listaAnexoEvalucion(){
-        AnexoEvalucionLogic anexoEvalucionLogic=new AnexoEvalucionLogic();
+    public ObjetoRetornaEntity listaAnexoEvalucion() {
+        AnexoEvalucionLogic anexoEvalucionLogic = new AnexoEvalucionLogic();
         return anexoEvalucionLogic.listaAnexoEvalucion();
-     }
-    
+    }
+
 }

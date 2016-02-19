@@ -6,7 +6,6 @@
 package co.com.siscomputo.proveedores.logic;
 
 import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
-import co.com.siscomputo.administracion.persistencia.AccionEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
 import co.com.siscomputo.proveedores.persistencia.CertificadoCalidadEntity;
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ import org.hibernate.Transaction;
  *
  * @author Felipe
  */
-public class CertificadoLogic {
+public class CertificadoLogic implements AutoCloseable {
 
     private Session sesion;//Variable de la sesión y conexión de la base de datos
     private Transaction tx;//Variable que almacena las consultas y las transacciones de la base de datos
@@ -92,15 +91,6 @@ public class CertificadoLogic {
             certificado = new CertificadoCalidadEntity();
             certificado.setNumeroRespuesta(0);
             certificado.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-                certificado = new CertificadoCalidadEntity();
-                certificado.setNumeroRespuesta(0);
-                certificado.setTrazaRespuesta(e.getMessage());
-            }
         }
         return certificado;
     }
@@ -128,21 +118,13 @@ public class CertificadoLogic {
             certificado = new CertificadoCalidadEntity();
             certificado.setNumeroRespuesta(0);
             certificado.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-                certificado = new CertificadoCalidadEntity();
-                certificado.setNumeroRespuesta(0);
-                certificado.setTrazaRespuesta(e.getMessage());
-            }
         }
         return certificado;
     }
 
     /**
-     *Metodo para traer todos los certificados de calidad
+     * Metodo para traer todos los certificados de calidad
+     *
      * @return
      */
     public ObjetoRetornaEntity listaCertificados() {
@@ -163,17 +145,24 @@ public class CertificadoLogic {
             retorno = new ObjetoRetornaEntity();
             retorno.setNumeroRespuesta(0);
             retorno.setTrazaRespuesta(e.getMessage());
-        } finally {
-            try {
-                sesion.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-                retorno = new ObjetoRetornaEntity();
-                retorno.setNumeroRespuesta(0);
-                retorno.setTrazaRespuesta(e.getMessage());
-            }
         }
+
         return retorno;
     }
 
+    @Override
+    public void close() throws Exception {
+        try {
+            if (tx != null) {
+                tx.commit();
+            }
+            if (sesion != null) {
+                sesion.close();
+                sesion = null;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
