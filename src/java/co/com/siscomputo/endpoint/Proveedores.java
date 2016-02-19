@@ -51,6 +51,7 @@ import co.com.siscomputo.proveedores.persistencia.TipoMonedaEntity;
 import co.com.siscomputo.proveedores.persistencia.TipoProveedorEntity;
 import co.com.siscomputo.proveedores.persistencia.TipoTributarioEntity;
 import co.com.siscomputo.utilidades.Valida;
+import java.util.Date;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -474,11 +475,33 @@ public class Proveedores {
         ProveedoresLogic logica = new ProveedoresLogic();
         return logica.listaProveedores();
     }
+<<<<<<< HEAD
+    /**
+     * Método que filtra los proveedores por criterios
+     * @param idTipoEstado
+     * @param idCiudad
+     * @param idLinea
+     * @param idEmpresa
+     * @param idResponsable
+     * @param idTipoProveedor
+     * @param idTibutaria
+     * @param idTipoCuenta
+     * @param idFormaPago
+     * @param fecha1
+     * @param fecha2
+     * @return 
+     */
+    @WebMethod(operationName = "proveedoresFiltardos")
+    public ObjetoRetornaEntity proveedoresFiltardos(@WebParam(name = "idTipoEstado") Integer idTipoEstado, @WebParam(name = "idCiudad") Integer idCiudad, @WebParam(name = "idLinea") Integer idLinea, @WebParam(name = "idEmpresa") Integer idEmpresa, @WebParam(name = "idResponsable") Integer idResponsable, @WebParam(name = "idTipoProveedor") Integer idTipoProveedor, @WebParam(name = "idTibutaria") Integer idTibutaria, @WebParam(name = "idTipoCuenta") Integer idTipoCuenta, @WebParam(name = "idFormaPago") Integer idFormaPago, @WebParam(name = "fechai") Date fecha1, @WebParam(name = "fechaf") Date fecha2){
+        FiltroProveedores filtroProveedores=new FiltroProveedores();
+        return filtroProveedores.filtrarProvedores(idTipoEstado, idCiudad, idLinea, idEmpresa, idResponsable, idTipoProveedor, idTibutaria, idTipoCuenta, idFormaPago, fecha1, fecha2);
+=======
 
     @WebMethod(operationName = "proveedoresFiltardos")
     public ObjetoRetornaEntity proveedoresFiltardos(@WebParam(name = "idTipoEstado") Integer idTipoEstado, @WebParam(name = "idCiudad") Integer idCiudad, @WebParam(name = "idLinea") Integer idLinea, @WebParam(name = "idEmpresa") Integer idEmpresa, @WebParam(name = "idResponsable") Integer idResponsable, @WebParam(name = "idTipoProveedor") Integer idTipoProveedor, @WebParam(name = "idTibutaria") Integer idTibutaria, @WebParam(name = "idTipoCuenta") Integer idTipoCuenta, @WebParam(name = "idFormaPago") Integer idFormaPago) {
         FiltroProveedores filtroProveedores = new FiltroProveedores();
         return filtroProveedores.filtrarProvedores(idTipoEstado, idCiudad, idLinea, idEmpresa, idResponsable, idTipoProveedor, idTibutaria, idTipoCuenta, idFormaPago);
+>>>>>>> origin/master
     }
 
     /**

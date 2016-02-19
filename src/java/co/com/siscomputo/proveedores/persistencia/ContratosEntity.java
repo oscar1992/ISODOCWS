@@ -82,10 +82,17 @@ public class ContratosEntity extends ObjetoRetornaEntity implements Serializable
 
     @Column(name = "CONT_ESTA")
     private String estadoContrato;
+<<<<<<< HEAD
 
     @Column(name = "CONT_DOCU")
     private String documentoContrato;
 
+=======
+    
+    @Column(name = "CONT_DOCU")
+    private String documentoContrato;
+    
+>>>>>>> origin/master
     public String getEstadoContrato() {
         return estadoContrato;
     }
@@ -213,5 +220,10 @@ public class ContratosEntity extends ObjetoRetornaEntity implements Serializable
     public void setDocumentoContrato(String documentoContrato) {
         this.documentoContrato = documentoContrato;
     }
+<<<<<<< HEAD
 
+=======
+    
+    
+>>>>>>> origin/master
 }
