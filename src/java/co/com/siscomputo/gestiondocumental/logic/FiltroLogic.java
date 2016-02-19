@@ -79,28 +79,24 @@ public class FiltroLogic {
                 if(fecha1==null||fecha2!=null){
                     System.out.println("Fecha1 Nula");
                 }else{
-                    
-                    SimpleDateFormat formas=new SimpleDateFormat("dd-MM-yyyy");
+                    /*
+                    SimpleDateFormat formas=new SimpleDateFormat("dd/MM/yyyy");
                     String faux=formas.format(fecha1);
                     System.out.println("No nula1: "+fecha1);
-                    criteria.add(Restrictions.sqlRestriction("DOCU_FCRE>'"+faux+"'"));
-                    //criteria.add(Restrictions.ge("fechaDocumento", fecha1));
+                    criteria.add(Restrictions.sqlRestriction("DOCU_FCRE>'"+faux+"'"));*/
+                    criteria.add(Restrictions.gt("fechaDocumento", fecha1));
                 }
                 if(fecha2==null||fecha1!=null){
                     System.out.println("Fecha2 Nula");
                 }else{
-                    
+                    /*
                     SimpleDateFormat formas=new SimpleDateFormat("dd-MM-yyyy");
                     String faux2=formas.format(fecha2);
                     System.out.println("No nula2: "+fecha2);
-                    criteria.add(Restrictions.sqlRestriction("DOCU_FCRE<'"+faux2+"'"));
+                    criteria.add(Restrictions.sqlRestriction("DOCU_FCRE<'"+faux2+"'"));*/
+                    criteria.add(Restrictions.lt("fechaDocumento", fecha2));
                 }
-                if(fecha1!=null&&fecha2!=null){
-                    SimpleDateFormat formas=new SimpleDateFormat("dd-MM-yyyy");
-                    String faux=formas.format(fecha1);
-                    System.out.println("No nula1: "+fecha1);
-                    String faux2=formas.format(fecha2);
-                    System.out.println("No nula2: "+fecha2);
+                if(fecha1!=null&&fecha2!=null){                    
                     criteria.add(Restrictions.between("fechaDocumento", fecha1, fecha2));
                     
                 }

@@ -9,6 +9,7 @@ import co.com.siscomputo.administracion.entites.ObjetoRetornaEntity;
 import co.com.siscomputo.conexion.HibernateUtil;
 import co.com.siscomputo.proveedores.persistencia.ContratosEntity;
 import co.com.siscomputo.proveedores.persistencia.ProveedoresEntity;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import org.hibernate.Criteria;
@@ -56,40 +57,62 @@ public class FiltroProveedores {
      * @param idFormaPago
      * @return 
      */
-    public ObjetoRetornaEntity filtrarProvedores(Integer idTipoEstado, Integer idCiudad, Integer idLinea, Integer idEmpresa, Integer idResponsable, Integer idTipoProveedor, Integer idTibutaria, Integer idTipoCuenta, Integer idFormaPago) {
+    public ObjetoRetornaEntity filtrarProvedores(Integer idTipoEstado, Integer idCiudad, Integer idLinea, Integer idEmpresa, Integer idResponsable, Integer idTipoProveedor, Integer idTibutaria, Integer idTipoCuenta, Integer idFormaPago, Date fecha1, Date fecha2) {
         ObjetoRetornaEntity retorna = new ObjetoRetornaEntity();
         try {
             String validaConexion = initOperation();
             if ("Ok".equalsIgnoreCase(validaConexion)) {
                 Criteria criteria = sesion.createCriteria(ProveedoresEntity.class);
-                if (idTipoEstado != 0) {
+                if (idTipoEstado != null) {
                     criteria.add(Restrictions.eq("estadoProveedor.idEstadoProveedor", idTipoEstado));
                 }
-                if (idCiudad != 0) {
+                if (idCiudad != null) {
                     criteria.add(Restrictions.eq("ciudadProveedor", idCiudad));
                 }
-                if (idLinea != 0) {
+                if (idLinea != null) {
                     criteria.add(Restrictions.eq("lineaProveedores.idLinea", idLinea));
                 }
-                if (idEmpresa != 0) {
+                if (idEmpresa != null) {
                     criteria.add(Restrictions.eq("empresaProveedor.idEmpresa", idEmpresa));
                 }
-                if (idResponsable != 0) {
+                if (idResponsable != null) {
                     criteria.add(Restrictions.eq("usuarioResponsable.idUsuario", idResponsable));
                 }
-                if (idTipoProveedor != 0) {
+                if (idTipoProveedor != null) {
                     criteria.add(Restrictions.eq("idTipoProveedor.idTipoProveedor", idTipoProveedor));
                 }
-                if (idTibutaria != 0) {
+                if (idTibutaria != null) {
                     criteria.add(Restrictions.eq("idTipoTributario.idTipoTributario", idTibutaria));
                 }
-                if (idTipoCuenta != 0) {
+                if (idTipoCuenta != null) {
                     criteria.add(Restrictions.eq("idTipocuenta.idTipoCuenta", idTipoCuenta));
                 }
-                if (idFormaPago != 0) {
+                if (idFormaPago != null) {
                     criteria.add(Restrictions.eq("idFormaPago.idFormasPagos", idFormaPago));
                 }
-                
+                if(fecha1==null||fecha2!=null){
+                    System.out.println("Fecha1 Nula");
+                }else{
+                    
+                    SimpleDateFormat formas=new SimpleDateFormat("dd-MM-yyyy");
+                    String faux=formas.format(fecha1);
+                    System.out.println("No nula1: "+fecha1);
+                    criteria.add(Restrictions.sqlRestriction("PROV_FECH>'"+faux+"'"));
+                    //criteria.add(Restrictions.ge("fechaDocumento", fecha1));
+                }
+                if(fecha2==null||fecha1!=null){
+                    System.out.println("Fecha2 Nula");
+                }else{
+                    
+                    SimpleDateFormat formas=new SimpleDateFormat("dd-MM-yyyy");
+                    String faux2=formas.format(fecha2);
+                    System.out.println("No nula2: "+fecha2);
+                    criteria.add(Restrictions.sqlRestriction("PROV_FECH<'"+faux2+"'"));
+                }
+                if(fecha1!=null&&fecha2!=null){                    
+                    criteria.add(Restrictions.between("fechaCreacion", fecha1, fecha2));
+                    
+                }
                 retorna.setRetorna((ArrayList<Object>) criteria.list());
                 retorna.setTrazaRespuesta("Carga exitosa de proveedores filtrados");
                 retorna.setNumeroRespuesta(99);
